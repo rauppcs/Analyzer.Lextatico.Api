@@ -1,0 +1,43 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+
+version: '3.4'
+
+services:
+  easycompilerapi:
+    image: ${DOCKER_REGISTRY-}easycompilerapi
+    build:
+      context: .
+      dockerfile: src/EasyCompiler.Api/Dockerfile
+    depends_on: 
+     - sqlserver
+    networks:
+     - EasyCompiler
+    ports:
+      - 5000:5000
+      - 5001:5001
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - LOCAL_DEVELOPMENT=True
+    volumes:
+      - ~/.vsdbg:/remote_debugger:rw
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    environment: 
+      - SA_PASSWORD=&asyComp1ler2021
+      - ACCEPT_EULA=Y
+    volumes: 
+      - sqlserverdata:/var/opt/mssql
+    ports: 
+      - 1433:1433
+    networks: 
+      - EasyCompiler
+  
+volumes: 
+  sqlserverdata:
+    external: false
+
+networks: 
+  EasyCompiler:
+    external: true
+    driver: bridge

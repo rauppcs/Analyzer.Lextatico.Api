@@ -1,0 +1,12 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+
+version: '3.4'
+
+services:
+  easycompilerapi:
+    environment:
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=easycompiler
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/easycompiler.pfx
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/https:ro
