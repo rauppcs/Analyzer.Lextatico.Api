@@ -1,6 +1,8 @@
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using EasyCompiler.Infra.CrossCutting.Extensions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -10,11 +12,17 @@ namespace EasyCompiler.Api
     {
         public static async Task Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
+            var host = CreateHostBuilder(args).ConfigureAppConfiguration((hostContext, builder) =>
+            {
+                if (hostContext.HostingEnvironment.EnvironmentName == "LocalDevelopment")
+                    builder.AddUserSecrets<Program>();
+                    
+            }).Build();
 
             var webHostEnvironment = host.Services.GetRequiredService<IWebHostEnvironment>();
-
-            await host.Services.MigrateContextDbAsync(webHostEnvironment.IsProduction());
+            
+            if (!webHostEnvironment.IsProduction())
+                await host.Services.MigrateContextDbAsync();
 
             await host.RunAsync();
         }

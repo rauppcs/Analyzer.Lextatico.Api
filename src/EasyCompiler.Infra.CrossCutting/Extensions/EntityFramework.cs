@@ -9,12 +9,11 @@ namespace EasyCompiler.Infra.CrossCutting.Extensions
 {
     public static class EntityFramework
     {
-        public static async Task<IServiceProvider> MigrateContextDbAsync(this IServiceProvider serviceProvider, bool isProduction)
+        public static async Task<IServiceProvider> MigrateContextDbAsync(this IServiceProvider serviceProvider)
         {
-            if (isProduction)
-                return serviceProvider;
+            using var escope = serviceProvider.GetService<IServiceScopeFactory>()?.CreateScope();
 
-            var contextDb = serviceProvider.GetRequiredService<EasyCompilerContext>();
+            var contextDb = escope.ServiceProvider.GetRequiredService<EasyCompilerContext>();
 
             if (!(contextDb is null))
             {
