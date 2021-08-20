@@ -1,7 +1,9 @@
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -18,11 +20,6 @@ namespace Lextatico.Infra.Data.Context
         /// <returns>Returns a valid DbContext.</returns>
         public LextaticoContext CreateDbContext(string[] args)
         {
-            if (Debugger.IsAttached == false)
-            {
-                Debugger.Launch();
-            }
-
             var directory = Directory.GetParent(Directory.GetCurrentDirectory())
                 .GetDirectories("Lextatico.Api").FirstOrDefault().FullName;
 
@@ -33,9 +30,9 @@ namespace Lextatico.Infra.Data.Context
                 .Build();
 
             var sqlStringBuilder = new SqlConnectionStringBuilder(builder.GetConnectionString(nameof(LextaticoContext)))
-                {
-                    Password = builder["DbPassword"]
-                };
+            {
+                Password = builder["DbPassword"]
+            };
 
             var connectionString = sqlStringBuilder.ToString();
 

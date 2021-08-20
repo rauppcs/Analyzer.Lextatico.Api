@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Immutable;
+using System.Threading;
 using System.Threading.Tasks;
+using Lextatico.Infra.CrossCutting.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,17 +14,21 @@ namespace Lextatico.Api
     {
         public static async Task Main(string[] args)
         {
+            // TODO: ESSA REGRA AQUI É PARA DAR TEMPO DE DAR ATTACH NA API
+            if (bool.TryParse(Environment.GetEnvironmentVariable("IS_DOCKER"), out var isDocker))
+                if (isDocker)
+                    Thread.Sleep(30000);
+
             var host = CreateHostBuilder(args).ConfigureAppConfiguration((hostContext, builder) =>
             {
                 if (hostContext.HostingEnvironment.EnvironmentName == "LocalDevelopment")
                     builder.AddUserSecrets<Program>();
-                    
             }).Build();
 
             var webHostEnvironment = host.Services.GetRequiredService<IWebHostEnvironment>();
-            
-            // if (!webHostEnvironment.IsProduction())
-                // await host.Services.MigrateContextDbAsync();
+
+            if (!webHostEnvironment.IsProduction())
+                await host.Services.MigrateContextDbAsync();
 
             await host.RunAsync();
         }
