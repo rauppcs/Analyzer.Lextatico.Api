@@ -3,15 +3,15 @@
 version: '3.4'
 
 services:
-  easycompilerapi:
-    image: ${DOCKER_REGISTRY-}easycompilerapi
+  lextaticoapi:
+    image: ${DOCKER_REGISTRY-}lextaticoapi
     build:
       context: .
-      dockerfile: src/EasyCompiler.Api/Dockerfile
+      dockerfile: src/Lextatico.Api/Dockerfile
     depends_on: 
      - sqlserver
     networks:
-     - EasyCompiler
+     - Lextatico
     ports:
       - 5000:5000
       - 5001:5001
@@ -24,20 +24,20 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver
     environment: 
-      - SA_PASSWORD=&asyComp1ler2021
+      - SA_PASSWORD={DB_PASSWORD}
       - ACCEPT_EULA=Y
     volumes: 
       - sqlserverdata:/var/opt/mssql
     ports: 
       - 1433:1433
     networks: 
-      - EasyCompiler
+      - Lextatico
   
 volumes: 
   sqlserverdata:
     external: false
 
 networks: 
-  EasyCompiler:
+  Lextatico:
     external: true
     driver: bridge

@@ -2,27 +2,27 @@
     "docker.commands.composeUp": [
         {
             "label": "Compose Up",
-            "template": "docker-compose -p easycompiler -f docker-compose.override.yml ${configurationFile} up ${detached} ${build}",
+            "template": "docker-compose -p lextatico -f docker-compose.override.yml ${configurationFile} up ${detached} ${build}",
             "contextTypes": [
                 "moby"
             ]
         },
         {
             "label": "Compose Up",
-            "template": "docker compose -p easycompiler -f docker-compose.override.yml ${configurationFile} up ${detached}"
+            "template": "docker compose -p lextatico -f docker-compose.override.yml ${configurationFile} up ${detached}"
         }
     ],
     "docker.commands.composeDown": [
         {
             "label": "Compose Down",
-            "template": "docker-compose -p easycompiler -f docker-compose.override.yml ${configurationFile} down",
+            "template": "docker-compose -p lextatico -f docker-compose.override.yml ${configurationFile} down",
             "contextTypes": [
                 "moby"
             ]
         },
         {
             "label": "Compose Down",
-            "template": "docker compose -p easycompiler -f docker-compose.override.yml ${configurationFile} down"
+            "template": "docker compose -p lextatico -f docker-compose.override.yml ${configurationFile} down"
         }
     ]
 }

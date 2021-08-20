@@ -3,10 +3,13 @@
 version: '3.4'
 
 services:
-  easycompilerapi:
+  lextaticoapi:
     environment:
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=easycompiler
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/easycompiler.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=lextatico
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/Lextatico.pfx
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/https:ro
+  sqlserver:
+    env_file: 
+      - .env
