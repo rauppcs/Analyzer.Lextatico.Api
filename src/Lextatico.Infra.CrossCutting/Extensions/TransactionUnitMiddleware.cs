@@ -38,7 +38,7 @@ namespace Lextatico.Infra.CrossCutting.Extensions
                     await _next(httpContext);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // _logger TODO: fazer log
 
