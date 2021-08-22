@@ -22,13 +22,15 @@ namespace Lextatico.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRepositories()
+            services
+                .AddRepositories()
                 .AddDomainServices()
                 .AddLextaticoAutoMapper()
                 .AddApplicationServices()
                 .AddContext(Configuration)
                 .AddLextaticoIdentity()
                 .AddJwtConfiguration(Configuration)
+                .AddLexitaticoCors()
                 .AddLextaticoControllers(CustomResponseModelStateInvalid.Configure)
                 .AddSwaggerConfiguration();
         }
@@ -46,6 +48,8 @@ namespace Lextatico.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
 

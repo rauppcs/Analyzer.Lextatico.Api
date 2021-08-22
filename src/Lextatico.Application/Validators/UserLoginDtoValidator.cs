@@ -15,8 +15,6 @@ namespace Lextatico.Application.Validators
             _userManager = userManager;
 
             ValidateEmail();
-
-            ValidatePassword();
         }
     }
 }
