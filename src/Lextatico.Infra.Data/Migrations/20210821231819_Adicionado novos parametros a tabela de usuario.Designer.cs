@@ -4,14 +4,16 @@ using Lextatico.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lextatico.Infra.Data.Migrations
 {
     [DbContext(typeof(LextaticoContext))]
-    partial class LextaticoContextModelSnapshot : ModelSnapshot
+    [Migration("20210821231819_Adicionado novos parametros a tabela de usuario")]
+    partial class Adicionadonovosparametrosatabeladeusuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

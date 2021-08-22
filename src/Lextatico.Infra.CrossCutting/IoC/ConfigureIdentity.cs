@@ -1,7 +1,7 @@
-using Lextatico.Infra.Data.Context;
-using Lextatico.Infra.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Lextatico.Infra.Data.Context;
+using Lextatico.Domain.Models;
 
 namespace Lextatico.Infra.CrossCutting.IoC
 {

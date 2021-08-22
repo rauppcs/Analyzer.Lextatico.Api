@@ -1,8 +1,14 @@
 using System;
+using System.IO;
+using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web;
+using Lextatico.Application.Dtos.Responses;
 using Lextatico.Infra.Data.Context;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Lextatico.Infra.CrossCutting.Extensions
 {
@@ -25,12 +31,19 @@ namespace Lextatico.Infra.CrossCutting.Extensions
                 {
                     var strategy = lextaticoContext.CreateExecutionStrategy();
 
-                    await strategy.ExecuteAsync(async () => {
+                    await strategy.ExecuteAsync(async () =>
+                    {
                         await using var transaction = await lextaticoContext.StartTransactionAsync();
 
                         await _next(httpContext);
 
-                        await lextaticoContext.SubmitTransactionAsync(transaction);
+                        if (IsSuccess(httpContext.Response.StatusCode))
+                            await lextaticoContext.SubmitTransactionAsync(transaction);
+                        else
+                        {
+                            await lextaticoContext.UndoTransaction(transaction);
+                            await lextaticoContext.DiscardCurrentTransactionAsync();
+                        }
                     });
                 }
                 else
@@ -40,10 +53,11 @@ namespace Lextatico.Infra.CrossCutting.Extensions
             }
             catch (Exception)
             {
-                // _logger TODO: fazer log
-
-                throw;
+                await lextaticoContext.UndoTransaction();
+                await lextaticoContext.DiscardCurrentTransactionAsync();
             }
         }
+
+        private bool IsSuccess(int statusCode) => statusCode >= 200 && statusCode < 299;
     }
 }

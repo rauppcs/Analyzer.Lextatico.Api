@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace Lextatico.Infra.Data.Models
+namespace Lextatico.Domain.Models
 {
     public class ApplicationRole : IdentityRole<Guid>
     {

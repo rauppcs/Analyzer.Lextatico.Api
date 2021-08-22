@@ -1,10 +1,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Lextatico.Infra.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Lextatico.Domain.Models;
 
 namespace Lextatico.Infra.Data.Context
 {
@@ -48,9 +48,7 @@ namespace Lextatico.Infra.Data.Context
             }
             catch (System.Exception)
             {
-                // _logger TODO: implementar logger
-
-                UndoTransaction();
+                await UndoTransaction(transaction);
 
                 throw;
             }
@@ -60,12 +58,15 @@ namespace Lextatico.Infra.Data.Context
             }
         }
 
-        public void UndoTransaction()
+        public async Task UndoTransaction(IDbContextTransaction transaction = null)
         {
-            throw new NotImplementedException();
+            if (transaction == null)
+                transaction = CurrentTransaction;
+
+            await transaction.RollbackAsync();
         }
 
-        private async Task DiscardCurrentTransactionAsync()
+        public async Task DiscardCurrentTransactionAsync()
         {
             if (CurrentTransaction is null) return;
 

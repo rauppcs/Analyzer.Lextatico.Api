@@ -8,9 +8,9 @@ namespace Lextatico.Infra.CrossCutting.IoC
 {
     public static class ConfigureContext
     {
-        public static void AddContext(this IServiceCollection serviceDescriptors, IConfiguration configuration)
+        public static IServiceCollection AddContext(this IServiceCollection services, IConfiguration configuration)
         {
-            serviceDescriptors.AddDbContext<LextaticoContext>(op =>
+            services.AddDbContext<LextaticoContext>(op =>
             {
                 var sqlStringBuilder = new SqlConnectionStringBuilder(configuration.GetConnectionString(nameof(LextaticoContext)));
 
@@ -20,6 +20,8 @@ namespace Lextatico.Infra.CrossCutting.IoC
 
                 op.UseSqlServer(connectionString);
             });
+
+            return services;
         }
     }
 }

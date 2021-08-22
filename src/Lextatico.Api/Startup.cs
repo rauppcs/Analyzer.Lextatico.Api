@@ -5,25 +5,32 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Lextatico.Application.Dtos.Responses;
+using Lextatico.Api.Configs;
 
 namespace Lextatico.Api
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddContext(Configuration);
-            services.AddLextaticoIdentity();
-            services.AddJwtConfiguration(Configuration);
-            services.AddControllers();
-            services.AddSwaggerConfiguration();
+            services.AddRepositories()
+                .AddDomainServices()
+                .AddLextaticoAutoMapper()
+                .AddApplicationServices()
+                .AddContext(Configuration)
+                .AddLextaticoIdentity()
+                .AddJwtConfiguration(Configuration)
+                .AddLextaticoControllers(CustomResponseModelStateInvalid.Configure)
+                .AddSwaggerConfiguration();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

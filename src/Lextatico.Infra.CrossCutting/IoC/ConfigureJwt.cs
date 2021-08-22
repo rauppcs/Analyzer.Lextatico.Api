@@ -9,9 +9,9 @@ namespace Lextatico.Infra.CrossCutting.IoC
 {
     public static class ConfigureJwt
     {
-        public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            var signingConfigurations = new SigningConfigurations(configuration["SecretKeyJwt"]);
+            var signingConfigurations = new SigningConfiguration(configuration["SecretKeyJwt"]);
             services.AddSingleton(signingConfigurations);
 
             var tokenConfiguration = new TokenConfiguration();
@@ -41,6 +41,8 @@ namespace Lextatico.Infra.CrossCutting.IoC
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser().Build());
             });
+
+            return services;
         }
     }
 }

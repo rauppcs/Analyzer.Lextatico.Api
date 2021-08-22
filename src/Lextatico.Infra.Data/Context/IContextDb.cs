@@ -15,6 +15,6 @@ namespace Lextatico.Infra.Data.Context
 
         Task SubmitTransactionAsync(IDbContextTransaction transaction);
 
-        void UndoTransaction();
+        Task UndoTransaction(IDbContextTransaction transaction);
     }
 }

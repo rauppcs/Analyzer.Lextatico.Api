@@ -3,12 +3,12 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Lextatico.Domain.Security
 {
-    public class SigningConfigurations
+    public class SigningConfiguration
     {
         public SecurityKey Key { get; }
         public SigningCredentials SigningCredentials { get; }
 
-        public SigningConfigurations(string secretKey)
+        public SigningConfiguration(string secretKey)
         {
             var secretKeyBytes = Encoding.ASCII.GetBytes(secretKey);
             Key = new SymmetricSecurityKey(secretKeyBytes);
