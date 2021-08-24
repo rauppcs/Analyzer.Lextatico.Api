@@ -30,7 +30,7 @@ namespace Lextatico.Api.Controllers
         [Route("[action]")]
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> SignIn([FromBody] UserSignInDto userSignIn)
+        public async Task<IActionResult> Signin([FromBody] UserSignInDto userSignIn)
         {
             var result = await _userAppService.CreateAsync(userSignIn);
 

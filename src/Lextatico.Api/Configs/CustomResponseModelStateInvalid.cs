@@ -1,4 +1,5 @@
 using Lextatico.Application.Dtos.Responses;
+using Lextatico.Infra.CrossCutting.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lextatico.Api.Configs
@@ -11,12 +12,12 @@ namespace Lextatico.Api.Configs
             {
                 var response = new Response();
 
-                foreach(var key in context.ModelState.Keys)
+                foreach (var key in context.ModelState.Keys)
                 {
                     var value = context.ModelState[key];
-                    foreach(var error in value.Errors)
+                    foreach (var error in value.Errors)
                     {
-                        response.AddError(key, error.ErrorMessage);
+                        response.AddError(key.ToCamelCase(), error.ErrorMessage);
                     }
                 }
 
