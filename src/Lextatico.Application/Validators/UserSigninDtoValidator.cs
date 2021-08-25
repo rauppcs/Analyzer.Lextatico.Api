@@ -25,12 +25,8 @@ namespace Lextatico.Application.Validators
 
         private void ValidatePasswordEqualConfirmPassword()
         {
-            RuleFor(userSignin => new { userSignin.Password, userSignin.ConfirmPassword })
-                .Must((userPassword) =>
-                {
-                    return userPassword.Password == userPassword.ConfirmPassword;
-                })
-                .OverridePropertyName(nameof(UserSignInDto.ConfirmPassword))
+            RuleFor(userSignin => userSignin.ConfirmPassword)
+                .Equal(userSignin => userSignin.Password)
                 .WithMessage("As senhas não conferem.");
         }
     }

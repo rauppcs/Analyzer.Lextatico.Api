@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentValidation;
 using Lextatico.Application.Dtos.User;
 using Lextatico.Domain.Models;
@@ -23,10 +24,29 @@ namespace Lextatico.Application.Validators
         protected void ValidatePassword()
         {
             RuleFor(userLoginDto => userLoginDto.Password)
+                .Custom((password, context) =>
+                {
+                    var passwordValidator = _userManager.PasswordValidators.FirstOrDefault();
+
+                    var result = passwordValidator.ValidateAsync(_userManager, null, password).Result;
+
+                    if (!result.Succeeded)
+                    {
+                        var messages = result.Errors.Select(error => error.Description);
+
+                        foreach (var message in messages)
+                        {
+                            context.AddFailure("", message);
+                        }
+                    }
+                })
                .MustAsync(async (password, cancelationToken) =>
                {
-                   var passwordValidator = new PasswordValidator<ApplicationUser>();
-                   return (await passwordValidator.ValidateAsync(_userManager, null, password)).Succeeded;
+                   var passwordValidator = _userManager.PasswordValidators.FirstOrDefault();
+
+                   var result = await passwordValidator.ValidateAsync(_userManager, null, password);
+
+                   return result.Succeeded;
                })
                .WithMessage("Senha informada não é válida.");
         }

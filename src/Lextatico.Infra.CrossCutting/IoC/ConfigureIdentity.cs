@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Lextatico.Infra.Data.Context;
 using Lextatico.Domain.Models;
+using Lextatico.Infra.CrossCutting.Extensions;
 
 namespace Lextatico.Infra.CrossCutting.IoC
 {
@@ -10,6 +11,7 @@ namespace Lextatico.Infra.CrossCutting.IoC
         public static IServiceCollection AddLextaticoIdentity(this IServiceCollection services)
         {
             services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddErrorDescriber<LocalizedIdentityErrorDescriber>()
                 .AddEntityFrameworkStores<LextaticoContext>()
                 .AddDefaultTokenProviders();
 
