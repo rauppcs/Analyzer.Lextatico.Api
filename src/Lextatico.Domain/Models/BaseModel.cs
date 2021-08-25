@@ -6,18 +6,12 @@ namespace Lextatico.Domain.Models
 {
     public class BaseModel
     {
-        [Key]
-        public Guid Id { get; set; }
-        private DateTime? _createdAt;
-
-        [Column("created_at")]
-        public DateTime? CreatedAt
+        public BaseModel(DateTime createdAt)
         {
-            get { return _createdAt; }
-            set { _createdAt = value ?? DateTime.UtcNow; }
+            CreatedAt = createdAt;
         }
-
-        [Column("updated_at")]
+        public Guid Id { get; set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
 }

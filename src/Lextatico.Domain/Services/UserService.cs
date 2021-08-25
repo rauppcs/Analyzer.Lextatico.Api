@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lextatico.Domain.Interfaces.Services;
 using Lextatico.Domain.Models;
@@ -36,7 +37,10 @@ namespace Lextatico.Domain.Services
         {
             var applicationUser = await _userManger.FindByEmailAsync(email);
 
-            var refreshTokenModel = new RefreshTokenModel(refreshToken, DateTime.UtcNow, applicationUser.Id, applicationUser);
+            var refreshTokenModel = new RefreshTokenModel(refreshToken, refreshTokenExpiration, applicationUser.Id, applicationUser);
+
+            if (applicationUser.RefreshTokens == null)
+                applicationUser.RefreshTokens = new List<RefreshTokenModel>();
 
             applicationUser.RefreshTokens.Add(refreshTokenModel);
         }

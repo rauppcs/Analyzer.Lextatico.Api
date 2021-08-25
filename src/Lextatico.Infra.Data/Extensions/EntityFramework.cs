@@ -16,13 +16,16 @@ namespace Lextatico.Infra.Data.Extensions
         {
             builder.ToTable(tableName);
 
-            builder.Property(entidade => entidade.Id)
+            builder.Property(model => model.Id)
                 .HasColumnName(nameColnumnId)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEWSEQUENTIALID()");
 
-            builder.Property(entidade => entidade.CreatedAt)
-                .HasColumnType("datetime");
+            builder.Property(model => model.CreatedAt)
+                .HasColumnType("DATETIME");
+
+            builder.Property(model => model.UpdatedAt)
+                .HasColumnType("DATETIME");
         }
     }
 }

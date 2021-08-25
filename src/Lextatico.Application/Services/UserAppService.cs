@@ -97,16 +97,13 @@ namespace Lextatico.Application.Services
 
         public async Task<Response> RefreshTokenAsync(UserRefreshDto userRefresh)
         {
-            var email = _tokenService.GetUserName(userRefresh.Token);
-
-            var applicationUser = _userManager.Users.FirstOrDefault(user => user.Email == email
-                && user.RefreshTokens
-                    .Any(refreshToken => refreshToken.Token == userRefresh.Token
+            var applicationUser = _userManager.Users.FirstOrDefault(user => user.RefreshTokens
+                    .Any(refreshToken => refreshToken.Token == userRefresh.RefreshToken
                         && DateTime.UtcNow <= refreshToken.TokenExpiration));
 
             if (applicationUser != null)
             {
-                var (token, refreshToken) = GenerateFullJwt(email);
+                var (token, refreshToken) = GenerateFullJwt(applicationUser.Email);
 
                 var authenticatedUser = new AuthenticatedUserDto(
                     true,
@@ -116,7 +113,7 @@ namespace Lextatico.Application.Services
                     refreshToken,
                     DateTime.UtcNow.AddSeconds(_tokenConfiguration.SecondsRefresh));
 
-                await _userService.UpdateRefreshToken(email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
+                await _userService.UpdateRefreshToken(applicationUser.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
 
                 Response.Result = authenticatedUser;
             }

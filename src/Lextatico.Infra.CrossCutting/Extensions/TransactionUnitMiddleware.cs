@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -37,7 +38,8 @@ namespace Lextatico.Infra.CrossCutting.Extensions
 
                         await _next(httpContext);
 
-                        if (IsSuccess(httpContext.Response.StatusCode))
+                        if (IsSuccess(httpContext.Response.StatusCode) ||
+                                httpContext.Request.Path.Value.Split("/").Contains("login"))
                             await lextaticoContext.SubmitTransactionAsync(transaction);
                         else
                         {

@@ -62,7 +62,6 @@ namespace Lextatico.Infra.Data.Repositories
                 return null;
 
             item.UpdatedAt = DateTime.UtcNow;
-            item.CreatedAt = itemDb.CreatedAt;
 
             _lextaticoContext.Entry(itemDb).CurrentValues.SetValues(item);
 

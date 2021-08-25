@@ -8,16 +8,7 @@ namespace Lextatico.Application.Validators
     {
         public UserRefreshDtoValidator()
         {
-            ValidateToken();
-
             ValidateRefreshToken();
-        }
-
-        public void ValidateToken()
-        {
-            RuleFor(userRefresh => userRefresh.Token)
-                .NotEmpty()
-                .WithMessage("Token deve ser informado.");
         }
 
         public void ValidateRefreshToken()
