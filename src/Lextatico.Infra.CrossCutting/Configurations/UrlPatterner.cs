@@ -2,7 +2,7 @@ using System;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Routing;
 
-namespace Lextatico.Infra.CrossCutting.Configs
+namespace Lextatico.Infra.CrossCutting.Configurations
 {
     public class UrlPatterner : IOutboundParameterTransformer
     {

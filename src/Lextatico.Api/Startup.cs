@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Lextatico.Application.Dtos.Responses;
-using Lextatico.Api.Configs;
+using Lextatico.Api.Configurations;
 
 namespace Lextatico.Api
 {

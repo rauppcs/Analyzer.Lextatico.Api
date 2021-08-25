@@ -2,7 +2,7 @@ using Lextatico.Application.Dtos.Responses;
 using Lextatico.Infra.CrossCutting.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Lextatico.Api.Configs
+namespace Lextatico.Api.Configurations
 {
     public class CustomResponseModelStateInvalid
     {

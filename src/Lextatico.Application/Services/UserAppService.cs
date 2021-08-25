@@ -100,8 +100,9 @@ namespace Lextatico.Application.Services
             var email = _tokenService.GetUserName(userRefresh.Token);
 
             var applicationUser = _userManager.Users.FirstOrDefault(user => user.Email == email
-                && user.RefreshToken == userRefresh.RefreshToken
-                && DateTime.UtcNow <= user.RefreshTokenExpiration);
+                && user.RefreshTokens
+                    .Any(refreshToken => refreshToken.Token == userRefresh.Token
+                        && DateTime.UtcNow <= refreshToken.TokenExpiration));
 
             if (applicationUser != null)
             {

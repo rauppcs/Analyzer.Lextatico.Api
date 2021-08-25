@@ -36,9 +36,9 @@ namespace Lextatico.Domain.Services
         {
             var applicationUser = await _userManger.FindByEmailAsync(email);
 
-            applicationUser.RefreshToken = refreshToken;
+            var refreshTokenModel = new RefreshTokenModel(refreshToken, DateTime.UtcNow, applicationUser.Id, applicationUser);
 
-            applicationUser.RefreshTokenExpiration = refreshTokenExpiration;
+            applicationUser.RefreshTokens.Add(refreshTokenModel);
         }
     }
 }

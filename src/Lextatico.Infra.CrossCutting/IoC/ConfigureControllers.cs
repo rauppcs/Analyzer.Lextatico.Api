@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Lextatico.Infra.CrossCutting.Configs;
+using Lextatico.Infra.CrossCutting.Configurations;
 
 namespace Lextatico.Infra.CrossCutting.IoC
 {

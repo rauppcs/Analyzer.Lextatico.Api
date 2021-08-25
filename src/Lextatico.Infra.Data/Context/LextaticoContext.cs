@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Lextatico.Domain.Models;
+using System.Reflection;
 
 namespace Lextatico.Infra.Data.Context
 {
@@ -77,7 +78,7 @@ namespace Lextatico.Infra.Data.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            // builder.ApplyConfigurationsFromAssembly(Assembly.Load("Lextatico.Infra.Data"));
+            builder.ApplyConfigurationsFromAssembly(Assembly.Load("Lextatico.Infra.Data"));
 
             base.OnModelCreating(builder);
         }
