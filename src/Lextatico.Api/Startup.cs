@@ -45,7 +45,8 @@ namespace Lextatico.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("doc/swagger.json", "Lextatico Api v1"));
             }
 
-            app.UseHttpsRedirection();
+            if (env.IsProduction())
+                app.UseHttpsRedirection();
 
             app.UseRouting();
 
