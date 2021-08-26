@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Lextatico.Infra.CrossCutting.Extensions
+namespace Lextatico.Infra.Identity.Extensions
 {
     public class LocalizedIdentityErrorDescriber : IdentityErrorDescriber
     {

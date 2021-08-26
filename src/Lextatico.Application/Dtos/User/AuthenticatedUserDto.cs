@@ -4,8 +4,9 @@ namespace Lextatico.Application.Dtos.User
 {
     public class AuthenticatedUserDto
     {
-        public AuthenticatedUserDto(bool authenticated, DateTime created, DateTime expiration, string accessToken, string refreshToken, DateTime refreshTokenExpiration)
+        public AuthenticatedUserDto(UserDetailDto user, bool authenticated, DateTime created, DateTime expiration, string accessToken, string refreshToken, DateTime refreshTokenExpiration)
         {
+            User = user;
             Authenticated = authenticated;
             Created = created;
             Expiration = expiration;
@@ -14,6 +15,7 @@ namespace Lextatico.Application.Dtos.User
             RefreshTokenExpiration = refreshTokenExpiration;
         }
 
+        public UserDetailDto User { get; set; }
         public bool Authenticated { get; set; }
         public DateTime Created { get; set; }
         public DateTime Expiration { get; set; }

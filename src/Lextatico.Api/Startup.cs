@@ -5,9 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Lextatico.Application.Dtos.Responses;
 using Lextatico.Api.Configurations;
+using Lextatico.Infra.Identity.User;
 
 namespace Lextatico.Api
 {
@@ -23,6 +22,8 @@ namespace Lextatico.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddHttpContextAccessor()
+                .AddAspNetUserConfiguration()
                 .AddRepositories()
                 .AddDomainServices()
                 .AddLextaticoAutoMapper()

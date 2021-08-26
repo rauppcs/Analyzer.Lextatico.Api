@@ -8,10 +8,13 @@ namespace Lextatico.Application.AutoMapper.Profiles
     {
         public ApplicationUserAutoMapperProfile()
         {
+            // MODEL TO DTO
             CreateMap<UserSignInDto, ApplicationUser>()
                 .ForMember(applicationUser => applicationUser.UserName,
                 options => options.MapFrom(userSignin => userSignin.Email));
 
+            // DTO TO MODEL
+            CreateMap<ApplicationUser, UserDetailDto>();
         }
     }
 }

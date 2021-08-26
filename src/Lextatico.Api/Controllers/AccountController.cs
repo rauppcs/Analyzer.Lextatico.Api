@@ -18,6 +18,15 @@ namespace Lextatico.Api.Controllers
         }
 
         [Route("[action]")]
+        [HttpGet]
+        public async Task<IActionResult> GetUser()
+        {
+            var result = await _userAppService.GetUserLoggedAsync();
+
+            return ReturnOk(result);
+        }
+
+        [Route("[action]")]
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] UserLogInDto userLogin)

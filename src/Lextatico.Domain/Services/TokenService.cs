@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Lextatico.Domain.Interfaces.Services;
 using Lextatico.Domain.Models;
 using Lextatico.Domain.Security;
@@ -67,6 +65,7 @@ namespace Lextatico.Domain.Services
         {
             _jwtClaims.Add(new Claim(JwtRegisteredClaimNames.Sub, _applicationUser.Id.ToString()));
             _jwtClaims.Add(new Claim(JwtRegisteredClaimNames.Email, _applicationUser.Email));
+            _jwtClaims.Add(new Claim(JwtRegisteredClaimNames.NameId, _applicationUser.Id.ToString()));
             _jwtClaims.Add(new Claim("username", _applicationUser.UserName));
             _jwtClaims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             _jwtClaims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
@@ -130,11 +129,11 @@ namespace Lextatico.Domain.Services
             return claims;
         }
 
-        public string GetEmail() => GetClaimsPrincipal().FindFirst("email").Value;
+        public string GetEmail() => GetClaimsPrincipal().FindFirst(JwtRegisteredClaimNames.Email).Value;
 
         public string GetUserName() => GetClaimsPrincipal().FindFirst("username").Value;
 
-        public string GetEmail(string token) => GetClaimsPrincipal(token).FindFirst("email").Value;
+        public string GetEmail(string token) => GetClaimsPrincipal(token).FindFirst(JwtRegisteredClaimNames.Email).Value;
 
         public string GetUserName(string token) => GetClaimsPrincipal(token).FindFirst("username").Value;
 

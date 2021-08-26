@@ -36,6 +36,18 @@ namespace Lextatico.Application.Services
             _signingConfiguration = signingConfiguration;
         }
 
+        public async Task<Response> GetUserLoggedAsync()
+        {
+            var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserLoggedAsync());
+
+            if (userDto != null)
+                Response.Result = userDto;
+            else
+                Response.AddError("", "Usuário não encontrado");
+
+            return Response;
+        }
+
         public async Task<Response> CreateAsync(UserSignInDto userSignIn)
         {
             var applicationUser = _mapper.Map<ApplicationUser>(userSignIn);
@@ -64,9 +76,12 @@ namespace Lextatico.Application.Services
 
             if (result.Succeeded)
             {
+                var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserByEmailAsync(userLogIn.Email));
+
                 var (token, refreshToken) = GenerateFullJwt(userLogIn.Email);
 
                 var authenticatedUser = new AuthenticatedUserDto(
+                    userDto,
                     true,
                     DateTime.UtcNow,
                     DateTime.UtcNow.AddSeconds(_tokenConfiguration.Seconds),
@@ -103,9 +118,12 @@ namespace Lextatico.Application.Services
 
             if (applicationUser != null)
             {
+                var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserByEmailAsync(applicationUser.Email));
+
                 var (token, refreshToken) = GenerateFullJwt(applicationUser.Email);
 
                 var authenticatedUser = new AuthenticatedUserDto(
+                    userDto,
                     true,
                     DateTime.UtcNow,
                     DateTime.UtcNow.AddSeconds(_tokenConfiguration.Seconds),
