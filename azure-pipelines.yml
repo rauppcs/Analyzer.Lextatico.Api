@@ -67,7 +67,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: '--configuration $(buildConfiguration) --output ./publish'
+    arguments: '--configuration $(buildConfiguration) --output --output $(Build.BinariesDirectory)/publish'
     zipAfterPublish: false
     modifyOutputPath: false
   
