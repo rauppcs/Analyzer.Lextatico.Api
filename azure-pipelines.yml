@@ -1,0 +1,87 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+- dev
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    feedsToUse: 'select'
+    vstsFeed: '9809fe23-8d17-4cca-a755-02a1c2259d1c'
+  displayName: 'Dotnet restore'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration)'
+  displayName: 'Dotnet build'
+
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'test'
+#     projects: '**/Boomerang.TestesUnitarios/*.csproj'
+#     arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:ExcludeByFile="**/Boomerang.Infraestrutura/Migrations/*.cs" /p:CoverletOutputFormat=opencover%2ccobertura --logger trx'
+#     nobuild: true
+#   displayName: 'DotNet Run Tests $(buildConfiguration)'
+  
+# - script: 'dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.8.5 --ignore-failed-sources'
+#   displayName: 'Install ReportGenerator tool'
+
+# - script: |
+#     export PATH=$PATH:$HOME/.dotnet/tools
+#     reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetDir:$(Build.SourcesDirectory)/coverlet/reports -reportTypes:"Cobertura"
+#   displayName: 'Create reports'
+
+# - task: PublishCodeCoverageResults@1
+#   displayName: 'Publish Code Coverage from $(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml'
+#   inputs:
+#     codeCoverageTool: Cobertura
+#     summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml'
+
+# - task: SonarQubeAnalyze@4
+#   displayName: 'Run Code Analysis'
+
+# - task: SonarQubePublish@4
+#   displayName: 'Publish Sonar Result'
+#   inputs:
+#     pollingTimeoutSec: '300'
+
+# - task: sonar-buildbreaker@8
+#   displayName: 'Break Build in case SonarQube Failure'
+#   inputs:
+#     SonarQube: 'SonarBem'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Dotnet publish'
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--configuration $(buildConfiguration) --output ./publish'
+    zipAfterPublish: false
+    modifyOutputPath: true
+  
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)/publish'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop_$(Build.SourceBranchName)'
+    publishLocation: 'Container'
