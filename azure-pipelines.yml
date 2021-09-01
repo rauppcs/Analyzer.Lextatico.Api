@@ -27,41 +27,6 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
   displayName: 'Dotnet build'
 
-# - task: DotNetCoreCLI@2
-#   inputs:
-#     command: 'test'
-#     projects: '**/Boomerang.TestesUnitarios/*.csproj'
-#     arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:ExcludeByFile="**/Boomerang.Infraestrutura/Migrations/*.cs" /p:CoverletOutputFormat=opencover%2ccobertura --logger trx'
-#     nobuild: true
-#   displayName: 'DotNet Run Tests $(buildConfiguration)'
-  
-# - script: 'dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.8.5 --ignore-failed-sources'
-#   displayName: 'Install ReportGenerator tool'
-
-# - script: |
-#     export PATH=$PATH:$HOME/.dotnet/tools
-#     reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetDir:$(Build.SourcesDirectory)/coverlet/reports -reportTypes:"Cobertura"
-#   displayName: 'Create reports'
-
-# - task: PublishCodeCoverageResults@1
-#   displayName: 'Publish Code Coverage from $(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml'
-#   inputs:
-#     codeCoverageTool: Cobertura
-#     summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml'
-
-# - task: SonarQubeAnalyze@4
-#   displayName: 'Run Code Analysis'
-
-# - task: SonarQubePublish@4
-#   displayName: 'Publish Sonar Result'
-#   inputs:
-#     pollingTimeoutSec: '300'
-
-# - task: sonar-buildbreaker@8
-#   displayName: 'Break Build in case SonarQube Failure'
-#   inputs:
-#     SonarQube: 'SonarBem'
-
 - task: DotNetCoreCLI@2
   displayName: 'Dotnet publish'
   inputs:
