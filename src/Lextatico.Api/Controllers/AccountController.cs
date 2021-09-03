@@ -1,9 +1,10 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Lextatico.Api.Controllers.Base;
-using Lextatico.Application.Dtos.Responses;
 using Lextatico.Application.Dtos.User;
 using Lextatico.Application.Services.Interfaces;
+using Lextatico.Infra.Services.Interfaces;
+using Lextatico.Infra.Services.Models.EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,11 @@ namespace Lextatico.Api.Controllers
     public class AccountController : MyControllerBase
     {
         private readonly IUserAppService _userAppService;
-        public AccountController(IUserAppService userAppService)
+        private readonly IEmailService _emailService;
+        public AccountController(IUserAppService userAppService, IEmailService emailService)
         {
             _userAppService = userAppService;
+            _emailService = emailService;
         }
 
         [Route("[action]")]
@@ -60,7 +63,16 @@ namespace Lextatico.Api.Controllers
         [HttpGet]
         public IActionResult ValidateToken()
         {
-            return ReturnOk(new Response(true));
+            return ReturnOk();
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> Forgot([FromBody] UserForgotPasswordDto userForgotPassword)
+        {
+            var result = await _userAppService.ForgotPasswordAsync(userForgotPassword);
+
+            return ReturnOk(result);
         }
     }
 }

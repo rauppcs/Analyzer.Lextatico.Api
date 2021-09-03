@@ -1,7 +1,5 @@
-using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using Lextatico.Application.Dtos.Responses;
+using Lextatico.Domain.Dtos.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

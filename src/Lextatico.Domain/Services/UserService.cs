@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Lextatico.Domain.Dtos.Responses;
 using Lextatico.Domain.Interfaces.Services;
 using Lextatico.Domain.Models;
 using Lextatico.Infra.Identity.User;
@@ -10,6 +11,7 @@ namespace Lextatico.Domain.Services
 {
     public class UserService : IUserService
     {
+        public Response Response { get; } = new();
         private readonly ITokenService _tokenService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -20,6 +22,17 @@ namespace Lextatico.Domain.Services
             _userManager = userManger;
             _signInManager = signInManager;
             _aspNetUser = aspNetUser;
+        }
+
+        public (string token, string refreshToken) GenerateFullJwt(string email)
+        {
+            return _tokenService
+                    .WithUserManager(_userManager)
+                    .WithEmail(email)
+                    .WithJwtClaims()
+                    .WithUserClaims()
+                    .WithUserRoles()
+                    .BuildToken();
         }
 
         public async Task<ApplicationUser> GetUserLoggedAsync()
@@ -36,21 +49,48 @@ namespace Lextatico.Domain.Services
             return applicationUser;
         }
 
-        public async Task<IdentityResult> CreateAsync(ApplicationUser applicationUser, string password)
+        public async Task<Response> CreateAsync(ApplicationUser applicationUser, string password)
         {
             var result = await _userManager.CreateAsync(applicationUser, password);
 
-            return result;
+            if (result.Succeeded)
+            {
+                Response.Result = true;
+            }
+            else
+            {
+                Response.Result = false;
+                foreach (var error in result.Errors)
+                {
+                    Response.AddError(string.Empty, error.Description);
+                }
+            }
+
+            return Response;
         }
 
-        public async Task<SignInResult> SignInAsync(string email, string password)
+        public async Task<Response> SignInAsync(string email, string password)
         {
             var result = await _signInManager.PasswordSignInAsync(email, password, false, true);
 
-            return result;
+            if (!result.Succeeded)
+            {
+                if (result.IsLockedOut)
+                    Response.AddError(string.Empty, "Usuário bloqueado.");
+                else if (result.IsNotAllowed)
+                {
+                    Response.AddError(string.Empty, "Usuário não está liberado para logar.");
+                }
+                else
+                {
+                    Response.AddError(string.Empty, "Usuário ou senha incorreto.");
+                }
+            }
+
+            return Response;
         }
 
-        public async Task UpdateRefreshToken(string email, string refreshToken, DateTime refreshTokenExpiration)
+        public async Task UpdateRefreshTokenAsync(string email, string refreshToken, DateTime refreshTokenExpiration)
         {
             var applicationUser = await _userManager.FindByEmailAsync(email);
 
@@ -60,6 +100,12 @@ namespace Lextatico.Domain.Services
                 applicationUser.RefreshTokens = new List<RefreshTokenModel>();
 
             applicationUser.RefreshTokens.Add(refreshTokenModel);
+        }
+
+        public async Task<Response> ForgotPasswordAsync(string email)
+        {
+            var applicationUser = await _userManager.FindByEmailAsync(email);
+            throw new NotImplementedException();
         }
     }
 }

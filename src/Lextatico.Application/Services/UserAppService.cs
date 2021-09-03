@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Lextatico.Application.Dtos.Responses;
 using Lextatico.Application.Dtos.User;
 using Lextatico.Application.Services.Interfaces;
+using Lextatico.Domain.Dtos.Responses;
 using Lextatico.Domain.Interfaces.Services;
 using Lextatico.Domain.Models;
 using Lextatico.Domain.Security;
@@ -54,27 +54,14 @@ namespace Lextatico.Application.Services
 
             var result = await _userService.CreateAsync(applicationUser, userSignIn.Password);
 
-            if (result.Succeeded)
-            {
-                Response.Result = true;
-            }
-            else
-            {
-                Response.Result = false;
-                foreach (var error in result.Errors)
-                {
-                    Response.AddError(string.Empty, error.Description);
-                }
-            }
-
-            return Response;
+            return result;
         }
 
         public async Task<Response> LogInAsync(UserLogInDto userLogIn)
         {
             var result = await _userService.SignInAsync(userLogIn.Email, userLogIn.Password);
 
-            if (result.Succeeded)
+            if (result.IsValid())
             {
                 var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserByEmailAsync(userLogIn.Email));
 
@@ -89,25 +76,10 @@ namespace Lextatico.Application.Services
                     refreshToken,
                     DateTime.UtcNow.AddSeconds(_tokenConfiguration.SecondsRefresh));
 
-                await _userService.UpdateRefreshToken(userLogIn.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
-
-                Response.Result = authenticatedUser;
-            }
-            else
-            {
-                if (result.IsLockedOut)
-                    Response.AddError(string.Empty, "Usuário bloqueado.");
-                else if (result.IsNotAllowed)
-                {
-                    Response.AddError(string.Empty, "Usuário não está liberado para logar.");
-                }
-                else
-                {
-                    Response.AddError(string.Empty, "Usuário ou senha incorreto.");
-                }
+                await _userService.UpdateRefreshTokenAsync(userLogIn.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
             }
 
-            return Response;
+            return result;
         }
 
         public async Task<Response> RefreshTokenAsync(UserRefreshDto userRefresh)
@@ -131,7 +103,7 @@ namespace Lextatico.Application.Services
                     refreshToken,
                     DateTime.UtcNow.AddSeconds(_tokenConfiguration.SecondsRefresh));
 
-                await _userService.UpdateRefreshToken(applicationUser.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
+                await _userService.UpdateRefreshTokenAsync(applicationUser.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
 
                 Response.Result = authenticatedUser;
             }
@@ -141,6 +113,13 @@ namespace Lextatico.Application.Services
             }
 
             return Response;
+        }
+
+        public async Task<Response> ForgotPasswordAsync(UserForgotPasswordDto userForgotPassword)
+        {
+            var result = await _userService.ForgotPasswordAsync(userForgotPassword.Email);
+
+            return result;
         }
 
         private (string token, string refreshToken) GenerateFullJwt(string email)

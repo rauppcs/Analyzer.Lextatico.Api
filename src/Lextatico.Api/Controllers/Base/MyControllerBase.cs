@@ -1,7 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Lextatico.Api.Filters;
-using Lextatico.Application.Dtos.Responses;
+using Lextatico.Domain.Dtos.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +23,11 @@ namespace Lextatico.Api.Controllers.Base
                 return BadRequest(response);
 
             return result;
+        }
+
+        protected virtual IActionResult ReturnOk()
+        {
+            return NoContent();
         }
 
         protected virtual IActionResult ReturnOk(Response response)

@@ -24,7 +24,9 @@ namespace Lextatico.Api
             services
                 .AddHttpContextAccessor()
                 .AddAspNetUserConfiguration()
+                .AddEmailSettings(Configuration)
                 .AddRepositories()
+                .AddInfraServices()
                 .AddDomainServices()
                 .AddLextaticoAutoMapper()
                 .AddApplicationServices()

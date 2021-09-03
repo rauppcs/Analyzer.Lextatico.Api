@@ -1,15 +1,9 @@
 using System;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
-using System.Web;
-using Lextatico.Application.Dtos.Responses;
 using Lextatico.Infra.Data.Context;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Lextatico.Infra.CrossCutting.Extensions
 {
