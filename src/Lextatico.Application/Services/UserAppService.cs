@@ -14,41 +14,32 @@ namespace Lextatico.Application.Services
 {
     public class UserAppService : IUserAppService
     {
-        public Response Response { get; } = new();
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenConfiguration _tokenConfiguration;
         private readonly SigningConfiguration _signingConfiguration;
         public UserAppService(IMapper mapper,
             IUserService userService,
             ITokenService tokenService,
-            UserManager<ApplicationUser> userManager,
             TokenConfiguration tokenConfiguration,
             SigningConfiguration signingConfiguration)
         {
             _mapper = mapper;
             _userService = userService;
             _tokenService = tokenService;
-            _userManager = userManager;
             _tokenConfiguration = tokenConfiguration;
             _signingConfiguration = signingConfiguration;
         }
 
-        public async Task<Response> GetUserLoggedAsync()
+        public async Task<UserDetailDto> GetUserLoggedAsync()
         {
             var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserLoggedAsync());
 
-            if (userDto != null)
-                Response.Result = userDto;
-            else
-                Response.AddError("", "Usuário não encontrado");
-
-            return Response;
+            return userDto;
         }
 
-        public async Task<Response> CreateAsync(UserSignInDto userSignIn)
+        public async Task<bool> CreateAsync(UserSignInDto userSignIn)
         {
             var applicationUser = _mapper.Map<ApplicationUser>(userSignIn);
 
@@ -57,15 +48,15 @@ namespace Lextatico.Application.Services
             return result;
         }
 
-        public async Task<Response> LogInAsync(UserLogInDto userLogIn)
+        public async Task<AuthenticatedUserDto> LogInAsync(UserLogInDto userLogIn)
         {
             var result = await _userService.SignInAsync(userLogIn.Email, userLogIn.Password);
 
-            if (result.IsValid())
+            if (result)
             {
                 var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserByEmailAsync(userLogIn.Email));
 
-                var (token, refreshToken) = GenerateFullJwt(userLogIn.Email);
+                var (token, refreshToken) = _userService.GenerateFullJwt(userLogIn.Email);
 
                 var authenticatedUser = new AuthenticatedUserDto(
                     userDto,
@@ -77,60 +68,45 @@ namespace Lextatico.Application.Services
                     DateTime.UtcNow.AddSeconds(_tokenConfiguration.SecondsRefresh));
 
                 await _userService.UpdateRefreshTokenAsync(userLogIn.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
+
+                return authenticatedUser;
             }
 
-            return result;
+            return null;
         }
 
-        public async Task<Response> RefreshTokenAsync(UserRefreshDto userRefresh)
+        public async Task<AuthenticatedUserDto> RefreshTokenAsync(UserRefreshDto userRefresh)
         {
-            var applicationUser = _userManager.Users.FirstOrDefault(user => user.RefreshTokens
-                    .Any(refreshToken => refreshToken.Token == userRefresh.RefreshToken
-                        && DateTime.UtcNow <= refreshToken.TokenExpiration));
+            var applicationUser = _userService.GetUserByRefreshToken(userRefresh.RefreshToken);
 
-            if (applicationUser != null)
+            if (applicationUser == null)
             {
-                var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserByEmailAsync(applicationUser.Email));
-
-                var (token, refreshToken) = GenerateFullJwt(applicationUser.Email);
-
-                var authenticatedUser = new AuthenticatedUserDto(
-                    userDto,
-                    true,
-                    DateTime.UtcNow,
-                    DateTime.UtcNow.AddSeconds(_tokenConfiguration.Seconds),
-                    token,
-                    refreshToken,
-                    DateTime.UtcNow.AddSeconds(_tokenConfiguration.SecondsRefresh));
-
-                await _userService.UpdateRefreshTokenAsync(applicationUser.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
-
-                Response.Result = authenticatedUser;
-            }
-            else
-            {
-                Response.AddError(string.Empty, "Token ou RefreshToken inválido, faça o login novamente.");
+                return null;
             }
 
-            return Response;
+            var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserByEmailAsync(applicationUser.Email));
+
+            var (token, refreshToken) = _userService.GenerateFullJwt(applicationUser.Email);
+
+            var authenticatedUser = new AuthenticatedUserDto(
+                userDto,
+                true,
+                DateTime.UtcNow,
+                DateTime.UtcNow.AddSeconds(_tokenConfiguration.Seconds),
+                token,
+                refreshToken,
+                DateTime.UtcNow.AddSeconds(_tokenConfiguration.SecondsRefresh));
+
+            await _userService.UpdateRefreshTokenAsync(applicationUser.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
+
+            return authenticatedUser;
         }
 
-        public async Task<Response> ForgotPasswordAsync(UserForgotPasswordDto userForgotPassword)
+        public async Task<bool> ForgotPasswordAsync(UserForgotPasswordDto userForgotPassword)
         {
             var result = await _userService.ForgotPasswordAsync(userForgotPassword.Email);
 
             return result;
-        }
-
-        private (string token, string refreshToken) GenerateFullJwt(string email)
-        {
-            return _tokenService
-                    .WithUserManager(_userManager)
-                    .WithEmail(email)
-                    .WithJwtClaims()
-                    .WithUserClaims()
-                    .WithUserRoles()
-                    .BuildToken();
         }
     }
 }

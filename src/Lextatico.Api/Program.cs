@@ -27,8 +27,8 @@ namespace Lextatico.Api
 
             var webHostEnvironment = host.Services.GetRequiredService<IWebHostEnvironment>();
 
-            // if (!webHostEnvironment.IsProduction())
-            //     await host.Services.MigrateContextDbAsync();
+            if (!webHostEnvironment.IsProduction())
+                await host.Services.MigrateContextDbAsync();
 
             await host.RunAsync();
         }

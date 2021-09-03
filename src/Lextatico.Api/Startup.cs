@@ -23,6 +23,7 @@ namespace Lextatico.Api
         {
             services
                 .AddHttpContextAccessor()
+                .AddResponse()
                 .AddAspNetUserConfiguration()
                 .AddEmailSettings(Configuration)
                 .AddRepositories()
