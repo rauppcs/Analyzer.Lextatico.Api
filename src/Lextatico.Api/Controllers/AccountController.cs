@@ -79,5 +79,21 @@ namespace Lextatico.Api.Controllers
 
             return ReturnOk(result);
         }
+
+        [Route("[action]")]
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Teste()
+        {
+            await _emailService.SendEmailAsync(new EmailRequest
+            {
+                Name = "Cassiano",
+                Email = "cassiano.raupp@outlook.com",
+                Subject = "Teste Umbler",
+                Body = "Umbler."
+            });
+
+            return Ok();
+        }
     }
 }
