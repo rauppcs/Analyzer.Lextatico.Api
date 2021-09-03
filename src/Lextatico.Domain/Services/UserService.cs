@@ -54,10 +54,10 @@ namespace Lextatico.Domain.Services
         {
             var applicationUser = await _userManager.FindByEmailAsync(email);
 
-            var refreshTokenModel = new RefreshTokenModel(refreshToken, refreshTokenExpiration, applicationUser.Id, applicationUser);
+            var refreshTokenModel = new RefreshToken(refreshToken, refreshTokenExpiration, applicationUser.Id, applicationUser);
 
             if (applicationUser.RefreshTokens == null)
-                applicationUser.RefreshTokens = new List<RefreshTokenModel>();
+                applicationUser.RefreshTokens = new List<RefreshToken>();
 
             applicationUser.RefreshTokens.Add(refreshTokenModel);
         }

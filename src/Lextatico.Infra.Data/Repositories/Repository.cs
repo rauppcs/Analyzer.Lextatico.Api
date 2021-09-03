@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lextatico.Infra.Data.Repositories
 {
-    public class Repository<T> where T : BaseModel
+    public class Repository<T> where T : Base
     {
         protected readonly LextaticoContext _lextaticoContext;
         private DbSet<T> _dataSet;

@@ -2,13 +2,13 @@ using System;
 
 namespace Lextatico.Domain.Models
 {
-    public class RefreshTokenModel : BaseModel
+    public class RefreshToken : Base
     {
-        public RefreshTokenModel()
+        public RefreshToken()
             : base(DateTime.UtcNow)
         {
         }
-        public RefreshTokenModel(string token, DateTime tokenExpiration, Guid idApplicationUser, ApplicationUser applicationUser)
+        public RefreshToken(string token, DateTime tokenExpiration, Guid idApplicationUser, ApplicationUser applicationUser)
             : base(DateTime.UtcNow)
         {
             Token = token;
@@ -20,6 +20,6 @@ namespace Lextatico.Domain.Models
         public string Token { get; set; }
         public DateTime TokenExpiration { get; set; }
         public Guid IdApplicationUser { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

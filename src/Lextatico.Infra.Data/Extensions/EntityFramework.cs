@@ -10,14 +10,14 @@ namespace Lextatico.Infra.Data.Extensions
         /// Define some default fields for the model.
         /// </summary>
         /// <param name="builder"></param>
-        /// <param name="nameColnumnId">Property name Id for the bank. Default: "Id"</param>
-        /// <typeparam name="TEntidade">Type of model to be defined.</typeparam>
-        public static void DefineDefaultFields<TEntidade>(this EntityTypeBuilder<TEntidade> builder, string tableName, string nameColnumnId = "Id") where TEntidade : BaseModel
+        /// <param name="nameColumnId">Property name Id for the database. Default: "Id"</param>
+        /// <typeparam name="T">Type of model to be defined.</typeparam>
+        public static void DefineDefaultFields<T>(this EntityTypeBuilder<T> builder, string tableName = nameof(T), string nameColumnId = "Id") where T : Base
         {
             builder.ToTable(tableName);
 
             builder.Property(model => model.Id)
-                .HasColumnName(nameColnumnId)
+                .HasColumnName(nameColumnId)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEWSEQUENTIALID()");
 

@@ -7,7 +7,7 @@ using Lextatico.Domain.Models;
 
 namespace Lextatico.Domain.Services
 {
-    public class Service<T> : IService<T> where T : BaseModel
+    public class Service<T> : IService<T> where T : Base
     {
         private readonly IRepository<T> _repository;
 

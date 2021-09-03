@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lextatico.Domain.Models
 {
-    public class BaseModel
+    public abstract class Base
     {
-        public BaseModel(DateTime createdAt)
+        public Base(DateTime createdAt)
         {
             CreatedAt = createdAt;
         }
