@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lextatico.Domain.Dtos.Responses
+namespace Lextatico.Domain.Dtos.Response
 {
     public class Response : IResponse
     {

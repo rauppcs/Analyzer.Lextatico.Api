@@ -25,7 +25,7 @@ namespace Lextatico.Infra.Services.Implementations
             message.Subject = emailRequest.Subject;
 
             var bodyBuilder = new BodyBuilder();
-            bodyBuilder.TextBody = emailRequest.Body;
+            bodyBuilder.HtmlBody = emailRequest.Body;
 
             message.Body = bodyBuilder.ToMessageBody();
 

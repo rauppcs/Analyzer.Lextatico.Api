@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Lextatico.Domain.Dtos.Responses;
+using Lextatico.Domain.Dtos.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -22,7 +22,11 @@ namespace Lextatico.Api.Filters
 
             response.AddError(string.Empty, "Ocorreu um erro inesperado.");
 
-            context.Result = new BadRequestObjectResult(response);
+            var result = new ObjectResult(response);
+
+            result.StatusCode = 500;
+
+            context.Result = result;
         }
 
         /// <summary>

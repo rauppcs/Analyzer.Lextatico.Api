@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Lextatico.Api.Controllers.Base;
 using Lextatico.Application.Dtos.User;
 using Lextatico.Application.Services.Interfaces;
-using Lextatico.Domain.Dtos.Responses;
+using Lextatico.Domain.Dtos.Response;
 using Lextatico.Infra.Services.Interfaces;
 using Lextatico.Infra.Services.Models.EmailService;
 using Microsoft.AspNetCore.Authorization;
@@ -73,6 +73,7 @@ namespace Lextatico.Api.Controllers
 
         [Route("[action]")]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword([FromBody] UserForgotPasswordDto userForgotPassword)
         {
             var result = await _userAppService.ForgotPasswordAsync(userForgotPassword);
@@ -81,19 +82,13 @@ namespace Lextatico.Api.Controllers
         }
 
         [Route("[action]")]
+        [HttpPost]
         [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> Teste()
+        public async Task<IActionResult> ResetPassword([FromBody] UserResetPasswordDto userResetPassword)
         {
-            await _emailService.SendEmailAsync(new EmailRequest
-            {
-                Name = "Cassiano",
-                Email = "cassiano.raupp@outlook.com",
-                Subject = "Teste Umbler",
-                Body = "Umbler."
-            });
+            var result = await _userAppService.ResetPasswordAsync(userResetPassword);
 
-            return Ok();
+            return ReturnOk(result);
         }
     }
 }

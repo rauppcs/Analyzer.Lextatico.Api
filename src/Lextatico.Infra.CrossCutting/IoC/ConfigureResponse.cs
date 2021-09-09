@@ -1,4 +1,4 @@
-using Lextatico.Domain.Dtos.Responses;
+using Lextatico.Domain.Dtos.Response;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lextatico.Infra.CrossCutting.IoC

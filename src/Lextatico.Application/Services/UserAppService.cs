@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Lextatico.Application.Dtos.User;
 using Lextatico.Application.Services.Interfaces;
-using Lextatico.Domain.Dtos.Responses;
+using Lextatico.Domain.Dtos.Response;
 using Lextatico.Domain.Interfaces.Services;
 using Lextatico.Domain.Models;
 using Lextatico.Domain.Security;
@@ -104,7 +104,24 @@ namespace Lextatico.Application.Services
 
         public async Task<bool> ForgotPasswordAsync(UserForgotPasswordDto userForgotPassword)
         {
+            var applicationUser = await _userService.GetUserByEmailAsync(userForgotPassword.Email);
+
+            if (applicationUser == null)
+                return false;
+
             var result = await _userService.ForgotPasswordAsync(userForgotPassword.Email);
+
+            return result;
+        }
+
+        public async Task<bool> ResetPasswordAsync(UserResetPasswordDto userResetPassword)
+        {
+            var applicationUser = await _userService.GetUserByEmailAsync(userResetPassword.Email);
+
+            if (applicationUser == null)
+                return false;
+
+            var result = await _userService.ResetPasswordAsync(userResetPassword.Email, userResetPassword.Password, userResetPassword.ResetToken);
 
             return result;
         }

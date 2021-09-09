@@ -1,5 +1,5 @@
 
-using Lextatico.Domain.Dtos.Responses;
+using Lextatico.Domain.Dtos.Response;
 
 namespace Lextatico.Application.Services.Interfaces
 {

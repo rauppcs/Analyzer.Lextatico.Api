@@ -1,7 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Lextatico.Api.Filters;
-using Lextatico.Domain.Dtos.Responses;
+using Lextatico.Domain.Dtos.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

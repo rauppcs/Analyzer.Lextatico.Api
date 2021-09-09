@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Lextatico.Application.Dtos.User;
-using Lextatico.Domain.Dtos.Responses;
+using Lextatico.Domain.Dtos.Response;
 using Microsoft.AspNetCore.Identity;
 
 namespace Lextatico.Application.Services.Interfaces
@@ -12,5 +12,6 @@ namespace Lextatico.Application.Services.Interfaces
         Task<AuthenticatedUserDto> LogInAsync(UserLogInDto userLogIn);
         Task<AuthenticatedUserDto> RefreshTokenAsync(UserRefreshDto userRefresh);
         Task<bool> ForgotPasswordAsync(UserForgotPasswordDto userForgotPassword);
+        Task<bool> ResetPasswordAsync(UserResetPasswordDto userResetPassword);
     }
 }

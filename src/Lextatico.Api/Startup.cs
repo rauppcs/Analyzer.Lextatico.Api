@@ -26,6 +26,7 @@ namespace Lextatico.Api
                 .AddResponse()
                 .AddAspNetUserConfiguration()
                 .AddEmailSettings(Configuration)
+                .AddUrlsConfiguration(Configuration)
                 .AddRepositories()
                 .AddInfraServices()
                 .AddDomainServices()
