@@ -102,7 +102,7 @@ namespace Lextatico.Domain.Services
             if (!result.Succeeded)
             {
                 if (result.IsLockedOut)
-                    _response.AddError(string.Empty, "Usuário bloqueado.");
+                    _response.AddError(string.Empty, "Usuário bloqueado. Aguarde 5 minutos e tente novamente.");
                 else if (result.IsNotAllowed)
                     _response.AddError(string.Empty, "Usuário não está liberado para fazer login.");
                 else

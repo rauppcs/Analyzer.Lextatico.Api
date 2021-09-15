@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Lextatico.Infra.Data.Context;
 using Microsoft.AspNetCore.Http;
@@ -32,8 +33,11 @@ namespace Lextatico.Infra.CrossCutting.Extensions
 
                         await _next(httpContext);
 
-                        if (IsSuccess(httpContext.Response.StatusCode) ||
-                                httpContext.Request.Path.Value.Split("/").Contains("login"))
+                        var httpStatusCode = Enum.Parse<HttpStatusCode>(httpContext.Response.StatusCode.ToString());
+
+                        var pathSplit = httpContext.Request.Path.Value.Split("/");
+
+                        if (httpStatusCode.IsSuccess() || pathSplit.Contains("login"))
                             await lextaticoContext.SubmitTransactionAsync(transaction);
                         else
                         {
@@ -53,7 +57,5 @@ namespace Lextatico.Infra.CrossCutting.Extensions
                 await lextaticoContext.DiscardCurrentTransactionAsync();
             }
         }
-
-        private bool IsSuccess(int statusCode) => statusCode >= 200 && statusCode < 299;
     }
 }
