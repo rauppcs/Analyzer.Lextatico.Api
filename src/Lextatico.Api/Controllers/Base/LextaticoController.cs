@@ -13,7 +13,7 @@ namespace Lextatico.Api.Controllers.Base
     /// </summary>
     [Authorize]
     [ApiController]
-    [FilterExceptionApi]
+    [FilterException]
     [Route("api/[controller]")]
     public abstract class LextaticoController : ControllerBase
     {

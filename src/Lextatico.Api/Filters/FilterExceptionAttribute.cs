@@ -8,7 +8,7 @@ namespace Lextatico.Api.Filters
     /// <summary>
     /// Filter to catch exceptions during operations called by controller methods.
     /// </summary>
-    public class FilterExceptionApi : ExceptionFilterAttribute
+    public class FilterExceptionAttribute : ExceptionFilterAttribute
     {
         /// <summary>
         /// Method called when an exception happens during an operation triggered by the controller.
