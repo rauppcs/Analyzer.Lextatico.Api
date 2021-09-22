@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lextatico.Api.Controllers.Base
 {
-    // [FilterExceptionApi]
     /// <summary>
     /// Base controller, containing the validation of the response object and the appropriate status returns of the possible application status codes.
     /// </summary>
     [Authorize]
     [ApiController]
-    [FilterException]
     [Route("api/[controller]")]
     public abstract class LextaticoController : ControllerBase
     {

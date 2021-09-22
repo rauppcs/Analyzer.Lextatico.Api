@@ -36,7 +36,7 @@ namespace Lextatico.Api
                 .AddLextaticoIdentity()
                 .AddJwtConfiguration(Configuration)
                 .AddLexitaticoCors()
-                .AddLextaticoControllers(CustomResponseModelStateInvalid.Configure)
+                .AddLextaticoControllers()
                 .AddSwaggerConfiguration();
         }
 
