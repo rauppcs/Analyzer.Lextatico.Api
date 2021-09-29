@@ -26,7 +26,7 @@ namespace Lextatico.Api.Filters
                     }
                 }
 
-                context.Result = new BadRequestObjectResult(response);
+                context.Result = new UnprocessableEntityObjectResult(response);
             }
         }
     }
