@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using FluentValidation.AspNetCore;
+using Lextatico.Api.Filters;
 using Lextatico.Domain.Configurations;
 using Lextatico.Domain.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,13 +16,20 @@ namespace Lextatico.Api.Configurations
 {
     public static class ApiConfigurations
     {
-        public static IServiceCollection AddLextaticoControllers(this IServiceCollection services, Action<ApiBehaviorOptions> configure)
+        public static IServiceCollection AddLextaticoControllers(this IServiceCollection services)
         {
             services.AddControllers(options =>
             {
+                // FILTERS
+                options.Filters.Add<GlobalExceptionAttribute>();
+                options.Filters.Add<ValidationModelAttribute>();
+
+                // CONVENCTIONS
                 options.Conventions.Add(new RouteTokenTransformerConvention(new UrlPatterner()));
             })
-                .ConfigureApiBehaviorOptions(configure)
+                // TODO: DEVIDIR QUAL FORMA DE VALIDAR O MODELSTATE (AMBAS FUNCIONAM)
+                // .ConfigureApiBehaviorOptions(CustomResponseModelStateInvalid.Configure)
+                .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true)
                 .AddFluentValidation(options =>
                 {
                     options.DisableDataAnnotationsValidation = true;

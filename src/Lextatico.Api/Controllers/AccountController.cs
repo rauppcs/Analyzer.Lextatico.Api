@@ -1,11 +1,9 @@
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Lextatico.Api.Controllers.Base;
 using Lextatico.Application.Dtos.User;
 using Lextatico.Application.Services.Interfaces;
 using Lextatico.Domain.Dtos.Response;
 using Lextatico.Infra.Services.Interfaces;
-using Lextatico.Infra.Services.Models.EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
