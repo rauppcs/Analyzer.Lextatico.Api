@@ -9,9 +9,9 @@ namespace Lextatico.Domain.Models
         {
 
         }
-        public Guid IdAnalizer { get; set; }
-        public virtual Analyzer Analizer { get; set; }
+        public Guid IdAnalyzer { get; set; }
+        public virtual Analyzer Analyzer { get; set; }
         public Guid IdToken { get; set; }
-        public TerminalToken TerminalToken { get; set; }
+        public virtual TerminalToken TerminalToken { get; set; }
     }
 }

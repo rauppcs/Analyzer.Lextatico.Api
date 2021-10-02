@@ -45,7 +45,6 @@ namespace Lextatico.Infra.Data.Repositories
         public async Task<T> InsertAsync(T item)
         {
             //TODO: VERIFICAR A NECESSIDADE DESSA LINHA -> item.Id = item.Id == Guid.Empty ? Guid.NewGuid() : item.Id;
-            item.CreatedAt = item.CreatedAt == DateTime.MinValue ? DateTime.UtcNow : item.CreatedAt;
 
             await _dataSet.AddAsync(item);
 
@@ -60,8 +59,6 @@ namespace Lextatico.Infra.Data.Repositories
 
             if (itemDb == null)
                 return null;
-
-            item.UpdatedAt = DateTime.UtcNow;
 
             _lextaticoContext.Entry(itemDb).CurrentValues.SetValues(item);
 

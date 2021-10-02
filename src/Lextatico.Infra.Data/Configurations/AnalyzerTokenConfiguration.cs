@@ -9,9 +9,21 @@ namespace Lextatico.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<AnalyzerToken> builder)
         {
-            builder.DefineDefaultFields();
+            builder.DefineDefaultFields(nameof(AnalyzerToken));
 
-            throw new System.NotImplementedException();
+            builder.Property(analyzerToken => analyzerToken.IdAnalyzer)
+                .IsRequired();
+
+            builder.Property(analyzerToken => analyzerToken.IdToken)
+                .IsRequired();
+
+            builder.HasOne(analyzerToken => analyzerToken.Analyzer)
+                .WithMany(analyzer => analyzer.AnalyzerTokens)
+                .HasForeignKey(analyzerToken => analyzerToken.IdAnalyzer);
+
+            builder.HasOne(analyzerToken => analyzerToken.TerminalToken)
+                .WithMany(terminalToken => terminalToken.AnalyzerTokens)
+                .HasForeignKey(analyzerToken => analyzerToken.IdToken);
         }
     }
 }

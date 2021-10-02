@@ -1,7 +1,7 @@
-using Lextatico.Domain.Models;
-using Lextatico.Infra.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Lextatico.Domain.Models;
+using Lextatico.Infra.Data.Extensions;
 
 namespace Lextatico.Infra.Data.Configurations
 {
@@ -9,9 +9,19 @@ namespace Lextatico.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<TerminalToken> builder)
         {
-            builder.DefineDefaultFields();
-            
-            throw new System.NotImplementedException();
+            builder.DefineDefaultFields(nameof(TerminalToken));
+
+            builder.Property(terminalToken => terminalToken.Name)
+                .HasColumnType("VARCHAR(50)")
+                .IsRequired();
+
+            builder.Property(terminalToken => terminalToken.Lexeme)
+                .HasColumnType("VARCHAR(30)")
+                .IsRequired();
+
+            builder.Property(terminalToken => terminalToken.TokenType)
+                .HasColumnType("VARCHAR(50)")
+                .IsRequired();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Lextatico.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
-            builder.DefineDefaultFields();
+            builder.DefineDefaultFields(nameof(RefreshToken));
 
             builder.Property(refreshToken => refreshToken.Token)
                 .HasColumnType("VARCHAR(32)")

@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Lextatico.Domain.Models
 {
@@ -9,5 +11,7 @@ namespace Lextatico.Domain.Models
         }
 
         public string Name { get; set; }
+
+        public virtual ICollection<AnalyzerToken> AnalyzerTokens { get; set; }
     }
 }

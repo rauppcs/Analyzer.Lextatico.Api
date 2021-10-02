@@ -9,9 +9,11 @@ namespace Lextatico.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Analyzer> builder)
         {
-            builder.DefineDefaultFields();
+            builder.DefineDefaultFields(nameof(Analyzer));
 
-            throw new System.NotImplementedException();
+            builder.Property(model => model.Name)
+                .HasColumnType("VARCHAR(50)")
+                .IsRequired();
         }
     }
 }
