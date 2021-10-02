@@ -1,9 +1,9 @@
-using Lextatico.Application.Dtos.Responses;
+
+using Lextatico.Domain.Dtos.Response;
 
 namespace Lextatico.Application.Services.Interfaces
 {
     public interface IAppService
     {
-        Response Response { get; }
     }
 }

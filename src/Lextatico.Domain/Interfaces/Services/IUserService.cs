@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Lextatico.Domain.Dtos.Response;
 using Lextatico.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -7,10 +8,14 @@ namespace Lextatico.Domain.Interfaces.Services
 {
     public interface IUserService
     {
+        (string token, string refreshToken) GenerateFullJwt(string email);
         Task<ApplicationUser> GetUserLoggedAsync();
         Task<ApplicationUser> GetUserByEmailAsync(string email);
-        Task<IdentityResult> CreateAsync(ApplicationUser applicationUser, string password);
-        Task<SignInResult> SignInAsync(string email, string password);
-        Task UpdateRefreshToken(string email, string refreshToken, DateTime refreshTokenExpiration);
+        ApplicationUser GetUserByRefreshToken(string refreshToken);
+        Task<bool> CreateAsync(ApplicationUser applicationUser, string password);
+        Task<bool> SignInAsync(string email, string password);
+        Task UpdateRefreshTokenAsync(string email, string refreshToken, DateTime refreshTokenExpiration);
+        Task<bool> ForgotPasswordAsync(string email);
+        Task<bool> ResetPasswordAsync(string email, string password, string resetToken);
     }
 }

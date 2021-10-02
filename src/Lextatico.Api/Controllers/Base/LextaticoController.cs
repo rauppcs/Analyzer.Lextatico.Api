@@ -1,48 +1,64 @@
 using System.IO;
 using System.Threading.Tasks;
-using Lextatico.Api.Filters;
-using Lextatico.Application.Dtos.Responses;
+using Lextatico.Domain.Dtos.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lextatico.Api.Controllers.Base
 {
-    // [FilterExceptionApi]
     /// <summary>
     /// Base controller, containing the validation of the response object and the appropriate status returns of the possible application status codes.
     /// </summary>
-    [ApiController]
     [Authorize]
+    [ApiController]
     [Route("api/[controller]")]
-    [FilterExceptionApi]
-    public abstract class MyControllerBase : ControllerBase
+    public abstract class LextaticoController : ControllerBase
     {
-        private IActionResult VerifyValidResponse(Response response, IActionResult result)
+        private readonly IResponse _response;
+
+        protected LextaticoController(IResponse response)
         {
-            if (response is null || !response.IsValid())
-                return BadRequest(response);
+            _response = response;
+        }
+
+        private IActionResult VerifyValidResponse(IActionResult result)
+        {
+            return VerifyValidResponse(null, result);
+        }
+
+        private IActionResult VerifyValidResponse(object data, IActionResult result)
+        {
+            if (_response is null || !_response.IsValid())
+                return BadRequest(_response);
+
+            _response.AddResult(data);
 
             return result;
         }
 
-        protected virtual IActionResult ReturnOk(Response response)
+        protected virtual IActionResult ReturnOk()
         {
-            return VerifyValidResponse(response, Ok(response));
+            return VerifyValidResponse(NoContent());
         }
 
-        protected virtual IActionResult ReturnCreated(Response response)
+        protected virtual IActionResult ReturnOk(object data)
         {
-            return VerifyValidResponse(response, Created(response.GetLocation(), response));
+            return VerifyValidResponse(data, Ok(_response));
         }
 
-        protected virtual IActionResult ReturnAccepted(Response response)
+        protected virtual IActionResult ReturnCreated(object data)
         {
-            return VerifyValidResponse(response, Accepted(response));
+            return VerifyValidResponse(data, Created(_response.GetLocation(), _response));
         }
 
-        protected virtual IActionResult ReturnBadRequest(Response response)
+        protected virtual IActionResult ReturnAccepted(object data)
         {
-            return BadRequest(response);
+            return VerifyValidResponse(data, Accepted(_response));
+        }
+
+        protected virtual IActionResult ReturnBadRequest()
+        {
+            return BadRequest(_response);
         }
 
         protected virtual IActionResult ReturnFileResult(string nameFile, string file, string contentType)

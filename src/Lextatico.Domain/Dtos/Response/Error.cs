@@ -1,4 +1,4 @@
-namespace Lextatico.Application.Dtos.Responses
+namespace Lextatico.Domain.Dtos.Response
 {
     public class Error
     {

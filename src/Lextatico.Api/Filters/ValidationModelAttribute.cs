@@ -1,14 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Lextatico.Domain.Dtos.Response;
 using Lextatico.Infra.CrossCutting.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Lextatico.Api.Configurations
+namespace Lextatico.Api.Filters
 {
-    public class CustomResponseModelStateInvalid
+    public class ValidationModelAttribute : ActionFilterAttribute
     {
-        public static void Configure(ApiBehaviorOptions options)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            options.InvalidModelStateResponseFactory = context =>
+            if (!context.ModelState.IsValid)
             {
                 var response = new Response();
 
@@ -21,8 +26,8 @@ namespace Lextatico.Api.Configurations
                     }
                 }
 
-                return new BadRequestObjectResult(response);
-            };
+                context.Result = new UnprocessableEntityObjectResult(response);
+            }
         }
     }
 }

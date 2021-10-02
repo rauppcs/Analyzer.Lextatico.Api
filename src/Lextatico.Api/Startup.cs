@@ -23,8 +23,12 @@ namespace Lextatico.Api
         {
             services
                 .AddHttpContextAccessor()
+                .AddResponse()
                 .AddAspNetUserConfiguration()
+                .AddEmailSettings(Configuration)
+                .AddUrlsConfiguration(Configuration)
                 .AddRepositories()
+                .AddInfraServices()
                 .AddDomainServices()
                 .AddLextaticoAutoMapper()
                 .AddApplicationServices()
@@ -32,7 +36,7 @@ namespace Lextatico.Api
                 .AddLextaticoIdentity()
                 .AddJwtConfiguration(Configuration)
                 .AddLexitaticoCors()
-                .AddLextaticoControllers(CustomResponseModelStateInvalid.Configure)
+                .AddLextaticoControllers()
                 .AddSwaggerConfiguration();
         }
 
@@ -42,12 +46,14 @@ namespace Lextatico.Api
             if (!env.IsProduction())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("doc/swagger.json", "Lextatico Api v1"));
             }
 
             if (env.IsProduction())
                 app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("doc/swagger.json", "Lextatico Api v1"));
 
             app.UseRouting();
 

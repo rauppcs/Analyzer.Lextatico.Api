@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
 using FluentValidation.AspNetCore;
+using Lextatico.Api.Filters;
+using Lextatico.Domain.Configurations;
 using Lextatico.Domain.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -14,13 +16,20 @@ namespace Lextatico.Api.Configurations
 {
     public static class ApiConfigurations
     {
-        public static IServiceCollection AddLextaticoControllers(this IServiceCollection services, Action<ApiBehaviorOptions> configure)
+        public static IServiceCollection AddLextaticoControllers(this IServiceCollection services)
         {
             services.AddControllers(options =>
             {
+                // FILTERS
+                options.Filters.Add<GlobalExceptionAttribute>();
+                options.Filters.Add<ValidationModelAttribute>();
+
+                // CONVENCTIONS
                 options.Conventions.Add(new RouteTokenTransformerConvention(new UrlPatterner()));
             })
-                .ConfigureApiBehaviorOptions(configure)
+                // TODO: DEVIDIR QUAL FORMA DE VALIDAR O MODELSTATE (AMBAS FUNCIONAM)
+                // .ConfigureApiBehaviorOptions(CustomResponseModelStateInvalid.Configure)
+                .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true)
                 .AddFluentValidation(options =>
                 {
                     options.DisableDataAnnotationsValidation = true;
@@ -43,7 +52,7 @@ namespace Lextatico.Api.Configurations
             return services;
         }
 
-        public static void AddSwaggerConfiguration(this IServiceCollection services)
+        public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
             {
@@ -52,7 +61,8 @@ namespace Lextatico.Api.Configurations
                      {
                          Title = "Lextatico Api",
                          Version = "v1",
-                         Contact = new OpenApiContact{
+                         Contact = new OpenApiContact
+                         {
                              Name = "Cassiano dos Santos Raupp",
                              Url = new Uri("https://www.linkedin.com/in/cassiano-raupp-50a6a9133/")
                          }
@@ -81,6 +91,8 @@ namespace Lextatico.Api.Configurations
                     }
                 });
             });
+
+            return services;
         }
 
         public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
@@ -115,6 +127,13 @@ namespace Lextatico.Api.Configurations
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser().Build());
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddUrlsConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<Urls>(configuration.GetSection("Urls"));
 
             return services;
         }

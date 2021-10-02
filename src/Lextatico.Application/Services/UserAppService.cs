@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Lextatico.Application.Dtos.Responses;
 using Lextatico.Application.Dtos.User;
 using Lextatico.Application.Services.Interfaces;
+using Lextatico.Domain.Dtos.Response;
 using Lextatico.Domain.Interfaces.Services;
 using Lextatico.Domain.Models;
 using Lextatico.Domain.Security;
@@ -14,71 +14,49 @@ namespace Lextatico.Application.Services
 {
     public class UserAppService : IUserAppService
     {
-        public Response Response { get; } = new();
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenConfiguration _tokenConfiguration;
         private readonly SigningConfiguration _signingConfiguration;
         public UserAppService(IMapper mapper,
             IUserService userService,
             ITokenService tokenService,
-            UserManager<ApplicationUser> userManager,
             TokenConfiguration tokenConfiguration,
             SigningConfiguration signingConfiguration)
         {
             _mapper = mapper;
             _userService = userService;
             _tokenService = tokenService;
-            _userManager = userManager;
             _tokenConfiguration = tokenConfiguration;
             _signingConfiguration = signingConfiguration;
         }
 
-        public async Task<Response> GetUserLoggedAsync()
+        public async Task<UserDetailDto> GetUserLoggedAsync()
         {
             var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserLoggedAsync());
 
-            if (userDto != null)
-                Response.Result = userDto;
-            else
-                Response.AddError("", "Usuário não encontrado");
-
-            return Response;
+            return userDto;
         }
 
-        public async Task<Response> CreateAsync(UserSignInDto userSignIn)
+        public async Task<bool> CreateAsync(UserSignInDto userSignIn)
         {
             var applicationUser = _mapper.Map<ApplicationUser>(userSignIn);
 
             var result = await _userService.CreateAsync(applicationUser, userSignIn.Password);
 
-            if (result.Succeeded)
-            {
-                Response.Result = true;
-            }
-            else
-            {
-                Response.Result = false;
-                foreach (var error in result.Errors)
-                {
-                    Response.AddError(string.Empty, error.Description);
-                }
-            }
-
-            return Response;
+            return result;
         }
 
-        public async Task<Response> LogInAsync(UserLogInDto userLogIn)
+        public async Task<AuthenticatedUserDto> LogInAsync(UserLogInDto userLogIn)
         {
             var result = await _userService.SignInAsync(userLogIn.Email, userLogIn.Password);
 
-            if (result.Succeeded)
+            if (result)
             {
                 var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserByEmailAsync(userLogIn.Email));
 
-                var (token, refreshToken) = GenerateFullJwt(userLogIn.Email);
+                var (token, refreshToken) = _userService.GenerateFullJwt(userLogIn.Email);
 
                 var authenticatedUser = new AuthenticatedUserDto(
                     userDto,
@@ -89,69 +67,63 @@ namespace Lextatico.Application.Services
                     refreshToken,
                     DateTime.UtcNow.AddSeconds(_tokenConfiguration.SecondsRefresh));
 
-                await _userService.UpdateRefreshToken(userLogIn.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
+                await _userService.UpdateRefreshTokenAsync(userLogIn.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
 
-                Response.Result = authenticatedUser;
-            }
-            else
-            {
-                if (result.IsLockedOut)
-                    Response.AddError(string.Empty, "Usuário bloqueado.");
-                else if (result.IsNotAllowed)
-                {
-                    Response.AddError(string.Empty, "Usuário não está liberado para logar.");
-                }
-                else
-                {
-                    Response.AddError(string.Empty, "Usuário ou senha incorreto.");
-                }
+                return authenticatedUser;
             }
 
-            return Response;
+            return null;
         }
 
-        public async Task<Response> RefreshTokenAsync(UserRefreshDto userRefresh)
+        public async Task<AuthenticatedUserDto> RefreshTokenAsync(UserRefreshDto userRefresh)
         {
-            var applicationUser = _userManager.Users.FirstOrDefault(user => user.RefreshTokens
-                    .Any(refreshToken => refreshToken.Token == userRefresh.RefreshToken
-                        && DateTime.UtcNow <= refreshToken.TokenExpiration));
+            var applicationUser = _userService.GetUserByRefreshToken(userRefresh.RefreshToken);
 
-            if (applicationUser != null)
+            if (applicationUser == null)
             {
-                var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserByEmailAsync(applicationUser.Email));
-
-                var (token, refreshToken) = GenerateFullJwt(applicationUser.Email);
-
-                var authenticatedUser = new AuthenticatedUserDto(
-                    userDto,
-                    true,
-                    DateTime.UtcNow,
-                    DateTime.UtcNow.AddSeconds(_tokenConfiguration.Seconds),
-                    token,
-                    refreshToken,
-                    DateTime.UtcNow.AddSeconds(_tokenConfiguration.SecondsRefresh));
-
-                await _userService.UpdateRefreshToken(applicationUser.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
-
-                Response.Result = authenticatedUser;
-            }
-            else
-            {
-                Response.AddError(string.Empty, "Token ou RefreshToken inválido, faça o login novamente.");
+                return null;
             }
 
-            return Response;
+            var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserByEmailAsync(applicationUser.Email));
+
+            var (token, refreshToken) = _userService.GenerateFullJwt(applicationUser.Email);
+
+            var authenticatedUser = new AuthenticatedUserDto(
+                userDto,
+                true,
+                DateTime.UtcNow,
+                DateTime.UtcNow.AddSeconds(_tokenConfiguration.Seconds),
+                token,
+                refreshToken,
+                DateTime.UtcNow.AddSeconds(_tokenConfiguration.SecondsRefresh));
+
+            await _userService.UpdateRefreshTokenAsync(applicationUser.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
+
+            return authenticatedUser;
         }
 
-        private (string token, string refreshToken) GenerateFullJwt(string email)
+        public async Task<bool> ForgotPasswordAsync(UserForgotPasswordDto userForgotPassword)
         {
-            return _tokenService
-                    .WithUserManager(_userManager)
-                    .WithEmail(email)
-                    .WithJwtClaims()
-                    .WithUserClaims()
-                    .WithUserRoles()
-                    .BuildToken();
+            var applicationUser = await _userService.GetUserByEmailAsync(userForgotPassword.Email);
+
+            if (applicationUser == null)
+                return false;
+
+            var result = await _userService.ForgotPasswordAsync(userForgotPassword.Email);
+
+            return result;
+        }
+
+        public async Task<bool> ResetPasswordAsync(UserResetPasswordDto userResetPassword)
+        {
+            var applicationUser = await _userService.GetUserByEmailAsync(userResetPassword.Email);
+
+            if (applicationUser == null)
+                return false;
+
+            var result = await _userService.ResetPasswordAsync(userResetPassword.Email, userResetPassword.Password, userResetPassword.ResetToken);
+
+            return result;
         }
     }
 }

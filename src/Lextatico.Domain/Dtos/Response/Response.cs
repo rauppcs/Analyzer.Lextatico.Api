@@ -3,9 +3,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lextatico.Application.Dtos.Responses
+namespace Lextatico.Domain.Dtos.Response
 {
-    public class Response
+    public class Response : IResponse
     {
         public Response()
         {
@@ -16,10 +16,11 @@ namespace Lextatico.Application.Dtos.Responses
             Result = result;
         }
 
-        private string _locationObjectCreated = string.Empty;
-        public IList<Error> Errors { get; set; } = new List<Error>();
-
         public object? Result { get; set; }
+        public IList<Error> Errors { get; set; } = new List<Error>();
+        private string _locationObjectCreated = string.Empty;
+
+        public void AddResult(object data) => Result = data;
 
         public void AddError(Error error) => Errors.Add(error);
 
@@ -32,5 +33,16 @@ namespace Lextatico.Application.Dtos.Responses
         public string GetLocation() => _locationObjectCreated;
 
         public void SetLocation(string location) => _locationObjectCreated = location;
+    }
+
+    public interface IResponse
+    {
+        void AddResult(object data);
+        void AddError(Error error);
+        void AddError(string property, string message);
+        bool IsValid();
+        void ClearErrors();
+        string GetLocation();
+        void SetLocation(string location);
     }
 }

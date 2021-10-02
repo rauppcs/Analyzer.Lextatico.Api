@@ -16,7 +16,11 @@ namespace Lextatico.Infra.Identity.Extensions
 
         public override IdentityError DuplicateEmail(string email)
         {
-            return base.DuplicateEmail(email);
+            return new IdentityError
+            {
+                Code = nameof(DuplicateEmail),
+                Description = $"Email \"{email}\" já está em uso."
+            };
         }
 
         public override IdentityError DuplicateRoleName(string role)
@@ -26,7 +30,11 @@ namespace Lextatico.Infra.Identity.Extensions
 
         public override IdentityError DuplicateUserName(string userName)
         {
-            return base.DuplicateUserName(userName);
+            return new IdentityError
+            {
+                Code = nameof(DuplicateUserName),
+                Description = $"Email \"{userName}\" já está em uso."
+            };
         }
 
         public override bool Equals(object obj)
