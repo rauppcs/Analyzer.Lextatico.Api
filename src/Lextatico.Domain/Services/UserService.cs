@@ -53,7 +53,7 @@ namespace Lextatico.Domain.Services
             var applicationUser = await GetUserByEmailAsync(email);
 
             if (applicationUser == null)
-                _response.AddError("", "Usuário não encontrado");
+                _response.AddError(string.Empty, "Usuário não encontrado");
 
             return applicationUser;
         }
@@ -63,7 +63,7 @@ namespace Lextatico.Domain.Services
             var applicationUser = await _userManager.FindByEmailAsync(email);
 
             if (applicationUser == null)
-                _response.AddError("", "Usuário não encontrado");
+                _response.AddError(string.Empty, "Usuário não encontrado");
 
             return applicationUser;
         }

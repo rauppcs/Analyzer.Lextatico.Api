@@ -10,7 +10,7 @@ namespace Lextatico.Infra.Identity.User
         {
             if (principal == null)
             {
-                throw new ArgumentException(nameof(principal));
+                throw new ArgumentNullException(nameof(principal));
             }
 
             var claim = principal.FindFirst(ClaimTypes.NameIdentifier);
@@ -21,7 +21,7 @@ namespace Lextatico.Infra.Identity.User
         {
             if (principal == null)
             {
-                throw new ArgumentException(nameof(principal));
+                throw new ArgumentNullException(nameof(principal));
             }
 
             var claim = principal.FindFirst(ClaimTypes.Email);
