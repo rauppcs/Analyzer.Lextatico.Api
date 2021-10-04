@@ -5,7 +5,7 @@ using Lextatico.Domain.Models;
 
 namespace Lextatico.Domain.Interfaces.Repositories
 {
-    public interface IRepository<T> where T : BaseModel
+    public interface IRepository<T> where T : Base
     {
         Task<T> InsertAsync(T item);
         Task<T> UpdateAsync(T item);

@@ -7,6 +7,6 @@ namespace Lextatico.Domain.Models
     public class ApplicationUser : IdentityUser<Guid>
     {
         public string Name { get; set; }
-        public ICollection<RefreshTokenModel> RefreshTokens { get; set; }
+        public virtual ICollection<RefreshToken> RefreshTokens { get; set; }
     }
 }

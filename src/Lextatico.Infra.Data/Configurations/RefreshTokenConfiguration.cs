@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Lextatico.Infra.Data.Configurations
 {
-    public class RefreshTokenModelConfiguration : IEntityTypeConfiguration<RefreshTokenModel>
+    public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
     {
-        public void Configure(EntityTypeBuilder<RefreshTokenModel> builder)
+        public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
-            builder.DefineDefaultFields("RefreshToken");
+            builder.DefineDefaultFields(nameof(RefreshToken));
 
             builder.Property(refreshToken => refreshToken.Token)
                 .HasColumnType("VARCHAR(32)")
