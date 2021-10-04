@@ -6,7 +6,6 @@
 trigger:
 - main
 - dev
-- feature/*
 
 pool:
   vmImage: 'ubuntu-latest'
