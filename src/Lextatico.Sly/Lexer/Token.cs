@@ -16,8 +16,8 @@ namespace Lextatico.Sly.Lexer
         public LexerPosition Position { get; set; }
 
         public char StringDelimiter = '"';
-        
-        public char CharDelimiter ='\'';
+
+        public char CharDelimiter = '\'';
 
         public int PositionInTokenFlow { get; set; }
 
@@ -105,7 +105,7 @@ namespace Lextatico.Sly.Lexer
             var empty = new Token();
 
             empty.IsEmpty = true;
-            
+
             return empty;
         }
     }
@@ -114,6 +114,7 @@ namespace Lextatico.Sly.Lexer
     {
         Identifier,
         String,
+        Char,
         Integer,
         Float,
         KeyWord,

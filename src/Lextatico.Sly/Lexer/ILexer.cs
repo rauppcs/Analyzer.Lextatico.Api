@@ -13,6 +13,6 @@ namespace Lextatico.Sly.Lexer
 
         LexerResult<T> Tokenize(ReadOnlyMemory<char> source);
 
-        LextaticoLexer<T> InitializeLexer(IList<T> tokens);
+        LextaticoLexer<T> InitializeLexer();
     }
 }

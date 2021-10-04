@@ -14,18 +14,22 @@ namespace Lextatico.Sly.Lexer
 
         public LextaticoLexer(IList<T> tokens) : base()
         {
+            _tokens = tokens;
         }
 
+        private readonly IList<T> _tokens;
+
         public FsmLexerBuilder<T> FsmLexerBuilder;
+
         protected AbstractFsmLexer<T> FsmLexer;
 
         protected readonly Dictionary<TokenType, Dictionary<string, T>> DerivedTokens;
+
         protected int StringCounter;
+
         protected int CharCounter;
 
-        public void AddDefinition(TokenDefinition tokenDefinition)
-        {
-        }
+        public void AddDefinition(TokenDefinition tokenDefinition) { }
 
         public LexerResult<T> Tokenize(string source)
         {
@@ -54,16 +58,16 @@ namespace Lextatico.Sly.Lexer
             throw new NotImplementedException();
         }
 
-        public LextaticoLexer<T> InitializeLexer(IList<T> tokens)
+        public LextaticoLexer<T> InitializeLexer()
         {
-            var fsmBuilder = new FsmLexerBuilder<T>();
+            var fsmLexerBuilder = new FsmLexerBuilder<T>();
 
-            foreach (var token in tokens)
+            foreach (var token in _tokens)
             {
-                AddLexeme(token);
+                AddLexeme(fsmLexerBuilder, token);
             }
 
-            FsmLexer = fsmBuilder.Lexer;
+            FsmLexer = fsmLexerBuilder.Lexer;
 
             return this;
         }
@@ -87,37 +91,42 @@ namespace Lextatico.Sly.Lexer
             return tok;
         }
 
-        private void AddLexeme(T token)
+        private void AddLexeme(FsmLexerBuilder<T> fsmLexerBuilder, T token)
         {
             // TODO: AQUI REGRA PARA INICIAR TODAS AS TRANSAÇÕES
         }
 
-        private void AddIdentifier()
+        private void AddIdentifier(FsmLexerBuilder<T> fsmLexerBuilder, T token)
+        {
+            // TODO: AQUI REGRA PARA TRANSIÇÕES DE IDENTIFICADORES
+        }
+
+        private void AddString(FsmLexerBuilder<T> fsmLexerBuilder, T token)
         {
 
         }
 
-        private void AddString()
+        private void AddChar(FsmLexerBuilder<T> fsmLexerBuilder, T token)
         {
 
         }
 
-        private void AddInteger()
+        private void AddInteger(FsmLexerBuilder<T> fsmLexerBuilder, T token)
         {
 
         }
 
-        private void AddFloat()
+        private void AddFloat(FsmLexerBuilder<T> fsmLexerBuilder, T token)
         {
 
         }
 
-        private void AddKeyWord()
+        private void AddKeyWord(FsmLexerBuilder<T> fsmLexerBuilder, T token)
         {
 
         }
 
-        private void AddSugarToken()
+        private void AddSugarToken(FsmLexerBuilder<T> fsmLexerBuilder, T token)
         {
 
         }

@@ -17,9 +17,7 @@ namespace Lextatico.Sly.Lexer
 
         public BuildResult<ILexer<T>> Build()
         {
-            var lexer = new LextaticoLexer<T>(_tokens);
-
-            var result = lexer.InitializeLexer(_tokens);
+            var result = new LextaticoLexer<T>(_tokens).InitializeLexer();
 
             var buildResult = new BuildResult<ILexer<T>>(result);
 
