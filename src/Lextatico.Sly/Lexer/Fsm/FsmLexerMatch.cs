@@ -5,26 +5,17 @@ using System.Threading.Tasks;
 
 namespace Lextatico.Sly.Lexer.Fsm
 {
-    public class FsmLexerMatch<T> where T : Token
+    public class FsmLexerMatch<T> 
+        // where T : Token
     {
         public Dictionary<string, object> Properties { get; }
 
         public bool IsString { get; set; }
         
-        public char StringDelimiterChar { get; set; }
-        
         public bool IsSuccess { get; set; }
 
         public bool IsEOS { get; }
         
-        public bool IsIndent { get; set; }
-        
-        public bool IsUnIndent { get; set; }
-        
-        public int UnIndentCount { get; set; }
-        
-        public int IndentationLevel { get; set; }
-
         public T Result { get; set; }
 
         public int NodeId { get; }
@@ -32,8 +23,6 @@ namespace Lextatico.Sly.Lexer.Fsm
         public LexerPosition NewPosition { get; set; }
         
         public bool IsLineEnding { get; set; }
-
-        public bool IsIndentationError { get; set; }
         
         
         public FsmLexerMatch(bool success)

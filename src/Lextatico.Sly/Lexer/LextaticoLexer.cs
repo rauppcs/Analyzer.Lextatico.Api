@@ -60,14 +60,23 @@ namespace Lextatico.Sly.Lexer
 
         public LextaticoLexer<T> InitializeLexer()
         {
-            var fsmLexerBuilder = new FsmLexerBuilder<T>();
+            FsmLexerBuilder = new FsmLexerBuilder<T>();
+
+            FsmLexerBuilder.Mark("start");
+
+            var identifier = _tokens.FirstOrDefault(t => t.TokenType == TokenType.Identifier);
+
+            if (_tokens.Any(a => a.TokenType == TokenType.Identifier || a.TokenType == TokenType.KeyWord))
+            {
+                AddIdentifier(FsmLexerBuilder, identifier, identifier?.IdentifierType ?? IdentifierType.AlphaIdentifier);
+            }
 
             foreach (var token in _tokens)
             {
-                AddLexeme(fsmLexerBuilder, token);
+                AddLexeme(FsmLexerBuilder, token);
             }
 
-            FsmLexer = fsmLexerBuilder.Lexer;
+            FsmLexer = FsmLexerBuilder.Lexer;
 
             return this;
         }
@@ -76,17 +85,12 @@ namespace Lextatico.Sly.Lexer
         {
             var tok = Activator.CreateInstance<T>();
             var inTok = match.Result;
-            tok.IsComment = inTok.IsComment;
+            // tok.IsComment = inTok.IsComment;
             tok.IsEmpty = inTok.IsEmpty;
             tok.SpanValue = inTok.SpanValue;
             tok.Position = inTok.Position;
-            tok.Discarded = inTok.Discarded;
-            tok.StringDelimiter = match.StringDelimiterChar;
             tok.IsLineEnding = match.IsLineEnding;
             tok.IsEOS = match.IsEOS;
-            tok.IsIndent = match.IsIndent;
-            tok.IsUnIndent = match.IsUnIndent;
-            tok.IndentationLevel = match.IndentationLevel;
 
             return tok;
         }
@@ -96,9 +100,35 @@ namespace Lextatico.Sly.Lexer
             // TODO: AQUI REGRA PARA INICIAR TODAS AS TRANSAÇÕES
         }
 
-        private void AddIdentifier(FsmLexerBuilder<T> fsmLexerBuilder, T token)
+        private void AddIdentifier(IFsmLexerBuilder<T> fsmLexerBuilder, T token, IdentifierType identifierType)
         {
-            // TODO: AQUI REGRA PARA TRANSIÇÕES DE IDENTIFICADORES
+            var nameIdentifier = Enum.GetName(typeof(TokenType), TokenType.Identifier);
+
+            fsmLexerBuilder
+                    .GoTo("start")
+                    .RangeTransition('a', 'z')
+                    .Mark(nameIdentifier)
+                    .GoTo("start")
+                    .RangeTransitionTo('A', 'Z', nameIdentifier)
+                    .RangeTransitionTo('a', 'z', nameIdentifier)
+                    .RangeTransitionTo('A', 'Z', nameIdentifier)
+                    .End(token);
+
+            if (identifierType == IdentifierType.AlphaNumIdentifier || identifierType == IdentifierType.AlphaNumDashIdentifier)
+                {
+                    fsmLexerBuilder
+                        .GoTo(nameIdentifier)
+                        .RangeTransitionTo('0', '9', nameIdentifier);
+                }
+            
+                if (identifierType == IdentifierType.AlphaNumDashIdentifier)
+                {
+                    fsmLexerBuilder
+                        .GoTo("start")
+                        .TransitionTo('_', nameIdentifier)
+                        .TransitionTo('_', nameIdentifier)
+                        .TransitionTo('-', nameIdentifier);
+                }
         }
 
         private void AddString(FsmLexerBuilder<T> fsmLexerBuilder, T token)

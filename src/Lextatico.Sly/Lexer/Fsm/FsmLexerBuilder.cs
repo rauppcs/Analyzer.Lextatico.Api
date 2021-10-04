@@ -14,6 +14,7 @@ namespace Lextatico.Sly.Lexer
             CurrentState = 0;
             _marks = new Dictionary<string, int>();
             Lexer.AddNode();
+            Lexer.GetNode(0).Mark = "start";
             Lexer.GetNode(0).IsStart = true;
         }
 

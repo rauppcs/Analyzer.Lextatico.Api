@@ -5,33 +5,25 @@ namespace Lextatico.Sly.Lexer
 {
     public class Token
     {
+        private const char StringDelimiter = '"';
+
+        private const char CharDelimiter = '\'';
+
         public string Name { get; set; }
 
         public string Lexeme { get; set; }
 
         public TokenType TokenType { get; set; }
 
+        public IdentifierType? IdentifierType { get; set; }
+
         public ReadOnlyMemory<char> SpanValue { get; set; }
 
         public LexerPosition Position { get; set; }
 
-        public char StringDelimiter = '"';
-
-        public char CharDelimiter = '\'';
-
         public int PositionInTokenFlow { get; set; }
 
-        public bool IsComment { get; set; }
-
-        public bool Discarded { get; set; } = false;
-
         public bool IsEOS { get; set; }
-
-        public bool IsIndent { get; set; }
-
-        public bool IsUnIndent { get; set; }
-
-        public int IndentationLevel { get; set; }
 
         public bool IsEmpty { get; set; }
 
@@ -73,7 +65,6 @@ namespace Lextatico.Sly.Lexer
 
                 return result;
             }
-            set { }
         }
 
         public char CharValue
@@ -119,5 +110,12 @@ namespace Lextatico.Sly.Lexer
         Float,
         KeyWord,
         SugarToken
+    }
+
+    public enum IdentifierType
+    {
+        AlphaIdentifier,
+        AlphaNumIdentifier,
+        AlphaNumDashIdentifier
     }
 }
