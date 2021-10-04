@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lextatico.Sly.Lexer.Fsm;
 
-namespace Lextatico.Sly.Lexer.Fsm
+namespace Lextatico.Sly.Lexer
 {
-    public class LextaticoLexer<T> : ILexer<T> where T : Token, new()
+    public class LextaticoLexer<T> : ILexer<T> where T : Token
     {
         // protected readonly Dictionary<GenericToken, Dictionary<string, IN>> derivedTokens;
         // protected IN doubleDerivedToken;
@@ -13,11 +14,12 @@ namespace Lextatico.Sly.Lexer.Fsm
 
         public LextaticoLexer(IList<T> tokens) : base()
         {
-            InitializeLexer(tokens);
         }
 
         public FsmLexerBuilder<T> FsmLexerBuilder;
         protected AbstractFsmLexer<T> FsmLexer;
+
+        protected readonly Dictionary<TokenType, Dictionary<string, T>> DerivedTokens;
         protected int StringCounter;
         protected int CharCounter;
 
@@ -52,9 +54,23 @@ namespace Lextatico.Sly.Lexer.Fsm
             throw new NotImplementedException();
         }
 
+        public LextaticoLexer<T> InitializeLexer(IList<T> tokens)
+        {
+            var fsmBuilder = new FsmLexerBuilder<T>();
+
+            foreach (var token in tokens)
+            {
+                AddLexeme(token);
+            }
+
+            FsmLexer = fsmBuilder.Lexer;
+
+            return this;
+        }
+
         public virtual T Transcode(FsmLexerMatch<T> match)
         {
-            var tok = new T();
+            var tok = Activator.CreateInstance<T>();
             var inTok = match.Result;
             tok.IsComment = inTok.IsComment;
             tok.IsEmpty = inTok.IsEmpty;
@@ -71,13 +87,39 @@ namespace Lextatico.Sly.Lexer.Fsm
             return tok;
         }
 
-        private void InitializeLexer(IList<T> tokens)
+        private void AddLexeme(T token)
         {
-            var fsmBuilder = new FsmLexerBuilder<T>();
+            // TODO: AQUI REGRA PARA INICIAR TODAS AS TRANSAÇÕES
+        }
 
-            // TODO: AQUI REGRA PARA INICIAR AS TRANSAÇÕES DEFAULT. EX: STRING, CHAR, INT...
+        private void AddIdentifier()
+        {
 
-            FsmLexer = fsmBuilder.Lexer;
+        }
+
+        private void AddString()
+        {
+
+        }
+
+        private void AddInteger()
+        {
+
+        }
+
+        private void AddFloat()
+        {
+
+        }
+
+        private void AddKeyWord()
+        {
+
+        }
+
+        private void AddSugarToken()
+        {
+
         }
     }
 }
