@@ -180,7 +180,7 @@ namespace Lextatico.Sly.Lexer
                 if (possibleTokens.ContainsKey(result.Value))
                     return possibleTokens[result.Value];
 
-                if (possibleTokens.ContainsKey(Enum.GetName<TokenType>(TokenType.Identifier).ToLower()))
+                if (possibleTokens.ContainsKey(Enum.GetName(typeof(TokenType), TokenType.Identifier).ToLower()))
                     return token;
             }
 
@@ -196,7 +196,7 @@ namespace Lextatico.Sly.Lexer
             switch (token.TokenType)
             {
                 case TokenType.Identifier:
-                    var nameIdentifier = Enum.GetName<TokenType>(TokenType.Identifier).ToLower();
+                    var nameIdentifier = Enum.GetName(typeof(TokenType), TokenType.Identifier).ToLower();
                     AddLexeme(token, nameIdentifier);
                     break;
                 case TokenType.KeyWord:
