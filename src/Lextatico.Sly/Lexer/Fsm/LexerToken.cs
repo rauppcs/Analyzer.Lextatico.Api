@@ -58,26 +58,7 @@ namespace Lextatico.Sly.Lexer.Fsm
 
         public int IntValue => int.Parse(Value);
 
-        public double DoubleValue
-        {
-            get
-            {
-                // Try parsing in the current culture
-                if (!double.TryParse(Value, NumberStyles.Any, CultureInfo.CurrentCulture,
-                        out var result) &&
-                    // Then try in US english
-                    !double.TryParse(Value, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"),
-                        out result) &&
-                    // Then in neutral language
-                    !double.TryParse(Value, NumberStyles.Any, CultureInfo.InvariantCulture,
-                        out result))
-                {
-                    result = 0.0;
-                }
-
-                return result;
-            }
-        }
+        public double DoubleValue => double.Parse(Value, CultureInfo.InvariantCulture);
 
         public char CharValue
         {

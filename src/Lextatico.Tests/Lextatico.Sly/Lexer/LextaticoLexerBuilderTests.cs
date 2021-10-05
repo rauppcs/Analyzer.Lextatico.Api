@@ -102,13 +102,31 @@ namespace Lextatico.Tests.Lextatico.Sly.Lexer
                     Lexeme = "int",
                     TokenType = TokenType.KeyWord,
                 },
-                // new Token
-                // {
-                //     Name = "Identificador",
-                //     Lexeme = "id",
-                //     TokenType = TokenType.Identifier,
-                //     IdentifierType = IdentifierType.AlphaNumDashIdentifier
-                // },
+                new Token
+                {
+                    Name = "Identificador",
+                    Lexeme = "id",
+                    TokenType = TokenType.Identifier,
+                    IdentifierType = IdentifierType.AlphaNumDashIdentifier
+                },
+                new Token
+                {
+                    Name = "Número inteiro",
+                    Lexeme = "",
+                    TokenType = TokenType.Integer
+                },
+                new Token
+                {
+                    Name = "Número real",
+                    Lexeme = "",
+                    TokenType = TokenType.Float
+                },
+                new Token
+                {
+                    Name = "Atribuição",
+                    Lexeme = "=",
+                    TokenType = TokenType.SugarToken
+                },
                 new Token
                 {
                     Name = "Ponto e vírgula",
@@ -121,7 +139,7 @@ namespace Lextatico.Tests.Lextatico.Sly.Lexer
 
             var result = lexerBuilder.Build();
 
-            var tokenResult = result.Result.Tokenize("int abc;");
+            var tokenResult = result.Result.Tokenize("int abc = 125.12;");
         }
     }
 }
