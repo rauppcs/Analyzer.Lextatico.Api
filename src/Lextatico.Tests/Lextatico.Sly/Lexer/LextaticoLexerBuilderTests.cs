@@ -16,16 +16,71 @@ namespace Lextatico.Tests.Lextatico.Sly.Lexer
             {
                 new Token
                 {
+                    Name = "Texto",
+                    Lexeme = "string",
+                    TokenType = TokenType.String,
+                },
+                new Token
+                {
+                    Name = "Caractere",
+                    Lexeme = "char",
+                    TokenType = TokenType.Char,
+                },
+                new Token
+                {
                     Name = "Int",
                     Lexeme = "int",
                     TokenType = TokenType.KeyWord,
-                    SpanValue = new ReadOnlyMemory<char>(new char[] { 'i', 'n', 't' }),
-                    Position = new LexerPosition(),
-                    PositionInTokenFlow = 0,
-                    IsEOS = false,
-                    IsEmpty = false,
-                    End = true,
-                    IsLineEnding = false
+                },
+                new Token
+                {
+                    Name = "Char",
+                    Lexeme = "char",
+                    TokenType = TokenType.KeyWord,
+                },
+                new Token
+                {
+                    Name = "Inteiro",
+                    Lexeme = "",
+                    TokenType = TokenType.Integer,
+                },
+
+                new Token
+                {
+                    Name = "Real",
+                    Lexeme = "",
+                    TokenType = TokenType.Float,
+                },
+                new Token
+                {
+                    Name = "Identificador",
+                    Lexeme = "id",
+                    TokenType = TokenType.Identifier,
+                    IdentifierType = IdentifierType.AlphaNumDashIdentifier
+                },
+                new Token
+                {
+                    Name = "Ponto e vírgula",
+                    Lexeme = ";",
+                    TokenType = TokenType.SugarToken,
+                },
+                new Token
+                {
+                    Name = "Dois pontos",
+                    Lexeme = ":",
+                    TokenType = TokenType.SugarToken,
+                },
+                new Token
+                {
+                    Name = "Atribuição",
+                    Lexeme = "=",
+                    TokenType = TokenType.SugarToken
+                },
+                new Token
+                {
+                    Name = "Igual",
+                    Lexeme = "==",
+                    TokenType = TokenType.SugarToken,
                 }
             };
 
@@ -34,6 +89,39 @@ namespace Lextatico.Tests.Lextatico.Sly.Lexer
             var result = lexerBuilder.Build();
 
             Assert.True(result.IsOk);
+        }
+
+        [Fact]
+        public void LextaticoLexerBuilder_Tokenize()
+        {
+            var tokens = new List<Token>
+            {
+                new Token
+                {
+                    Name = "Int",
+                    Lexeme = "int",
+                    TokenType = TokenType.KeyWord,
+                },
+                // new Token
+                // {
+                //     Name = "Identificador",
+                //     Lexeme = "id",
+                //     TokenType = TokenType.Identifier,
+                //     IdentifierType = IdentifierType.AlphaNumDashIdentifier
+                // },
+                new Token
+                {
+                    Name = "Ponto e vírgula",
+                    Lexeme = ";",
+                    TokenType = TokenType.SugarToken,
+                }
+            };
+
+            var lexerBuilder = new LextaticoLexerBuilder<Token>(tokens);
+
+            var result = lexerBuilder.Build();
+
+            var tokenResult = result.Result.Tokenize("int abc;");
         }
     }
 }

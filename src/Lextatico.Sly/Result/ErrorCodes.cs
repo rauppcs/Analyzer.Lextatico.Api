@@ -29,7 +29,7 @@ namespace Lextatico.Sly.Result
         
         LexerCharDelimiterCannotBeLetter,
         
-        // LEXER_SUGAR_TOKEN_CANNOT_START_WITH_LETTER,
+        LexerSugarTokenCannotStartWithLetter,
         
         #endregion
 

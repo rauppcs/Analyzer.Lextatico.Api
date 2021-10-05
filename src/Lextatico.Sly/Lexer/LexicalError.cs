@@ -4,19 +4,19 @@ namespace Lextatico.Sly.Lexer
 {
     public class LexicalError : ParseError
     {
-        public LexicalError(int line, int column, char unexpectedChar)
+        public LexicalError(int line, int column, string unexpectedSymbol)
         {
             Line = line;
             Column = column;
-            UnexpectedChar = unexpectedChar;
+            UnexpectedSymbol = unexpectedSymbol;
             ErrorType = ErrorType.UnexpectedChar;
         }
 
-        public char UnexpectedChar { get; set; }
+        public string UnexpectedSymbol { get; set; }
 
-        public override string ErrorMessage => string.Format("Lexical Error, line {1}, column {2} : Unrecognized symbol '{0}'", UnexpectedChar.ToString(), Line.ToString(), Column.ToString());
+        public override string ErrorMessage => string.Format("Lexical Error, line {1}, column {2} : Unrecognized symbol '{0}'", UnexpectedSymbol, Line, Column);
 
-        
+
         public override string ToString()
         {
             return ErrorMessage;

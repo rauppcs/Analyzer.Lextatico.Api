@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lextatico.Sly.Result;
 
 namespace Lextatico.Sly.Lexer
 {
@@ -13,6 +14,6 @@ namespace Lextatico.Sly.Lexer
 
         LexerResult<T> Tokenize(ReadOnlyMemory<char> source);
 
-        LextaticoLexer<T> InitializeLexer();
+        LextaticoLexer<T> InitializeLexer(BuildResult<ILexer<T>> buildResult);
     }
 }

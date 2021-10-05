@@ -7,7 +7,7 @@ using Lextatico.Sly.Lexer.Fsm;
 namespace Lextatico.Sly.Lexer
 {
     public abstract class AbstractFsmLexer<T>
-        where T : Token
+        where T : struct
     {
         public AbstractFsmLexer()
         {
@@ -15,7 +15,14 @@ namespace Lextatico.Sly.Lexer
             Transitions = new Dictionary<int, List<FsmLexerTransition>>();
         }
 
+        public char StringDelimiter = '"';
+
+        public bool IgnoreWhiteSpace { get; set; }
+
+        public List<char> WhiteSpaces { get; set; }
+
         protected readonly Dictionary<int, FsmLexerNode<T>> Nodes;
+        
         protected readonly Dictionary<int, List<FsmLexerTransition>> Transitions;
 
         internal int NewNodeId => Nodes.Count;

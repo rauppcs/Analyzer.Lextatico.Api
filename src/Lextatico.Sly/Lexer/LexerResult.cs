@@ -2,29 +2,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lextatico.Sly.Lexer.Fsm;
 
 namespace Lextatico.Sly.Lexer
 {
-    public class LexerResult<T> where T : Token
+    public class LexerResult<T>
+        where T : Token
     {
-        public bool IsError { get; set; }
+        public LexerResult()
+        { }
 
-        public bool IsOk => !IsError;
-
-        public LexicalError Error { get; }
-
-        public List<T> Tokens { get; set; }
-
-        public LexerResult(List<T> tokens)
+        public LexerResult(List<LexerToken<T>> tokens)
         {
-            IsError = false;
             Tokens = tokens;
         }
 
         public LexerResult(LexicalError error)
         {
-            IsError = true;
             Error = error;
         }
+
+        public bool IsError => Error != null;
+
+        public bool IsOk => !IsError;
+
+        public LexicalError Error { get; internal set; }
+
+        public IList<LexerToken<T>> Tokens { get; set; }
+
+
     }
 }

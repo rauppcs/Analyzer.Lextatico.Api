@@ -2,13 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lextatico.Sly.Extensions;
 using Lextatico.Sly.Lexer.Fsm;
 
 namespace Lextatico.Sly.Lexer
 {
     public class FsmLexer<T> : AbstractFsmLexer<T>
-        where T : Token
+        where T : struct
     {
+        public FsmLexer()
+        {
+            WhiteSpaces = new List<char>();
+        }
+
         public override FsmLexerNode<T> AddNode(T value)
         {
             var lexerNode = new FsmLexerNode<T>(value);
@@ -72,8 +78,62 @@ namespace Lextatico.Sly.Lexer
 
         public override FsmLexerMatch<T> Run(ReadOnlyMemory<char> source, LexerPosition lexerPosition)
         {
-            // TODO: AQUI REGRA DE VALIDAR O TOKEN
-            throw new NotImplementedException();
+            ConsumeWhiteSpace(source, lexerPosition);
+
+            if (lexerPosition.Index >= source.Length)
+            {
+                return new FsmLexerMatch<T>(false);
+            }
+
+            var position = lexerPosition.Clone();
+
+            FsmLexerMatch<T> result = null;
+
+            var currentNode = Nodes[0];
+
+            while (lexerPosition.Index < source.Length)
+            {
+                var currentCharacter = source.At(lexerPosition);
+                var currentValue = source.Slice(position.Index, lexerPosition.Index - position.Index + 1);
+                currentNode = Move(currentNode, currentCharacter, currentValue);
+                if (currentNode == null)
+                {
+                    // No more viable transitions, so exit loop
+                    break;
+                }
+
+                if (currentNode.IsEnd)
+                {
+                    // Remember the possible match
+                    result = new FsmLexerMatch<T>(true, currentNode.Value, currentNode.Token, currentValue, position, currentNode.Id, lexerPosition, currentNode.IsLineEnding);
+                }
+
+                lexerPosition.Index++;
+                lexerPosition.Column++;
+            }
+
+            if (result != null)
+            {
+                // Backtrack
+                var length = result.Result.Value.Length;
+                lexerPosition.Index = result.Result.Position.Index + length;
+                lexerPosition.Column = result.Result.Position.Column + length;
+
+                return result;
+            }
+
+            if (lexerPosition.Index >= source.Length)
+            {
+                // Failed on last character, so need to backtrack
+                lexerPosition.Index -= 1;
+                lexerPosition.Column -= 1;
+            }
+
+            var errorChar = source.Slice(lexerPosition.Index, 1);
+
+            result = new FsmLexerMatch<T>(false, default(T), new Token(), errorChar, lexerPosition, -1, lexerPosition, false);
+
+            return result;
         }
 
         private FsmLexerNode<T> Move(FsmLexerNode<T> from, char token, ReadOnlyMemory<char> value)
@@ -93,6 +153,24 @@ namespace Lextatico.Sly.Lexer
             return null;
         }
 
-        
+        private void ConsumeWhiteSpace(ReadOnlyMemory<char> source, LexerPosition position)
+        {
+
+            while (position.Index < source.Length)
+            {
+                if (IgnoreWhiteSpace)
+                {
+                    var currentCharacter = source.At(position.Index);
+                    if (WhiteSpaces.Contains(currentCharacter))
+                    {
+                        position.Index++;
+                        position.Column++;
+                        continue;
+                    }
+                }
+
+                break;
+            }
+        }
     }
 }

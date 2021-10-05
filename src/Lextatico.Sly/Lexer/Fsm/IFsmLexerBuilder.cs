@@ -6,7 +6,8 @@ using Lextatico.Sly.Result;
 
 namespace Lextatico.Sly.Lexer
 {
-    public interface IFsmLexerBuilder<T> where T : Token
+    public interface IFsmLexerBuilder<T>
+        where T : struct
     {
         BuildResult<AbstractFsmLexer<T>> BuildLexer();
 
@@ -20,7 +21,7 @@ namespace Lextatico.Sly.Lexer
 
         FsmLexerNode<T> GetNode(string mark);
 
-        FsmLexerBuilder<T> End(T nodeValue, bool isLineEnding = false);
+        FsmLexerBuilder<T> End(Token token, T nodeValue, bool isLineEnding = false);
 
         FsmLexerBuilder<T> SafeTransition(char input);
 

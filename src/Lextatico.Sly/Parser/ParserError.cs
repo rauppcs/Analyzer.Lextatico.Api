@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Lextatico.Sly.Parser
 {
-     public class ParseError
+    public class ParseError
     {
         public virtual ErrorType ErrorType { get; protected set; }
         public virtual int Column { get; protected set; }
@@ -42,6 +42,7 @@ namespace Lextatico.Sly.Parser
         UnexpectedEOS,
         UnexpectedToken,
         UnexpectedChar,
+        // UnexpectedSymbol,
         IndentationError
     }
 }
