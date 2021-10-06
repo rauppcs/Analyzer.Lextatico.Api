@@ -181,7 +181,7 @@ namespace Lextatico.Sly.Lexer
                 if (possibleTokens.ContainsKey(result.Value))
                     return possibleTokens[result.Value];
 
-                if (possibleTokens.ContainsKey(Enum.GetName(typeof(TokenType), TokenType.Identifier).ToLower()))
+                if (possibleTokens.ContainsKey(TokenType.Identifier.ToString().ToLower()))
                     return token;
             }
 
@@ -197,7 +197,7 @@ namespace Lextatico.Sly.Lexer
             switch (token.TokenType)
             {
                 case TokenType.Identifier:
-                    var nameIdentifier = Enum.GetName(typeof(TokenType), TokenType.Identifier).ToLower();
+                    var nameIdentifier = TokenType.Identifier.ToString().ToLower();
                     AddLexeme(token, nameIdentifier);
                     break;
                 case TokenType.KeyWord:
@@ -240,7 +240,7 @@ namespace Lextatico.Sly.Lexer
         {
             var tokenType = token?.TokenType ?? TokenType.Identifier;
 
-            var nameIdentifier = Enum.GetName(typeof(TokenType), TokenType.Identifier);
+            var nameIdentifier = TokenType.Identifier.ToString();
 
             FsmLexerBuilder
                     .GoTo("start")
@@ -314,11 +314,11 @@ namespace Lextatico.Sly.Lexer
 
             if (stringDelimiterChar != escapeStringDelimiterChar)
             {
-                var name = $"{Enum.GetName(typeof(TokenType), TokenType.String)}";
+                var name = $"{TokenType.String.ToString()}";
 
-                var nameEscape = $"escape_{Enum.GetName(typeof(TokenType), TokenType.String)}";
+                var nameEscape = $"escape_{name}";
 
-                var nameEnd = $"{Enum.GetName(typeof(TokenType), TokenType.String)}_end";
+                var nameEnd = $"{name}_end";
 
                 FsmLexerBuilder.GoTo("start");
 
@@ -394,15 +394,15 @@ namespace Lextatico.Sly.Lexer
 
             FsmLexerBuilder.GoTo("start");
 
-            var name = $"{Enum.GetName(typeof(TokenType), TokenType.Char)}";
+            var name = $"{TokenType.Char.ToString()}";
 
-            var nameStart = $"start_{Enum.GetName(typeof(TokenType), TokenType.Char)}";
+            var nameStart = $"start_{name}";
 
-            var nameEnd = $"end_{Enum.GetName(typeof(TokenType), TokenType.Char)}";
+            var nameEnd = $"end_{name}";
 
-            var nameEscape = $"escapeChar_{Enum.GetName(typeof(TokenType), TokenType.Char)}";
+            var nameEscape = $"escapeChar_{name}";
 
-            var nameUnicode = $"unicode_{Enum.GetName(typeof(TokenType), TokenType.Char)}";
+            var nameUnicode = $"unicode_{name}";
 
             FsmLexerBuilder.Transition(charDelimiterChar)
                 .Mark(nameStart + "_" + CharCounter)
@@ -427,7 +427,7 @@ namespace Lextatico.Sly.Lexer
 
         private void AddInteger(Token token, TokenType tokenType = TokenType.Integer)
         {
-            var name = Enum.GetName(typeof(TokenType), TokenType.Integer);
+            var name = TokenType.Integer.ToString();
 
             FsmLexerBuilder.GoTo("start")
                 .RangeTransition('0', '9')
@@ -438,9 +438,9 @@ namespace Lextatico.Sly.Lexer
 
         private void AddFloat(Token token, TokenType tokenType = TokenType.Float)
         {
-            var startName = $"start_{Enum.GetName(typeof(TokenType), TokenType.Float)}";
+            var name = TokenType.Float.ToString();
 
-            var name = Enum.GetName(typeof(TokenType), TokenType.Float);
+            var startName = $"start_{name}";
 
             FsmLexerBuilder.Transition('.')
                 .Mark(startName)

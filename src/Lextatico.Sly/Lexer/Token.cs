@@ -27,7 +27,7 @@ namespace Lextatico.Sly.Lexer
 
         public override string ToString()
         {
-            return Enum.GetName(typeof(TokenType), TokenType);
+            return TokenType.ToString();
         }
     }
 
