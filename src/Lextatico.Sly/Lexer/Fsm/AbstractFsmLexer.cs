@@ -19,10 +19,12 @@ namespace Lextatico.Sly.Lexer
 
         public bool IgnoreWhiteSpace { get; set; }
 
+        public bool IgnoreEol { get; set; }
+
         public List<char> WhiteSpaces { get; set; }
 
         protected readonly Dictionary<int, FsmLexerNode<T>> Nodes;
-        
+
         protected readonly Dictionary<int, List<FsmLexerTransition>> Transitions;
 
         internal int NewNodeId => Nodes.Count;

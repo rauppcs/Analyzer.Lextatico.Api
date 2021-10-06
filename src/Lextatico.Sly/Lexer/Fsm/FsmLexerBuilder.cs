@@ -299,6 +299,12 @@ namespace Lextatico.Sly.Lexer
             return this;
         }
 
+        public FsmLexerBuilder<T> IgnoreEol(bool ignore = true)
+        {
+            Lexer.IgnoreEol = ignore;
+            return this;
+        }
+
         public FsmLexerBuilder<T> WhiteSpace(char spaceChar)
         {
             Lexer.WhiteSpaces.Add(spaceChar);

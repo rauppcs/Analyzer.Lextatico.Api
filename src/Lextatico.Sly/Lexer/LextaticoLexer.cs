@@ -109,7 +109,8 @@ namespace Lextatico.Sly.Lexer
             FsmLexerBuilder = new FsmLexerBuilder<TokenType>();
 
             FsmLexerBuilder
-                .IgnoreWS(true)
+                .IgnoreWS()
+                .IgnoreEol()
                 .WhiteSpace(new[] { ' ', '\t' });
 
             FsmLexerBuilder.Mark("start");

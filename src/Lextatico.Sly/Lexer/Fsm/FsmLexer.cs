@@ -169,6 +169,18 @@ namespace Lextatico.Sly.Lexer
                     }
                 }
 
+                if (IgnoreEol)
+                {
+                    var eol = EolManager.IsEndOfLine(source, position.Index);
+                    if (eol != EolType.No)
+                    {
+                        position.Index += eol == EolType.Windows ? 2 : 1;
+                        position.Column = 0;
+                        position.Line++;
+                        continue;
+                    }
+                }
+
                 break;
             }
         }
