@@ -1,6 +1,5 @@
 using System.IO;
 using System.Threading.Tasks;
-using Lextatico.Api.Filters;
 using Lextatico.Domain.Dtos.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +21,11 @@ namespace Lextatico.Api.Controllers.Base
             _response = response;
         }
 
+        private IActionResult VerifyValidResponse(IActionResult result)
+        {
+            return VerifyValidResponse(null, result);
+        }
+
         private IActionResult VerifyValidResponse(object data, IActionResult result)
         {
             if (_response is null || !_response.IsValid())
@@ -34,7 +38,7 @@ namespace Lextatico.Api.Controllers.Base
 
         protected virtual IActionResult ReturnOk()
         {
-            return NoContent();
+            return VerifyValidResponse(NoContent());
         }
 
         protected virtual IActionResult ReturnOk(object data)
