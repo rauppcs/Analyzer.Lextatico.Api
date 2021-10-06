@@ -129,6 +129,12 @@ namespace Lextatico.Tests.Lextatico.Sly.Lexer
                 },
                 new Token
                 {
+                    Name = "Igual",
+                    Lexeme = "==",
+                    TokenType = TokenType.SugarToken
+                },
+                new Token
+                {
                     Name = "Ponto e vírgula",
                     Lexeme = ";",
                     TokenType = TokenType.SugarToken,
@@ -139,7 +145,7 @@ namespace Lextatico.Tests.Lextatico.Sly.Lexer
 
             var result = lexerBuilder.Build();
 
-            var tokenResult = result.Result.Tokenize("int abc = 125.12;");
+            var tokenResult = result.Result.Tokenize("int abc = true == 2;");
         }
     }
 }

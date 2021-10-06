@@ -160,7 +160,7 @@ namespace Lextatico.Sly.Lexer
             lexerToken.Position = innerLexerToken.Position;
             lexerToken.IsLineEnding = fsmMatch.IsLineEnding;
             lexerToken.IsEOS = fsmMatch.IsEOS;
-            lexerToken.Token = token;
+            lexerToken.Result = token;
 
             return lexerToken;
         }

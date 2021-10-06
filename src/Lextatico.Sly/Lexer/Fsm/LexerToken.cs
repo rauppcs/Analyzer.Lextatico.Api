@@ -27,8 +27,6 @@ namespace Lextatico.Sly.Lexer.Fsm
 
         private const char CharDelimiter = '\'';
 
-        public T Token { get; set; }
-
         public ReadOnlyMemory<char> SpanValue { get; set; }
 
         public LexerPosition Position { get; set; }
@@ -83,7 +81,7 @@ namespace Lextatico.Sly.Lexer.Fsm
 
         public bool End { get; set; }
         public bool IsLineEnding { get; set; }
-        public T Result { get; }
+        public T Result { get; internal set; }
 
         public static LexerToken<T> Empty()
         {
