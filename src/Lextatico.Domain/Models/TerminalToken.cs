@@ -12,6 +12,8 @@ namespace Lextatico.Domain.Models
         }
 
         public string Name { get; set; }
+        public string ViewName { get; set; }
+        public string Resume { get; set; }
         public string Lexeme { get; set; }
         public string TokenType { get; set; }
 

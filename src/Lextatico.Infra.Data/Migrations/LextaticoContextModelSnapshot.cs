@@ -234,6 +234,13 @@ namespace Lextatico.Infra.Data.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR(50)");
 
+                    b.Property<string>("ViewName")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(20)");
+
+                    b.Property<string>("Resume")
+                        .HasColumnType("VARCHAR(200)");
+
                     b.Property<string>("TokenType")
                         .IsRequired()
                         .HasColumnType("VARCHAR(50)");

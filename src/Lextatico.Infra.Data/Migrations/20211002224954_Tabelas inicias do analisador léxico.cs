@@ -60,6 +60,8 @@ namespace Lextatico.Infra.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID()"),
                     Name = table.Column<string>(type: "VARCHAR(50)", nullable: false),
+                    ViewName = table.Column<string>(type: "VARCHAR(20)", nullable: false),
+                    Resume = table.Column<string>(type: "VARCHAR(200)", nullable: true),
                     Lexeme = table.Column<string>(type: "VARCHAR(30)", nullable: false),
                     TokenType = table.Column<string>(type: "VARCHAR(50)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "DATETIME", nullable: false, defaultValueSql: "GETDATE()"),

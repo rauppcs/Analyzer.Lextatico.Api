@@ -15,6 +15,13 @@ namespace Lextatico.Infra.Data.Configurations
                 .HasColumnType("VARCHAR(50)")
                 .IsRequired();
 
+            builder.Property(terminalToken => terminalToken.ViewName)
+                .HasColumnType("VARCHAR(20)")
+                .IsRequired();
+
+            builder.Property(terminalToken => terminalToken.Resume)
+                .HasColumnType("VARCHAR(200)");
+
             builder.Property(terminalToken => terminalToken.Lexeme)
                 .HasColumnType("VARCHAR(30)")
                 .IsRequired();
