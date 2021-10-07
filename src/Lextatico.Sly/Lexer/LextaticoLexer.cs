@@ -118,7 +118,7 @@ namespace Lextatico.Sly.Lexer
             var identifierToken = _tokens.FirstOrDefault(t => t.TokenType == TokenType.Identifier);
 
             identifierToken ??=
-                (T)new Token("Default", "id", TokenType.Identifier, IdentifierType.AlphaIdentifier);
+                (T)new Token("Default", "id", "", "", TokenType.Identifier, IdentifierType.AlphaIdentifier);
 
             if (_tokens.Any(a => a.TokenType == TokenType.Identifier || a.TokenType == TokenType.KeyWord))
             {

@@ -9,15 +9,21 @@ namespace Lextatico.Sly.Lexer
         public Token()
         { }
 
-        public Token(string name, string lexeme, TokenType tokenType, IdentifierType? identifierType)
+        public Token(string name, string viewName, string resume, string lexeme, TokenType tokenType, IdentifierType? identifierType)
         {
             Name = name;
+            ViewName = viewName;
+            Resume = resume;
             Lexeme = lexeme;
             TokenType = tokenType;
             IdentifierType = identifierType;
         }
 
         public string Name { get; set; }
+
+        public string ViewName { get; set; }
+
+        public string Resume { get; set; }
 
         public string Lexeme { get; set; }
 
