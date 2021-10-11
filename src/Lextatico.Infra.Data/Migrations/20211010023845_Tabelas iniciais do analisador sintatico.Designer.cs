@@ -4,14 +4,16 @@ using Lextatico.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lextatico.Infra.Data.Migrations
 {
     [DbContext(typeof(LextaticoContext))]
-    partial class LextaticoContextModelSnapshot : ModelSnapshot
+    [Migration("20211010023845_Tabelas iniciais do analisador sintatico")]
+    partial class Tabelasiniciaisdoanalisadorsintatico
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,70 +48,35 @@ namespace Lextatico.Infra.Data.Migrations
                     b.ToTable("Analyzer");
                 });
 
-            modelBuilder.Entity("Lextatico.Domain.Models.AnalyzerNonTerminalToken", b =>
+            modelBuilder.Entity("Lextatico.Domain.Models.AnalyzerToken", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Id")
-                        .HasDefaultValueSql("NEWSEQUENTIALID()");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("DATETIME")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<Guid>("IdAnalyzer")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdNonTerminalToken")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdate()
-                        .HasColumnType("DATETIME")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdNonTerminalToken");
-
-                    b.HasIndex("IdAnalyzer", "IdNonTerminalToken");
-
-                    b.ToTable("AnalyzerNonTerminalToken");
-                });
-
-            modelBuilder.Entity("Lextatico.Domain.Models.AnalyzerTerminalToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Id")
-                        .HasDefaultValueSql("NEWSEQUENTIALID()");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("DATETIME")
-                        .HasDefaultValueSql("GETDATE()");
-
                     b.Property<Guid>("IdAnalyzer")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("IdTerminalToken")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DATETIME")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("DATETIME")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdAnalyzer", "IdTerminalToken");
 
                     b.HasIndex("IdTerminalToken");
 
-                    b.HasIndex("IdAnalyzer", "IdTerminalToken");
-
-                    b.ToTable("AnalyzerTerminalToken");
+                    b.ToTable("AnalyzerToken");
                 });
 
             modelBuilder.Entity("Lextatico.Domain.Models.ApplicationRole", b =>
@@ -507,26 +474,7 @@ namespace Lextatico.Infra.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Lextatico.Domain.Models.AnalyzerNonTerminalToken", b =>
-                {
-                    b.HasOne("Lextatico.Domain.Models.Analyzer", "Analyzer")
-                        .WithMany("AnalyzerNonTerminalTokens")
-                        .HasForeignKey("IdAnalyzer")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Lextatico.Domain.Models.NonTerminalToken", "NonTerminalToken")
-                        .WithMany("AnalyzerNonTerminalTokens")
-                        .HasForeignKey("IdNonTerminalToken")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Analyzer");
-
-                    b.Navigation("NonTerminalToken");
-                });
-
-            modelBuilder.Entity("Lextatico.Domain.Models.AnalyzerTerminalToken", b =>
+            modelBuilder.Entity("Lextatico.Domain.Models.AnalyzerToken", b =>
                 {
                     b.HasOne("Lextatico.Domain.Models.Analyzer", "Analyzer")
                         .WithMany("AnalyzerTokens")
@@ -647,8 +595,6 @@ namespace Lextatico.Infra.Data.Migrations
 
             modelBuilder.Entity("Lextatico.Domain.Models.Analyzer", b =>
                 {
-                    b.Navigation("AnalyzerNonTerminalTokens");
-
                     b.Navigation("AnalyzerTokens");
                 });
 
@@ -659,8 +605,6 @@ namespace Lextatico.Infra.Data.Migrations
 
             modelBuilder.Entity("Lextatico.Domain.Models.NonTerminalToken", b =>
                 {
-                    b.Navigation("AnalyzerNonTerminalTokens");
-
                     b.Navigation("NonTerminalTokenRuleClauses");
 
                     b.Navigation("NonTerminalTokenRules");

@@ -5,17 +5,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Lextatico.Infra.Data.Configurations
 {
-    public class AnalyzerTokenConfiguration : IEntityTypeConfiguration<AnalyzerToken>
+    public class AnalyzerTerminalTokenConfiguration : IEntityTypeConfiguration<AnalyzerTerminalToken>
     {
-        public void Configure(EntityTypeBuilder<AnalyzerToken> builder)
+        public void Configure(EntityTypeBuilder<AnalyzerTerminalToken> builder)
         {
-            builder.DefineDefaultFields(nameof(AnalyzerToken));
+            builder.DefineDefaultFields(nameof(AnalyzerTerminalToken));
 
             builder.Property(analyzerToken => analyzerToken.IdAnalyzer)
                 .IsRequired();
 
-            builder.Property(analyzerToken => analyzerToken.IdToken)
+            builder.Property(analyzerToken => analyzerToken.IdTerminalToken)
                 .IsRequired();
+
+            builder.HasIndex(analyzerToken => new { analyzerToken.IdAnalyzer, analyzerToken.IdTerminalToken });
 
             builder.HasOne(analyzerToken => analyzerToken.Analyzer)
                 .WithMany(analyzer => analyzer.AnalyzerTokens)
@@ -23,7 +25,7 @@ namespace Lextatico.Infra.Data.Configurations
 
             builder.HasOne(analyzerToken => analyzerToken.TerminalToken)
                 .WithMany(terminalToken => terminalToken.AnalyzerTokens)
-                .HasForeignKey(analyzerToken => analyzerToken.IdToken);
+                .HasForeignKey(analyzerToken => analyzerToken.IdTerminalToken);
         }
     }
 }

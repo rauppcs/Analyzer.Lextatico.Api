@@ -6,7 +6,7 @@ namespace Lextatico.Domain.Models
     public class TerminalToken : Base
     {
         public TerminalToken()
-            : base(DateTime.UtcNow)
+        // : base(DateTime.UtcNow)
         {
 
         }
@@ -16,7 +16,7 @@ namespace Lextatico.Domain.Models
         public string Resume { get; set; }
         public string Lexeme { get; set; }
         public string TokenType { get; set; }
-
-        public virtual ICollection<AnalyzerToken> AnalyzerTokens { get; set; }
+        public virtual ICollection<AnalyzerTerminalToken> AnalyzerTokens { get; set; }
+        public virtual ICollection<NonTerminalTokenRuleClause> NonTerminalTokenRuleClauses { get; set; }
     }
 }
