@@ -6,12 +6,15 @@ namespace Lextatico.Domain.Models
 {
     public class Analyzer : Base
     {
-        public Analyzer() : base(DateTime.UtcNow)
+        public Analyzer()
+        // : base(DateTime.UtcNow)
         {
         }
 
         public string Name { get; set; }
 
-        public virtual ICollection<AnalyzerToken> AnalyzerTokens { get; set; }
+        public virtual ICollection<AnalyzerTerminalToken> AnalyzerTokens { get; set; }
+
+        public virtual ICollection<AnalyzerNonTerminalToken> AnalyzerNonTerminalTokens { get; set; }
     }
 }

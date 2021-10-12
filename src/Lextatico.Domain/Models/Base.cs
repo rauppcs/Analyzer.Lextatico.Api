@@ -6,10 +6,10 @@ namespace Lextatico.Domain.Models
 {
     public abstract class Base
     {
-        public Base(DateTime createdAt)
-        {
-            CreatedAt = createdAt;
-        }
+        // public Base(DateTime createdAt)
+        // {
+        //     CreatedAt = createdAt;
+        // }
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
