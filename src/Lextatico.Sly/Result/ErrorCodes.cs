@@ -39,7 +39,7 @@ namespace Lextatico.Sly.Result
         
         // PARSER_MISSING_OPERAND,
         
-        // PARSER_REFERENCE_NOT_FOUND,
+        ParserReferenceNotFound,
         
         // PARSER_MIXED_CHOICES,
         
@@ -51,7 +51,7 @@ namespace Lextatico.Sly.Result
         
         // PARSER_INCORRECT_VISITOR_PARAMETER_NUMBER,
         
-        // PARSER_LEFT_RECURSIVE,
+        ParserLeftRecursive,
 
         #endregion
     }

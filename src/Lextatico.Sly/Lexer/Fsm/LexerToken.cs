@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace Lextatico.Sly.Lexer.Fsm
 {
     public class LexerToken<T>
-    // where T : Token
     {
         public LexerToken(T result, ReadOnlyMemory<char> value, LexerPosition position)
         {
@@ -91,6 +90,15 @@ namespace Lextatico.Sly.Lexer.Fsm
 
             return empty;
         }
-    }
 
+        public override string ToString()
+        {
+            if (IsEOS)
+            {
+                return "<<EOS>>";    
+            }
+
+            return $"{Result} [{Value}] @{Position}";
+        }
+    }
 }

@@ -7,9 +7,10 @@ namespace Lextatico.Sly.Lexer
     public class Token
     {
         public Token()
-        { }
+        {
+        }
 
-        public Token(string name, string viewName, string resume, string lexeme, TokenType tokenType, IdentifierType? identifierType)
+        public Token(string name, string viewName, string resume, string lexeme, TokenType tokenType, IdentifierType? identifierType = null)
         {
             Name = name;
             ViewName = viewName;
@@ -19,21 +20,21 @@ namespace Lextatico.Sly.Lexer
             IdentifierType = identifierType;
         }
 
-        public string Name { get; set; }
+        public string Name { get; }
 
-        public string ViewName { get; set; }
+        public string ViewName { get; }
 
-        public string Resume { get; set; }
+        public string Resume { get; }
 
-        public string Lexeme { get; set; }
+        public string Lexeme { get; }
 
-        public TokenType TokenType { get; set; }
+        public TokenType TokenType { get; }
 
-        public IdentifierType? IdentifierType { get; set; }
+        public IdentifierType? IdentifierType { get; }
 
         public override string ToString()
         {
-            return TokenType.ToString();
+            return $"({TokenType.ToString()} - '{ViewName}')";
         }
     }
 
