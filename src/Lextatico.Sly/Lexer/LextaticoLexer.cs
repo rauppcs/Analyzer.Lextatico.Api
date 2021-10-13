@@ -118,11 +118,11 @@ namespace Lextatico.Sly.Lexer
             var identifierToken = _tokens.FirstOrDefault(t => t.TokenType == TokenType.Identifier);
 
             identifierToken ??=
-                (T)new Token("Default", "id", "", "", TokenType.Identifier, IdentifierType.AlphaIdentifier);
+                (T)new Token("Default", "id", "", "", TokenType.Identifier, IdentifierType.Alpha);
 
             if (_tokens.Any(a => a.TokenType == TokenType.Identifier || a.TokenType == TokenType.KeyWord))
             {
-                AddIdentifier(identifierToken, identifierToken?.IdentifierType ?? IdentifierType.AlphaIdentifier);
+                AddIdentifier(identifierToken, identifierToken?.IdentifierType ?? IdentifierType.Alpha);
             }
 
             if (_tokens.Any(a => a.TokenType == TokenType.Integer || a.TokenType == TokenType.Float))
@@ -252,14 +252,14 @@ namespace Lextatico.Sly.Lexer
                     .RangeTransitionTo('A', 'Z', nameIdentifier)
                     .End(token, tokenType);
 
-            if (identifierType == IdentifierType.AlphaNumIdentifier || identifierType == IdentifierType.AlphaNumDashIdentifier)
+            if (identifierType == IdentifierType.AlphaNum || identifierType == IdentifierType.AlphaNumDash)
             {
                 FsmLexerBuilder
                     .GoTo(nameIdentifier)
                     .RangeTransitionTo('0', '9', nameIdentifier);
             }
 
-            if (identifierType == IdentifierType.AlphaNumDashIdentifier)
+            if (identifierType == IdentifierType.AlphaNumDash)
             {
                 FsmLexerBuilder
                     .GoTo("start")

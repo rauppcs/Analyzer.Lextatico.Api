@@ -53,8 +53,8 @@ namespace Lextatico.Sly.Lexer
 
     public enum IdentifierType
     {
-        AlphaIdentifier,
-        AlphaNumIdentifier,
-        AlphaNumDashIdentifier
+        Alpha,
+        AlphaNum,
+        AlphaNumDash
     }
 }
