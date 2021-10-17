@@ -27,8 +27,6 @@ namespace Lextatico.Api.Configurations
                 // CONVENCTIONS
                 options.Conventions.Add(new RouteTokenTransformerConvention(new UrlPatterner()));
             })
-                // TODO: DEVIDIR QUAL FORMA DE VALIDAR O MODELSTATE (AMBAS FUNCIONAM)
-                // .ConfigureApiBehaviorOptions(CustomResponseModelStateInvalid.Configure)
                 .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true)
                 .AddFluentValidation(options =>
                 {

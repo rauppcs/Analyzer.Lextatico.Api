@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Lextatico.Api.Controllers.Base;
 using Lextatico.Application.Dtos.User;
 using Lextatico.Application.Services.Interfaces;
-using Lextatico.Domain.Dtos.Response;
+using Lextatico.Domain.Dtos.Message;
 using Lextatico.Infra.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,14 +13,14 @@ namespace Lextatico.Api.Controllers
     {
         private readonly IUserAppService _userAppService;
         private readonly IEmailService _emailService;
-        private readonly IResponse _response;
+        private readonly IMessage _message;
 
-        public AccountController(IUserAppService userAppService, IEmailService emailService, IResponse response)
-            : base(response)
+        public AccountController(IUserAppService userAppService, IEmailService emailService, IMessage message)
+            : base(message)
         {
             _userAppService = userAppService;
             _emailService = emailService;
-            _response = response;
+            _message = message;
         }
 
         [Route("[action]")]

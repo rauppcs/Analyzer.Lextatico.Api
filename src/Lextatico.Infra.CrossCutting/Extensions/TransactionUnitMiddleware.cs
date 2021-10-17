@@ -3,11 +3,25 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Lextatico.Infra.Data.Context;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lextatico.Infra.CrossCutting.Extensions
 {
+    public static class TransactionUnitExtension
+    {
+        public static IApplicationBuilder UseTransaction(this IApplicationBuilder app)
+        {
+            if (app is null)
+                throw new ArgumentNullException(nameof(app));
+
+            app.UseMiddleware<TransactionUnitMiddleware>();
+
+            return app;
+        }
+    }
+
     public class TransactionUnitMiddleware
     {
         private readonly RequestDelegate _next;

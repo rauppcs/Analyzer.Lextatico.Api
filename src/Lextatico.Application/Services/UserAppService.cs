@@ -4,11 +4,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Lextatico.Application.Dtos.User;
 using Lextatico.Application.Services.Interfaces;
-using Lextatico.Domain.Dtos.Response;
 using Lextatico.Domain.Interfaces.Services;
 using Lextatico.Domain.Models;
 using Lextatico.Domain.Security;
-using Microsoft.AspNetCore.Identity;
 
 namespace Lextatico.Application.Services
 {

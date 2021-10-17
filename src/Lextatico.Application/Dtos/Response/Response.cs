@@ -3,24 +3,23 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lextatico.Domain.Dtos.Response
+namespace Lextatico.Application.Dtos.Response
 {
-    public class Response : IResponse
+    public class Response<T>
     {
         public Response()
         {
-
         }
-        public Response(object result)
+        public Response(T data)
         {
-            Result = result;
+            Data = data;
         }
 
-        public object? Result { get; set; }
+        public T? Data { get; set; }
         public IList<Error> Errors { get; set; } = new List<Error>();
         private string _locationObjectCreated = string.Empty;
 
-        public void AddResult(object data) => Result = data;
+        public void AddResult(T data) => Data = data;
 
         public void AddError(Error error) => Errors.Add(error);
 
@@ -33,16 +32,5 @@ namespace Lextatico.Domain.Dtos.Response
         public string GetLocation() => _locationObjectCreated;
 
         public void SetLocation(string location) => _locationObjectCreated = location;
-    }
-
-    public interface IResponse
-    {
-        void AddResult(object data);
-        void AddError(Error error);
-        void AddError(string property, string message);
-        bool IsValid();
-        void ClearErrors();
-        string GetLocation();
-        void SetLocation(string location);
     }
 }

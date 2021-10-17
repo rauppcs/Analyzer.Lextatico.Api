@@ -1,4 +1,5 @@
-using Lextatico.Domain.Dtos.Response;
+using Lextatico.Application.Dtos.Response;
+using Lextatico.Domain.Dtos.Message;
 using Lextatico.Infra.CrossCutting.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +11,7 @@ namespace Lextatico.Api.Configurations
         {
             options.InvalidModelStateResponseFactory = context =>
             {
-                var response = new Response();
+                var response = new Response<bool>(false);
 
                 foreach (var key in context.ModelState.Keys)
                 {

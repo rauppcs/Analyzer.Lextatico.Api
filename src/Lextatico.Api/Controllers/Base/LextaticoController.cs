@@ -1,6 +1,8 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
-using Lextatico.Domain.Dtos.Response;
+using Lextatico.Application.Dtos.Response;
+using Lextatico.Domain.Dtos.Message;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,51 +16,76 @@ namespace Lextatico.Api.Controllers.Base
     [Route("api/[controller]")]
     public abstract class LextaticoController : ControllerBase
     {
-        private readonly IResponse _response;
+        private readonly IMessage _message;
 
-        protected LextaticoController(IResponse response)
+        protected LextaticoController(IMessage message)
         {
-            _response = response;
+            _message = message;
         }
 
-        private IActionResult VerifyValidResponse(IActionResult result)
+        private bool ValidResponse()
         {
-            return VerifyValidResponse(null, result);
+            if (_message is null || !_message.IsValid())
+                return false;
+
+            return true;
         }
 
-        private IActionResult VerifyValidResponse(object data, IActionResult result)
+        private Response<T> MountResponse<T>(T data)
         {
-            if (_response is null || !_response.IsValid())
-                return BadRequest(_response);
+            var response = new Response<T>(data);
 
-            _response.AddResult(data);
+            foreach (var error in _message.Errors)
+            {
+                response.AddError(error.Property, error.Message);
+            }
 
-            return result;
+            return response;
         }
 
         protected virtual IActionResult ReturnOk()
         {
-            return VerifyValidResponse(NoContent());
+            if (!ValidResponse())
+                return ReturnBadRequest(false);
+
+            return NoContent();
         }
 
-        protected virtual IActionResult ReturnOk(object data)
+        protected virtual IActionResult ReturnOk<T>(T data)
         {
-            return VerifyValidResponse(data, Ok(_response));
+            if (!ValidResponse())
+                return ReturnBadRequest(data);
+
+            var response = MountResponse(data);
+
+            return Ok(response);
         }
 
         protected virtual IActionResult ReturnCreated(object data)
         {
-            return VerifyValidResponse(data, Created(_response.GetLocation(), _response));
+            if (!ValidResponse())
+                return ReturnBadRequest(data);
+
+            var response = MountResponse(data);
+
+            return Created(_message.GetLocation(), response);
         }
 
         protected virtual IActionResult ReturnAccepted(object data)
         {
-            return VerifyValidResponse(data, Accepted(_response));
+            if (!ValidResponse())
+                return ReturnBadRequest(data);
+
+            var response = MountResponse(data);
+
+            return Accepted(response);
         }
 
-        protected virtual IActionResult ReturnBadRequest()
+        protected virtual IActionResult ReturnBadRequest<T>(T data)
         {
-            return BadRequest(_response);
+            var response = MountResponse(data);
+
+            return BadRequest(response);
         }
 
         protected virtual IActionResult ReturnFileResult(string nameFile, string file, string contentType)
@@ -87,6 +114,12 @@ namespace Lextatico.Api.Controllers.Base
             return File(ms, contentType, nameFile);
         }
 
-        protected virtual IActionResult ReturnCustomResult(IActionResult actionResult) => actionResult;
+        protected virtual IActionResult ReturnCustomResult(IActionResult actionResult)
+        {
+            if (!ValidResponse())
+                return BadRequest();
+
+            return actionResult;
+        }
     }
 }

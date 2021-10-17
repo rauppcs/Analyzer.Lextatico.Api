@@ -7,18 +7,6 @@ namespace Lextatico.Infra.Data.Migrations
 {
     public partial class Tabelasiniciasdoanalisadorléxico : Migration
     {
-        private void InsertTokens(MigrationBuilder migrationBuilder)
-        {
-            var currentDirectory = Directory.GetCurrentDirectory();
-
-            var fileInsertTokens =
-                Path.Combine(currentDirectory, $"Sql{Path.DirectorySeparatorChar}InsertTokens.sql");
-
-            var sql = File.ReadAllText(fileInsertTokens);
-
-            migrationBuilder.Sql(sql);
-        }
-
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<DateTime>(
@@ -108,8 +96,6 @@ namespace Lextatico.Infra.Data.Migrations
                 name: "IX_AnalyzerToken_IdToken",
                 table: "AnalyzerToken",
                 column: "IdToken");
-
-            InsertTokens(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

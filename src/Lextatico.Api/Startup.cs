@@ -23,7 +23,7 @@ namespace Lextatico.Api
         {
             services
                 .AddHttpContextAccessor()
-                .AddResponse()
+                .AddMessage()
                 .AddAspNetUserConfiguration()
                 .AddEmailSettings(Configuration)
                 .AddUrlsConfiguration(Configuration)
@@ -49,7 +49,10 @@ namespace Lextatico.Api
             }
 
             if (env.IsProduction())
+            {
                 app.UseHttpsRedirection();
+                app.UseHsts();
+            }
 
             app.UseSwagger();
 
@@ -63,7 +66,7 @@ namespace Lextatico.Api
 
             app.UseAuthorization();
 
-            app.UseMiddleware<TransactionUnitMiddleware>();
+            app.UseTransaction();
 
             app.UseEndpoints(endpoints =>
             {

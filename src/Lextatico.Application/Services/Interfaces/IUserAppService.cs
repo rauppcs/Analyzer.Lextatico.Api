@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
 using Lextatico.Application.Dtos.User;
-using Lextatico.Domain.Dtos.Response;
-using Microsoft.AspNetCore.Identity;
 
 namespace Lextatico.Application.Services.Interfaces
 {

@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Lextatico.Domain.Dtos.Response;
 using Lextatico.Domain.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace Lextatico.Domain.Interfaces.Services
 {

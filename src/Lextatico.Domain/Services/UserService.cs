@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Lextatico.Domain.Configurations;
-using Lextatico.Domain.Dtos.Response;
+using Lextatico.Domain.Dtos.Message;
 using Lextatico.Domain.Interfaces.Services;
 using Lextatico.Domain.Models;
 using Lextatico.Infra.Identity.User;
@@ -17,20 +17,20 @@ namespace Lextatico.Domain.Services
 {
     public class UserService : IUserService
     {
-        private readonly IResponse _response;
+        private readonly IMessage _message;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAspNetUser _aspNetUser;
         private readonly Urls _urls;
-        public UserService(ITokenService tokenService, UserManager<ApplicationUser> userManger, SignInManager<ApplicationUser> signInManager, IAspNetUser aspNetUser, IResponse response, IOptions<Urls> urls, IEmailService emailService)
+        public UserService(ITokenService tokenService, UserManager<ApplicationUser> userManger, SignInManager<ApplicationUser> signInManager, IAspNetUser aspNetUser, IMessage message, IOptions<Urls> urls, IEmailService emailService)
         {
             _tokenService = tokenService;
             _userManager = userManger;
             _signInManager = signInManager;
             _aspNetUser = aspNetUser;
-            _response = response;
+            _message = message;
             _urls = urls.Value;
             _emailService = emailService;
         }
@@ -53,7 +53,7 @@ namespace Lextatico.Domain.Services
             var applicationUser = await GetUserByEmailAsync(email);
 
             if (applicationUser == null)
-                _response.AddError(string.Empty, "Usuário não encontrado");
+                _message.AddError(string.Empty, "Usuário não encontrado");
 
             return applicationUser;
         }
@@ -63,7 +63,7 @@ namespace Lextatico.Domain.Services
             var applicationUser = await _userManager.FindByEmailAsync(email);
 
             if (applicationUser == null)
-                _response.AddError(string.Empty, "Usuário não encontrado");
+                _message.AddError(string.Empty, "Usuário não encontrado");
 
             return applicationUser;
         }
@@ -75,7 +75,7 @@ namespace Lextatico.Domain.Services
                         && DateTime.UtcNow <= refresh.TokenExpiration));
 
             if (applicationUser == null)
-                _response.AddError(string.Empty, "Token ou RefreshToken inválido, faça o login novamente.");
+                _message.AddError(string.Empty, "Token ou RefreshToken inválido, faça o login novamente.");
 
             return applicationUser;
         }
@@ -88,7 +88,7 @@ namespace Lextatico.Domain.Services
             {
                 foreach (var error in result.Errors)
                 {
-                    _response.AddError(string.Empty, error.Description);
+                    _message.AddError(string.Empty, error.Description);
                 }
             }
 
@@ -102,11 +102,11 @@ namespace Lextatico.Domain.Services
             if (!result.Succeeded)
             {
                 if (result.IsLockedOut)
-                    _response.AddError(string.Empty, "Usuário bloqueado. Aguarde 5 minutos e tente novamente.");
+                    _message.AddError(string.Empty, "Usuário bloqueado. Aguarde 5 minutos e tente novamente.");
                 else if (result.IsNotAllowed)
-                    _response.AddError(string.Empty, "Usuário não está liberado para fazer login.");
+                    _message.AddError(string.Empty, "Usuário não está liberado para fazer login.");
                 else
-                    _response.AddError(string.Empty, "Usuário ou senha incorreto.");
+                    _message.AddError(string.Empty, "Usuário ou senha incorreto.");
             }
 
             return result.Succeeded;
@@ -155,7 +155,7 @@ namespace Lextatico.Domain.Services
             {
                 foreach (var error in result.Errors)
                 {
-                    _response.AddError(string.Empty, error.Description);
+                    _message.AddError(string.Empty, error.Description);
                 }
             }
 
