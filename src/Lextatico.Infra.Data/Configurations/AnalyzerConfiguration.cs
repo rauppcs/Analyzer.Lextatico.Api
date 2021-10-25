@@ -14,6 +14,10 @@ namespace Lextatico.Infra.Data.Configurations
             builder.Property(model => model.Name)
                 .HasColumnType("VARCHAR(50)")
                 .IsRequired();
+
+            builder.HasOne(analyzer => analyzer.ApplicationUser)
+                .WithMany(applicationUser => applicationUser.Analyzers)
+                .HasForeignKey(analyzer => analyzer.ApplicationUserId);
         }
     }
 }

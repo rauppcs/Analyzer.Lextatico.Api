@@ -12,9 +12,9 @@ namespace Lextatico.Domain.Models
         }
 
         public string Name { get; set; }
-
+        public Guid ApplicationUserId { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual ICollection<AnalyzerTerminalToken> AnalyzerTokens { get; set; }
-
         public virtual ICollection<AnalyzerNonTerminalToken> AnalyzerNonTerminalTokens { get; set; }
     }
 }

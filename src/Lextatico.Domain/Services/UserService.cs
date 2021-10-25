@@ -118,9 +118,6 @@ namespace Lextatico.Domain.Services
 
             var refreshTokenModel = new RefreshToken(refreshToken, refreshTokenExpiration, applicationUser.Id, applicationUser);
 
-            if (applicationUser.RefreshTokens == null)
-                applicationUser.RefreshTokens = new List<RefreshToken>();
-
             applicationUser.RefreshTokens.Add(refreshTokenModel);
         }
 

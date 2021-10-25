@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Lextatico.Domain.Interfaces.Repositories;
 using Lextatico.Domain.Models;
 using Lextatico.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lextatico.Infra.Data.Repositories
 {
-    public class Repository<T> where T : Base
+    public class Repository<T> : IRepository<T> where T : Base
     {
         protected readonly LextaticoContext _lextaticoContext;
-        private DbSet<T> _dataSet;
+        protected DbSet<T> _dataSet;
 
         public Repository(LextaticoContext lextaticoContext)
         {
