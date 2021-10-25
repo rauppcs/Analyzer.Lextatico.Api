@@ -13,7 +13,7 @@ namespace Lextatico.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<NonTerminalTokenRule> builder)
         {
-            builder.DefineDefaultFields(nameof(NonTerminalTokenRule));
+            builder.DefineDefaultFields();
 
             builder.Property(nonTerminalTokenRule => nonTerminalTokenRule.Name)
                 .HasColumnType("VARCHAR(50)")
@@ -25,7 +25,7 @@ namespace Lextatico.Infra.Data.Configurations
 
             builder.HasOne(nonTerminalTokenRule => nonTerminalTokenRule.NonTerminalToken)
                 .WithMany(nonTerminalToken => nonTerminalToken.NonTerminalTokenRules)
-                .HasForeignKey(nonTerminalTokenRule => nonTerminalTokenRule.IdNonTerminalToken);
+                .HasForeignKey(nonTerminalTokenRule => nonTerminalTokenRule.NonTerminalTokenId);
         }
     }
 }

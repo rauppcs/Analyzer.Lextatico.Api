@@ -13,7 +13,7 @@ namespace Lextatico.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<NonTerminalToken> builder)
         {
-            builder.DefineDefaultFields(nameof(NonTerminalToken));
+            builder.DefineDefaultFields();
 
             builder.Property(nonTerminalToken => nonTerminalToken.Name)
                 .HasColumnType("VARCHAR(50)")

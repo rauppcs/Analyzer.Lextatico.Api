@@ -9,7 +9,7 @@ namespace Lextatico.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Analyzer> builder)
         {
-            builder.DefineDefaultFields(nameof(Analyzer));
+            builder.DefineDefaultFields();
 
             builder.Property(model => model.Name)
                 .HasColumnType("VARCHAR(50)")

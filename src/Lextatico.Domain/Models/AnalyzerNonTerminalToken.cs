@@ -7,9 +7,9 @@ namespace Lextatico.Domain.Models
 {
     public class AnalyzerNonTerminalToken : Base
     {
-        public Guid IdAnalyzer { get; set; }
+        public Guid AnalyzerId { get; set; }
         public virtual Analyzer Analyzer { get; set; }
-        public Guid IdNonTerminalToken { get; set; }
+        public Guid NonTerminalTokenId { get; set; }
         public virtual NonTerminalToken NonTerminalToken { get; set; }
     }
 }
