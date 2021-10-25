@@ -83,8 +83,8 @@ namespace Lextatico.Api.Controllers.Base
 
         protected virtual IActionResult ReturnBadRequest<T>(Response<T> response)
         {
-            if (response.Data == null)
-                return NotFound(response);
+            // if (response.Data == null)
+            //     return NotFound(response);
 
             return BadRequest(response);
         }
