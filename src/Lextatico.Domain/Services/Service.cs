@@ -41,12 +41,7 @@ namespace Lextatico.Domain.Services
 
         public virtual async Task<T> GetByIdAsync(Guid id)
         {
-            var entity = await _repository.SelectByIdAsync(id);
-
-            if (entity == null)
-                _message.AddError($"{id} não encontrado.");
-
-            return entity;
+            return await _repository.SelectByIdAsync(id);
         }
     }
 }
