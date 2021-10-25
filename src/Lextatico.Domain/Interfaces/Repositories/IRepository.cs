@@ -7,10 +7,10 @@ namespace Lextatico.Domain.Interfaces.Repositories
 {
     public interface IRepository<T> where T : Base
     {
-        Task<T> InsertAsync(T item);
-        Task<T> UpdateAsync(T item);
+        Task<bool> InsertAsync(T item);
+        Task<bool> UpdateAsync(T item);
         Task<bool> DeleteAsync(Guid id);
-        Task<T> SelectAsync(Guid id);
+        Task<T> SelectByIdAsync(Guid id);
         Task<IList<T>> SelectAllAsync();
     }
 }

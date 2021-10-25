@@ -7,10 +7,10 @@ namespace Lextatico.Domain.Interfaces.Services
 {
     public interface IService<T> where T : class
     {
-        Task<T> GetAsync(Guid id);
+        Task<T> GetByIdAsync(Guid id);
         Task<IList<T>> GetAllAsync();
-        Task<T> PostAsync(T item);
-        Task<T> PutAsync(T item);
+        Task<bool> PostAsync(T item);
+        Task<bool> PutAsync(T item);
         Task<bool> DeleteAsync(Guid id);
     }
 }

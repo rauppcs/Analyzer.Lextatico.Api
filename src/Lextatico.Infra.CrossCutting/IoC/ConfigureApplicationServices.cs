@@ -9,7 +9,7 @@ namespace Lextatico.Infra.CrossCutting.IoC
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IUserAppService, UserAppService>();
-            services.AddScoped<IUserAppService, UserAppService>();
+            services.AddScoped<IAnalyzerAppService, AnalyzerAppService>();
 
             return services;
         }

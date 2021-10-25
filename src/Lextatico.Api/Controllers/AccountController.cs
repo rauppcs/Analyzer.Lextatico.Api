@@ -13,14 +13,12 @@ namespace Lextatico.Api.Controllers
     {
         private readonly IUserAppService _userAppService;
         private readonly IEmailService _emailService;
-        private readonly IMessage _message;
 
         public AccountController(IUserAppService userAppService, IEmailService emailService, IMessage message)
             : base(message)
         {
             _userAppService = userAppService;
             _emailService = emailService;
-            _message = message;
         }
 
         [Route("[action]")]

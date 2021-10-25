@@ -3,29 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Lextatico.Api.Controllers.Base;
+using Lextatico.Application.Dtos.Analyzer;
+using Lextatico.Application.Dtos.Response;
+using Lextatico.Application.Services.Interfaces;
 using Lextatico.Domain.Dtos.Message;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lextatico.Api.Controllers
 {
     public class AnalyzerController : LextaticoController
     {
-        public AnalyzerController(IMessage message) : base(message)
+        private readonly IAnalyzerAppService _analyzerAppService;
+        public AnalyzerController(IMessage message, IAnalyzerAppService analyzerAppService)
+            : base(message)
         {
+            _analyzerAppService = analyzerAppService;
         }
 
-        [Route("/")]
         [HttpGet]
         public async Task<IActionResult> GetAnalyzers()
         {
-            throw new NotImplementedException();
+            var analyzers = await _analyzerAppService.GetAnalyzersByLoggedUserAsync();
+
+            return ReturnOk(analyzers);
         }
 
-        [Route("/{idAnalyzer:guid}")]
+        [Route("{analyzerId:guid}")]
         [HttpGet]
-        public async Task<IActionResult> GetAnalyzers(Guid idAnalyzer)
+        public async Task<IActionResult> GetAnalyzers(Guid analyzerId)
         {
-            throw new NotImplementedException();
+            var analyzer = await _analyzerAppService.GetAnalyzerByIdAsync(analyzerId);
+
+            return ReturnOk(analyzer);
         }
     }
 }

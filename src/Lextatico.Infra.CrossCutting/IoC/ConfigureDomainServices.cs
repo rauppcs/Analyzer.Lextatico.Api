@@ -11,6 +11,7 @@ namespace Lextatico.Infra.CrossCutting.IoC
             // DOMAIN SERVICES
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAnalyzerService, AnalyzerService>();
 
             return services;
         }

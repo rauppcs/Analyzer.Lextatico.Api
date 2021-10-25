@@ -19,6 +19,8 @@ namespace Lextatico.Domain.Dtos.Message
 
         public void AddError(string property, string message) => Errors.Add(new Error(property, message));
 
+        public void AddError(string message) => Errors.Add(new Error(string.Empty, message));
+
         public bool IsValid() => !Errors.Any();
 
         public void ClearErrors() => Errors.Clear();
@@ -33,6 +35,7 @@ namespace Lextatico.Domain.Dtos.Message
         IList<Error> Errors { get; set; }
         void AddError(Error error);
         void AddError(string property, string message);
+        void AddError(string message);
         bool IsValid();
         void ClearErrors();
         string GetLocation();

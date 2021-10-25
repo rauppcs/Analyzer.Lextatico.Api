@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Lextatico.Api.Configurations;
 using Lextatico.Infra.Identity.User;
+using Microsoft.AspNetCore.Http;
 
 namespace Lextatico.Api
 {

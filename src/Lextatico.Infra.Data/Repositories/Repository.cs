@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lextatico.Infra.Data.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : Base
+    public abstract class Repository<T> : IRepository<T> where T : Base
     {
         protected readonly LextaticoContext _lextaticoContext;
         protected DbSet<T> _dataSet;
@@ -18,9 +18,36 @@ namespace Lextatico.Infra.Data.Repositories
             _lextaticoContext = lextaticoContext;
             _dataSet = lextaticoContext.Set<T>();
         }
+
+        public async Task<bool> InsertAsync(T item)
+        {
+            //TODO: VERIFICAR A NECESSIDADE DESSA LINHA -> item.Id = item.Id == Guid.Empty ? Guid.NewGuid() : item.Id;
+
+            await _dataSet.AddAsync(item);
+
+            var result = await _lextaticoContext.SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        public async Task<bool> UpdateAsync(T item)
+        {
+            var itemDb = await SelectByIdAsync(item.Id);
+
+            if (itemDb == null)
+                return false;
+
+            _lextaticoContext.Entry(itemDb).CurrentValues.SetValues(item);
+
+            var result = await _lextaticoContext.SaveChangesAsync();
+
+            return result > 0;
+        }
+
         public async Task<bool> DeleteAsync(Guid id)
         {
-            var itemDb = await SelectAsync(id);
+            var itemDb = await SelectByIdAsync(id);
+
             if (itemDb == null)
                 return false;
 
@@ -31,41 +58,10 @@ namespace Lextatico.Infra.Data.Repositories
             return true;
         }
 
-        public async Task<T> SelectAsync(Guid id)
-        {
-            var itemDb = await _dataSet.FindAsync(id);
-            return itemDb;
-        }
+        public async Task<T> SelectByIdAsync(Guid id) =>
+            await _dataSet.FindAsync(id);
 
-        public async Task<IList<T>> SelectAllAsync()
-        {
-            var itensDb = await _dataSet.ToListAsync();
-            return itensDb;
-        }
-
-        public async Task<T> InsertAsync(T item)
-        {
-            //TODO: VERIFICAR A NECESSIDADE DESSA LINHA -> item.Id = item.Id == Guid.Empty ? Guid.NewGuid() : item.Id;
-
-            await _dataSet.AddAsync(item);
-
-            await _lextaticoContext.SaveChangesAsync();
-
-            return item;
-        }
-
-        public async Task<T> UpdateAsync(T item)
-        {
-            var itemDb = await SelectAsync(item.Id);
-
-            if (itemDb == null)
-                return null;
-
-            _lextaticoContext.Entry(itemDb).CurrentValues.SetValues(item);
-
-            await _lextaticoContext.SaveChangesAsync();
-
-            return item;
-        }
+        public async Task<IList<T>> SelectAllAsync() =>
+            await _dataSet.ToListAsync();
     }
 }

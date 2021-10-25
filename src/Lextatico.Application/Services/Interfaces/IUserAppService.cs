@@ -3,7 +3,7 @@ using Lextatico.Application.Dtos.User;
 
 namespace Lextatico.Application.Services.Interfaces
 {
-    public interface IUserAppService : IAppService
+    public interface IUserAppService
     {
         Task<UserDetailDto> GetUserLoggedAsync();
         Task<bool> CreateAsync(UserSignInDto userSignIn);

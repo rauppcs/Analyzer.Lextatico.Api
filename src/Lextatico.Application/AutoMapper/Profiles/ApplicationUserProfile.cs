@@ -4,16 +4,16 @@ using Lextatico.Domain.Models;
 
 namespace Lextatico.Application.AutoMapper.Profiles
 {
-    public class ApplicationUserAutoMapperProfile : Profile
+    public class ApplicationUserProfile : Profile
     {
-        public ApplicationUserAutoMapperProfile()
+        public ApplicationUserProfile()
         {
-            // MODEL TO DTO
+            // DTO TO MODEL
             CreateMap<UserSignInDto, ApplicationUser>()
                 .ForMember(applicationUser => applicationUser.UserName,
                 options => options.MapFrom(userSignin => userSignin.Email));
 
-            // DTO TO MODEL
+            // MODEL TO DTO
             CreateMap<ApplicationUser, UserDetailDto>();
         }
     }

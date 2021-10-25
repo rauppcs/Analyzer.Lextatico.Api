@@ -46,44 +46,45 @@ namespace Lextatico.Api.Controllers.Base
         protected virtual IActionResult ReturnOk()
         {
             if (!ValidResponse())
-                return ReturnBadRequest(false);
+                return BadRequest();
 
             return NoContent();
         }
 
         protected virtual IActionResult ReturnOk<T>(T data)
         {
-            if (!ValidResponse())
-                return ReturnBadRequest(data);
-
             var response = MountResponse(data);
+
+            if (!ValidResponse())
+                return ReturnBadRequest(response);
 
             return Ok(response);
         }
 
-        protected virtual IActionResult ReturnCreated(object data)
+        protected virtual IActionResult ReturnCreated<T>(T data)
         {
-            if (!ValidResponse())
-                return ReturnBadRequest(data);
-
             var response = MountResponse(data);
+
+            if (!ValidResponse())
+                return ReturnBadRequest(response);
 
             return Created(_message.GetLocation(), response);
         }
 
-        protected virtual IActionResult ReturnAccepted(object data)
+        protected virtual IActionResult ReturnAccepted<T>(T data)
         {
-            if (!ValidResponse())
-                return ReturnBadRequest(data);
-
             var response = MountResponse(data);
+
+            if (!ValidResponse())
+                return ReturnBadRequest(response);
 
             return Accepted(response);
         }
 
-        protected virtual IActionResult ReturnBadRequest<T>(T data)
+        protected virtual IActionResult ReturnBadRequest<T>(Response<T> response)
         {
-            var response = MountResponse(data);
+            if (response.Data == null)
+                return NotFound(response);
 
             return BadRequest(response);
         }

@@ -8,6 +8,6 @@ namespace Lextatico.Domain.Interfaces.Repositories
 {
     public interface IAnalyzerRepository : IRepository<Analyzer>
     {
-        Task<Analyzer> SelectAnalyzerByUserIdAsync(Guid userId);
+        Task<IEnumerable<Analyzer>> SelectAnalyzersByUserIdAsync(Guid userId);
     }
 }

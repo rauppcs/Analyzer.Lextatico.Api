@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Lextatico.Domain.Interfaces.Repositories;
 using Lextatico.Domain.Models;
 using Lextatico.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lextatico.Infra.Data.Repositories
 {
@@ -15,9 +16,7 @@ namespace Lextatico.Infra.Data.Repositories
         {
         }
 
-        public async Task<Analyzer> SelectAnalyzerByUserIdAsync(Guid userId)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<Analyzer>> SelectAnalyzersByUserIdAsync(Guid userId) =>
+            await _dataSet.Where(f => f.ApplicationUserId == userId).ToListAsync();
     }
 }
