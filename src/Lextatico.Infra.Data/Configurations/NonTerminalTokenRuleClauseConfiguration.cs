@@ -13,7 +13,7 @@ namespace Lextatico.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<NonTerminalTokenRuleClause> builder)
         {
-            builder.DefineDefaultFields(nameof(NonTerminalTokenRuleClause));
+            builder.DefineDefaultFields();
 
             builder.Property(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.Name)
                 .HasColumnType("VARCHAR(50)")
@@ -29,16 +29,16 @@ namespace Lextatico.Infra.Data.Configurations
 
             builder.HasOne(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.NonTerminalToken)
                 .WithMany(nonTerminalToken => nonTerminalToken.NonTerminalTokenRuleClauses)
-                .HasForeignKey(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.IdNonTerminalToken)
+                .HasForeignKey(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.NonTerminalTokenId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.TerminalToken)
                 .WithMany(terminalToken => terminalToken.NonTerminalTokenRuleClauses)
-                .HasForeignKey(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.IdTerminalToken);
+                .HasForeignKey(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.TerminalTokenId);
 
             builder.HasOne(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.NonTerminalTokenRule)
                 .WithMany(nonTerminalTokenRule => nonTerminalTokenRule.NonTerminalTokenRuleClauses)
-                .HasForeignKey(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.IdNonTerminalTokenRule);
+                .HasForeignKey(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.NonTerminalTokenRuleId);
         }
     }
 }

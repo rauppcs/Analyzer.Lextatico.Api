@@ -13,23 +13,23 @@ namespace Lextatico.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<AnalyzerNonTerminalToken> builder)
         {
-            builder.DefineDefaultFields(nameof(AnalyzerNonTerminalToken));
+            builder.DefineDefaultFields();
 
-            builder.Property(analyzerToken => analyzerToken.IdAnalyzer)
+            builder.Property(analyzerToken => analyzerToken.AnalyzerId)
                .IsRequired();
 
-            builder.Property(analyzerToken => analyzerToken.IdNonTerminalToken)
+            builder.Property(analyzerToken => analyzerToken.NonTerminalTokenId)
                 .IsRequired();
 
-            builder.HasIndex(analyzerToken => new { analyzerToken.IdAnalyzer, analyzerToken.IdNonTerminalToken });
+            builder.HasIndex(analyzerToken => new { analyzerToken.AnalyzerId, analyzerToken.NonTerminalTokenId });
 
             builder.HasOne(analyzerNonTerminalToken => analyzerNonTerminalToken.Analyzer)
                 .WithMany(analyzer => analyzer.AnalyzerNonTerminalTokens)
-                .HasForeignKey(analyzerToken => analyzerToken.IdAnalyzer);
+                .HasForeignKey(analyzerToken => analyzerToken.AnalyzerId);
 
             builder.HasOne(analyzerNonTerminalToken => analyzerNonTerminalToken.NonTerminalToken)
                 .WithMany(nonTerminalToken => nonTerminalToken.AnalyzerNonTerminalTokens)
-                .HasForeignKey(analyzerNonTerminalToken => analyzerNonTerminalToken.IdNonTerminalToken);
+                .HasForeignKey(analyzerNonTerminalToken => analyzerNonTerminalToken.NonTerminalTokenId);
         }
     }
 }

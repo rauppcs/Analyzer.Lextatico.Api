@@ -9,23 +9,23 @@ namespace Lextatico.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<AnalyzerTerminalToken> builder)
         {
-            builder.DefineDefaultFields(nameof(AnalyzerTerminalToken));
+            builder.DefineDefaultFields();
 
-            builder.Property(analyzerToken => analyzerToken.IdAnalyzer)
+            builder.Property(analyzerToken => analyzerToken.AnalyzerId)
                 .IsRequired();
 
-            builder.Property(analyzerToken => analyzerToken.IdTerminalToken)
+            builder.Property(analyzerToken => analyzerToken.TerminalTokenId)
                 .IsRequired();
 
-            builder.HasIndex(analyzerToken => new { analyzerToken.IdAnalyzer, analyzerToken.IdTerminalToken });
+            builder.HasIndex(analyzerToken => new { analyzerToken.AnalyzerId, analyzerToken.TerminalTokenId });
 
             builder.HasOne(analyzerToken => analyzerToken.Analyzer)
                 .WithMany(analyzer => analyzer.AnalyzerTokens)
-                .HasForeignKey(analyzerToken => analyzerToken.IdAnalyzer);
+                .HasForeignKey(analyzerToken => analyzerToken.AnalyzerId);
 
             builder.HasOne(analyzerToken => analyzerToken.TerminalToken)
                 .WithMany(terminalToken => terminalToken.AnalyzerTokens)
-                .HasForeignKey(analyzerToken => analyzerToken.IdTerminalToken);
+                .HasForeignKey(analyzerToken => analyzerToken.TerminalTokenId);
         }
     }
 }

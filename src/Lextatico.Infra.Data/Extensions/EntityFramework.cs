@@ -13,8 +13,11 @@ namespace Lextatico.Infra.Data.Extensions
         /// <param name="builder"></param>
         /// <param name="nameColumnId">Property name Id for the database. Default: "Id"</param>
         /// <typeparam name="T">Type of model to be defined.</typeparam>
-        public static void DefineDefaultFields<T>(this EntityTypeBuilder<T> builder, string tableName, string nameColumnId = "Id") where T : Base
+        public static void DefineDefaultFields<T>(this EntityTypeBuilder<T> builder, string tableName = "", string nameColumnId = "Id") where T : Base
         {
+            if (string.IsNullOrEmpty(tableName))
+                tableName = typeof(T).Name;
+
             builder.ToTable(tableName);
 
             builder.Property(model => model.Id)

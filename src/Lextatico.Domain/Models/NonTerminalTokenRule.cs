@@ -9,7 +9,7 @@ namespace Lextatico.Domain.Models
     {
         public string Name { get; set; }
         public int Sequence { get; set; }
-        public Guid IdNonTerminalToken { get; set; }
+        public Guid NonTerminalTokenId { get; set; }
         public virtual NonTerminalToken NonTerminalToken { get; set; }
         public virtual ICollection<NonTerminalTokenRuleClause> NonTerminalTokenRuleClauses { get; set; }
     }

@@ -10,11 +10,11 @@ namespace Lextatico.Domain.Models
         public string Name { get; set; }
         public int Sequence { get; set; }
         public bool IsTerminalToken { get; set; }
-        public Guid IdTerminalToken { get; set; }
+        public Guid TerminalTokenId { get; set; }
         public virtual TerminalToken TerminalToken { get; set; }
-        public Guid IdNonTerminalToken { get; set; }
+        public Guid NonTerminalTokenId { get; set; }
         public virtual NonTerminalToken NonTerminalToken { get; set; }
-        public Guid IdNonTerminalTokenRule { get; set; }
+        public Guid NonTerminalTokenRuleId { get; set; }
         public NonTerminalTokenRule NonTerminalTokenRule { get; set; }
     }
 }

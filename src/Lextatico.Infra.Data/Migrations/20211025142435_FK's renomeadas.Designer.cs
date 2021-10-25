@@ -4,14 +4,16 @@ using Lextatico.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lextatico.Infra.Data.Migrations
 {
     [DbContext(typeof(LextaticoContext))]
-    partial class LextaticoContextModelSnapshot : ModelSnapshot
+    [Migration("20211025142435_FK's renomeadas")]
+    partial class FKsrenomeadas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,9 +28,6 @@ namespace Lextatico.Infra.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id")
                         .HasDefaultValueSql("NEWSEQUENTIALID()");
-
-                    b.Property<Guid>("ApplicationUserId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -45,8 +44,6 @@ namespace Lextatico.Infra.Data.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Analyzer");
                 });
@@ -512,17 +509,6 @@ namespace Lextatico.Infra.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Lextatico.Domain.Models.Analyzer", b =>
-                {
-                    b.HasOne("Lextatico.Domain.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("Analyzers")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-                });
-
             modelBuilder.Entity("Lextatico.Domain.Models.AnalyzerNonTerminalToken", b =>
                 {
                     b.HasOne("Lextatico.Domain.Models.Analyzer", "Analyzer")
@@ -670,8 +656,6 @@ namespace Lextatico.Infra.Data.Migrations
 
             modelBuilder.Entity("Lextatico.Domain.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Analyzers");
-
                     b.Navigation("RefreshTokens");
                 });
 

@@ -9,7 +9,7 @@ namespace Lextatico.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<TerminalToken> builder)
         {
-            builder.DefineDefaultFields(nameof(TerminalToken));
+            builder.DefineDefaultFields();
 
             builder.Property(terminalToken => terminalToken.Name)
                 .HasColumnType("VARCHAR(50)")
