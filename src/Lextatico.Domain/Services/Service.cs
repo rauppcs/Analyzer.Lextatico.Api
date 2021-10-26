@@ -11,12 +11,10 @@ namespace Lextatico.Domain.Services
     public class Service<T> : IService<T> where T : Base
     {
         private readonly IRepository<T> _repository;
-        private readonly IMessage _message;
 
-        public Service(IRepository<T> repository, IMessage message)
+        public Service(IRepository<T> repository)
         {
             _repository = repository;
-            _message = message;
         }
 
         public virtual async Task<bool> PostAsync(T item)
@@ -34,7 +32,7 @@ namespace Lextatico.Domain.Services
             return await _repository.DeleteAsync(id);
         }
 
-        public virtual async Task<IList<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _repository.SelectAllAsync();
         }
