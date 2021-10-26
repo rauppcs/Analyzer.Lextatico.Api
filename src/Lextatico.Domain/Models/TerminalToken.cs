@@ -6,17 +6,15 @@ namespace Lextatico.Domain.Models
     public class TerminalToken : Base
     {
         public TerminalToken()
-        // : base(DateTime.UtcNow)
         {
-
         }
 
-        public string Name { get; set; }
-        public string ViewName { get; set; }
-        public string Resume { get; set; }
-        public string Lexeme { get; set; }
-        public string TokenType { get; set; }
-        public virtual ICollection<AnalyzerTerminalToken> AnalyzerTokens { get; set; }
-        public virtual ICollection<NonTerminalTokenRuleClause> NonTerminalTokenRuleClauses { get; set; }
+        public string Name { get; private set; }
+        public string ViewName { get; private set; }
+        public string Resume { get; private set; }
+        public string Lexeme { get; private set; }
+        public string TokenType { get; private set; }
+        public virtual ICollection<AnalyzerTerminalToken> AnalyzerTokens { get; } = new List<AnalyzerTerminalToken>();
+        public virtual ICollection<NonTerminalTokenRuleClause> NonTerminalTokenRuleClauses { get; } = new List<NonTerminalTokenRuleClause>();
     }
 }

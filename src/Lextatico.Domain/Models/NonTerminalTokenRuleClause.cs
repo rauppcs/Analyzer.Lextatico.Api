@@ -7,14 +7,14 @@ namespace Lextatico.Domain.Models
 {
     public class NonTerminalTokenRuleClause : Base
     {
-        public string Name { get; set; }
-        public int Sequence { get; set; }
-        public bool IsTerminalToken { get; set; }
-        public Guid TerminalTokenId { get; set; }
-        public virtual TerminalToken TerminalToken { get; set; }
-        public Guid NonTerminalTokenId { get; set; }
-        public virtual NonTerminalToken NonTerminalToken { get; set; }
-        public Guid NonTerminalTokenRuleId { get; set; }
-        public NonTerminalTokenRule NonTerminalTokenRule { get; set; }
+        public string Name { get; private set; }
+        public int Sequence { get; private set; }
+        public bool IsTerminalToken { get; private set; }
+        public Guid TerminalTokenId { get; private set; }
+        public virtual TerminalToken TerminalToken { get; private set; }
+        public Guid NonTerminalTokenId { get; private set; }
+        public virtual NonTerminalToken NonTerminalToken { get; private set; }
+        public Guid NonTerminalTokenRuleId { get; private set; }
+        public NonTerminalTokenRule NonTerminalTokenRule { get; private set; }
     }
 }

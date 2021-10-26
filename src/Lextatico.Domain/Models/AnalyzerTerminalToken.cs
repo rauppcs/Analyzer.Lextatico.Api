@@ -5,13 +5,11 @@ namespace Lextatico.Domain.Models
     public class AnalyzerTerminalToken : Base
     {
         public AnalyzerTerminalToken()
-            // : base(DateTime.UtcNow)
         {
-
         }
-        public Guid AnalyzerId { get; set; }
-        public virtual Analyzer Analyzer { get; set; }
-        public Guid TerminalTokenId { get; set; }
-        public virtual TerminalToken TerminalToken { get; set; }
+        public Guid AnalyzerId { get; private set; }
+        public virtual Analyzer Analyzer { get; private set; }
+        public Guid TerminalTokenId { get; private set; }
+        public virtual TerminalToken TerminalToken { get; private set; }
     }
 }

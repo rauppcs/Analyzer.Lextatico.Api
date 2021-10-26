@@ -7,10 +7,10 @@ namespace Lextatico.Domain.Models
 {
     public class NonTerminalTokenRule : Base
     {
-        public string Name { get; set; }
-        public int Sequence { get; set; }
-        public Guid NonTerminalTokenId { get; set; }
-        public virtual NonTerminalToken NonTerminalToken { get; set; }
-        public virtual ICollection<NonTerminalTokenRuleClause> NonTerminalTokenRuleClauses { get; set; }
+        public string Name { get; private set; }
+        public int Sequence { get; private set; }
+        public Guid NonTerminalTokenId { get; private set; }
+        public virtual NonTerminalToken NonTerminalToken { get; private set; }
+        public virtual ICollection<NonTerminalTokenRuleClause> NonTerminalTokenRuleClauses { get; } = new List<NonTerminalTokenRuleClause>();
     }
 }
