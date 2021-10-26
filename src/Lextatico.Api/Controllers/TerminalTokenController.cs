@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Lextatico.Api.Controllers.Base;
+using Lextatico.Application.Services.Interfaces;
 using Lextatico.Domain.Dtos.Message;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,16 +11,20 @@ namespace Lextatico.Api.Controllers
 {
     public class TerminalTokenController : LextaticoController
     {
-        public TerminalTokenController(IMessage message)
+        private readonly ITerminalTokenAppService _terminalTokenAppService;
+
+        public TerminalTokenController(IMessage message, ITerminalTokenAppService terminalTokenAppService)
             : base(message)
         {
-
+            _terminalTokenAppService = terminalTokenAppService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetTerminalTokens()
         {
-            throw new NotImplementedException();
+            var terminalTokens = await _terminalTokenAppService.GetTerminalTokens();
+
+            return ReturnOk(terminalTokens);
         }
     }
 }

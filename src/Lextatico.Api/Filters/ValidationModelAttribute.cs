@@ -16,7 +16,7 @@ namespace Lextatico.Api.Filters
         {
             if (!context.ModelState.IsValid)
             {
-                var response = new Response<bool>(false);
+                var response = new Response();
 
                 foreach (var key in context.ModelState.Keys)
                 {

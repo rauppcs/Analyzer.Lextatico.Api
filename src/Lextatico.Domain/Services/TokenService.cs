@@ -79,6 +79,7 @@ namespace Lextatico.Domain.Services
         public ITokenService WithUserClaims()
         {
             _userClaims = _userManager.GetClaimsAsync(_applicationUser).Result;
+
             _identityClaims.AddClaims(_userClaims);
 
             return this;
@@ -87,8 +88,8 @@ namespace Lextatico.Domain.Services
         public ITokenService WithUserRoles()
         {
             var userRoles = _userManager.GetRolesAsync(_applicationUser).Result;
-            // userRoles.ToList().ForEach(r => _identityClaims.AddClaim(new Claim(ClaimTypes.Role, r)));
-            userRoles.ToList().ForEach(r => _identityClaims.AddClaim(new Claim("role", r)));
+
+            userRoles.ToList().ForEach(r => _identityClaims.AddClaim(new Claim(ClaimTypes.Role, r)));
 
             return this;
         }
@@ -96,6 +97,7 @@ namespace Lextatico.Domain.Services
         public (string token, string refreshToken) BuildToken()
         {
             var tokenHandler = new JwtSecurityTokenHandler();
+
             var securityToken = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = _tokenConfiguration.Issuer,
@@ -106,6 +108,7 @@ namespace Lextatico.Domain.Services
             });
 
             var token = tokenHandler.WriteToken(securityToken);
+
             var refreshToken = CreateRefreshToken();
 
             return (token, refreshToken);
@@ -114,6 +117,7 @@ namespace Lextatico.Domain.Services
         private ClaimsPrincipal GetClaimsPrincipal()
         {
             var header = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
+            
             var token = header.Split(" ")[1];
 
             return GetClaimsPrincipal(token);
@@ -122,6 +126,7 @@ namespace Lextatico.Domain.Services
         private ClaimsPrincipal GetClaimsPrincipal(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
+            
             var validationParameters = GetValidationParameters();
 
             var claims = tokenHandler.ValidateToken(token, validationParameters, out var securityToken);

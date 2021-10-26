@@ -29,8 +29,7 @@ namespace Lextatico.Api.Controllers
             return ReturnOk(analyzers);
         }
 
-        [Route("{analyzerId:guid}")]
-        [HttpGet]
+        [HttpGet, Route("{analyzerId:guid}")]
         public async Task<IActionResult> GetAnalyzers(Guid analyzerId)
         {
             var analyzer = await _analyzerAppService.GetAnalyzerByIdAsync(analyzerId);

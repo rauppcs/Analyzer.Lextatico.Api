@@ -31,9 +31,9 @@ namespace Lextatico.Api.Controllers.Base
             return true;
         }
 
-        private Response<T> MountResponse<T>(T data)
+        private Response MountResponse<T>(T data)
         {
-            var response = new Response<T>(data);
+            var response = new Response(data);
 
             foreach (var error in _message.Errors)
             {
@@ -81,7 +81,7 @@ namespace Lextatico.Api.Controllers.Base
             return Accepted(response);
         }
 
-        protected virtual IActionResult ReturnBadRequest<T>(Response<T> response)
+        protected virtual IActionResult ReturnBadRequest(Response response)
         {
             // if (response.Data == null)
             //     return NotFound(response);

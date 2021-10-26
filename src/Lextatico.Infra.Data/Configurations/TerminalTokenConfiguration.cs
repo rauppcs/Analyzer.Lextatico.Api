@@ -29,6 +29,10 @@ namespace Lextatico.Infra.Data.Configurations
             builder.Property(terminalToken => terminalToken.TokenType)
                 .HasColumnType("VARCHAR(50)")
                 .IsRequired();
+
+            builder.Property(terminalToken => terminalToken.IdentifierType)
+                .HasColumnType("VARCHAR(50)")
+                .IsRequired(false);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Lextatico.Api.Configurations
         {
             options.InvalidModelStateResponseFactory = context =>
             {
-                var response = new Response<bool>(false);
+                var response = new Response(false);
 
                 foreach (var key in context.ModelState.Keys)
                 {

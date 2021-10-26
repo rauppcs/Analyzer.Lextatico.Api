@@ -11,10 +11,10 @@ namespace Lextatico.Application.Services
 {
     public class TerminalTokenAppService : ITerminalTokenAppService
     {
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
         private readonly ITerminalTokenService _terminalTokenService;
 
-        public TerminalTokenAppService(Mapper mapper, ITerminalTokenService terminalTokenService)
+        public TerminalTokenAppService(IMapper mapper, ITerminalTokenService terminalTokenService)
         {
             _mapper = mapper;
             _terminalTokenService = terminalTokenService;

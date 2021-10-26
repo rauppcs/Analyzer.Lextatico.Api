@@ -17,7 +17,7 @@ namespace Lextatico.Api.Filters
         /// <param name="context">Context object for the exception.</param>
         public override void OnException(ExceptionContext context)
         {
-            var response = new Response<bool>(false);
+            var response = new Response();
 
             var exception = context.Exception;
 
