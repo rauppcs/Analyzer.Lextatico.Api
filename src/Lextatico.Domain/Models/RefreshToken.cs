@@ -5,11 +5,9 @@ namespace Lextatico.Domain.Models
     public class RefreshToken : Base
     {
         public RefreshToken()
-            // : base(DateTime.UtcNow)
         {
         }
         public RefreshToken(string token, DateTime tokenExpiration, Guid applicationUserId, ApplicationUser applicationUser)
-            // : base(DateTime.UtcNow)
         {
             Token = token;
             TokenExpiration = tokenExpiration;
@@ -17,9 +15,9 @@ namespace Lextatico.Domain.Models
             ApplicationUser = applicationUser;
         }
 
-        public string Token { get; set; }
-        public DateTime TokenExpiration { get; set; }
-        public Guid ApplicationUserId { get; set; }
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public string Token { get; private set; }
+        public DateTime TokenExpiration { get; private set; }
+        public Guid ApplicationUserId { get; private set; }
+        public virtual ApplicationUser ApplicationUser { get; private set; }
     }
 }

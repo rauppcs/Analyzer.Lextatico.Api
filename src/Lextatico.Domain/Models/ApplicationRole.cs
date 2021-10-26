@@ -5,6 +5,5 @@ namespace Lextatico.Domain.Models
 {
     public class ApplicationRole : IdentityRole<Guid>
     {
-
     }
 }
