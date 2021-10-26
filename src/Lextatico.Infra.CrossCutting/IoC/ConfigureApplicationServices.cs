@@ -10,6 +10,7 @@ namespace Lextatico.Infra.CrossCutting.IoC
         {
             services.AddScoped<IUserAppService, UserAppService>();
             services.AddScoped<IAnalyzerAppService, AnalyzerAppService>();
+            services.AddScoped<ITerminalTokenAppService, TerminalTokenAppService>();
 
             return services;
         }

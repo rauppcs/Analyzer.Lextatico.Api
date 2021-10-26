@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Lextatico.Domain.Interfaces.Repositories;
 using Lextatico.Domain.Models;
@@ -61,7 +63,16 @@ namespace Lextatico.Infra.Data.Repositories
         public async Task<T> SelectByIdAsync(Guid id) =>
             await _dataSet.FindAsync(id);
 
-        public async Task<IList<T>> SelectAllAsync() =>
+        public async Task<IEnumerable<T>> SelectAllAsync() =>
             await _dataSet.ToListAsync();
+
+        public async Task<IEnumerable<T>> SelectAllOrderedAsync() =>
+            await _dataSet.ToListAsync();
+
+        public async Task<IEnumerable<T>> SelectAllOrderByAscendingAsync<TKey>(Expression<Func<T, TKey>> expression) =>
+            await _dataSet.OrderBy(expression).ToListAsync();
+
+        public async Task<IEnumerable<T>> SelectAllOrderByDescendingAsync<TKey>(Expression<Func<T, TKey>> expression) =>
+            await _dataSet.OrderByDescending(expression).ToListAsync();
     }
 }

@@ -8,8 +8,6 @@ namespace Lextatico.Domain.Interfaces.Services
 {
     public interface ITokenService
     {
-        
-
         ITokenService WithUserManager(UserManager<ApplicationUser> userManager);
         ITokenService WithTokenConfiguration(TokenConfiguration tokenConfiguration);
         ITokenService WithSigningConfiguration(SigningConfiguration signingConfiguration);

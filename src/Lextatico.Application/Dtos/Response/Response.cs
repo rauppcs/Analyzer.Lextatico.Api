@@ -5,21 +5,21 @@ using System.Linq;
 
 namespace Lextatico.Application.Dtos.Response
 {
-    public class Response<T>
+    public class Response
     {
         public Response()
         {
         }
-        public Response(T data)
+        public Response(object data)
         {
             Data = data;
         }
 
-        public T? Data { get; set; }
-        public IList<Error> Errors { get; set; } = new List<Error>();
+        public object? Data { get; private set; }
+        public IList<Error> Errors { get; } = new List<Error>();
         private string _locationObjectCreated = string.Empty;
 
-        public void AddResult(T data) => Data = data;
+        public void AddResult(object data) => Data = data;
 
         public void AddError(Error error) => Errors.Add(error);
 

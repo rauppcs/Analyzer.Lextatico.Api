@@ -14,14 +14,12 @@ namespace Lextatico.Domain.Services
     {
         private readonly IAnalyzerRepository _analyzerRepository;
         private readonly IAspNetUser _aspNetUser;
-        // private readonly IMessage _message;
 
         public AnalyzerService(IAnalyzerRepository analyzerRepository, IAspNetUser aspNetUser, IMessage message)
-            : base(analyzerRepository, message)
+            : base(analyzerRepository)
         {
             _analyzerRepository = analyzerRepository;
             _aspNetUser = aspNetUser;
-            // _message = message;
         }
 
         public async Task<IEnumerable<Analyzer>> GetAnalyzersByLoggedUserAsync()

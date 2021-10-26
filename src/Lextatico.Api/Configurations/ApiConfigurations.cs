@@ -6,7 +6,6 @@ using Lextatico.Domain.Configurations;
 using Lextatico.Domain.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -119,12 +118,7 @@ namespace Lextatico.Api.Configurations
                 paramsValidation.ClockSkew = TimeSpan.FromSeconds(30);
             });
 
-            services.AddAuthorizationCore(auth =>
-            {
-                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser().Build());
-            });
+            services.AddAuthorizationCore();
 
             return services;
         }
