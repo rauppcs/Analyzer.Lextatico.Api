@@ -7,11 +7,6 @@ namespace Lextatico.Domain.Dtos.Message
 {
     public class Message : IMessage
     {
-        public Message()
-        {
-
-        }
-
         public IList<Error> Errors { get; set; } = new List<Error>();
         private string _locationObjectCreated = string.Empty;
 
