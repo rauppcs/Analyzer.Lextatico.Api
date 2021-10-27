@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Lextatico.Application.Dtos.Response;
 using Lextatico.Domain.Dtos.Message;
+using Lextatico.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -17,11 +18,20 @@ namespace Lextatico.Api.Filters
         /// <param name="context">Context object for the exception.</param>
         public override void OnException(ExceptionContext context)
         {
-            var response = new Response<bool>(false);
+            var response = new Response();
 
             var exception = context.Exception;
 
-            response.AddError(string.Empty, "Ocorreu um erro inesperado.");
+            if (exception is NotFoundException)
+            {
+                response.AddError(exception.Message);
+
+                context.Result = new NotFoundObjectResult(response);
+
+                return;
+            }
+
+            response.AddError("Ocorreu um erro inesperado.");
 
             var result = new ObjectResult(response);
 

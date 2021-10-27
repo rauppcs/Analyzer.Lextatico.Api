@@ -31,13 +31,13 @@ namespace Lextatico.Api.Controllers.Base
             return true;
         }
 
-        private Response<T> MountResponse<T>(T data)
+        private Response MountResponse<T>(T data)
         {
-            var response = new Response<T>(data);
+            var response = new Response(data);
 
             foreach (var error in _message.Errors)
             {
-                response.AddError(error.Property, error.Message);
+                response.AddError(error);
             }
 
             return response;
@@ -81,11 +81,16 @@ namespace Lextatico.Api.Controllers.Base
             return Accepted(response);
         }
 
-        protected virtual IActionResult ReturnBadRequest<T>(Response<T> response)
+        protected virtual IActionResult ReturnAccepted()
         {
-            // if (response.Data == null)
-            //     return NotFound(response);
+            if (!ValidResponse())
+                return BadRequest();
 
+            return Accepted();
+        }
+
+        protected virtual IActionResult ReturnBadRequest(Response response)
+        {
             return BadRequest(response);
         }
 

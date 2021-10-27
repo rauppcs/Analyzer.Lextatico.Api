@@ -29,13 +29,20 @@ namespace Lextatico.Api.Controllers
             return ReturnOk(analyzers);
         }
 
-        [Route("{analyzerId:guid}")]
-        [HttpGet]
-        public async Task<IActionResult> GetAnalyzers(Guid analyzerId)
+        [HttpGet, Route("{analyzerId:guid}")]
+        public async Task<IActionResult> GetAnalyzer(Guid analyzerId)
         {
             var analyzer = await _analyzerAppService.GetAnalyzerByIdAsync(analyzerId);
 
             return ReturnOk(analyzer);
+        }
+
+        [HttpDelete, Route("{analyzerId:guid}")]
+        public async Task<IActionResult> DeleteAnalyzer(Guid analyzerId)
+        {
+            await _analyzerAppService.DeleteAnalyzerByIdAsync(analyzerId);
+
+            return ReturnOk();
         }
     }
 }

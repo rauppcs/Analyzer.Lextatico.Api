@@ -21,8 +21,7 @@ namespace Lextatico.Api.Controllers
             _emailService = emailService;
         }
 
-        [Route("[action]")]
-        [HttpGet]
+        [HttpGet, Route("[action]")]
         public async Task<IActionResult> GetUser()
         {
             var result = await _userAppService.GetUserLoggedAsync();
@@ -30,8 +29,7 @@ namespace Lextatico.Api.Controllers
             return ReturnOk(result);
         }
 
-        [Route("[action]")]
-        [HttpPost]
+        [HttpPost, Route("[action]")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] UserLogInDto userLogin)
         {
@@ -40,8 +38,7 @@ namespace Lextatico.Api.Controllers
             return ReturnOk(result);
         }
 
-        [Route("[action]")]
-        [HttpPost]
+        [HttpPost, Route("[action]")]
         [AllowAnonymous]
         public async Task<IActionResult> Signin([FromBody] UserSignInDto userSignIn)
         {
@@ -50,8 +47,7 @@ namespace Lextatico.Api.Controllers
             return ReturnCreated(result);
         }
 
-        [Route("[action]")]
-        [HttpPost]
+        [HttpPost, Route("[action]")]
         [AllowAnonymous]
         public async Task<IActionResult> RefreshToken([FromBody] UserRefreshDto userRefresh)
         {
@@ -60,31 +56,28 @@ namespace Lextatico.Api.Controllers
             return ReturnOk(result);
         }
 
-        [Route("[action]")]
-        [HttpGet]
+        [HttpGet, Route("[action]")]
         public IActionResult ValidateToken()
         {
             return ReturnOk();
         }
 
-        [Route("[action]")]
-        [HttpPost]
+        [HttpPost, Route("[action]")]
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword([FromBody] UserForgotPasswordDto userForgotPassword)
         {
-            var result = await _userAppService.ForgotPasswordAsync(userForgotPassword);
+            await _userAppService.ForgotPasswordAsync(userForgotPassword);
 
-            return ReturnOk(result);
+            return ReturnOk();
         }
 
-        [Route("[action]")]
-        [HttpPost]
+        [HttpPost, Route("[action]")]
         [AllowAnonymous]
         public async Task<IActionResult> ResetPassword([FromBody] UserResetPasswordDto userResetPassword)
         {
-            var result = await _userAppService.ResetPasswordAsync(userResetPassword);
+            await _userAppService.ResetPasswordAsync(userResetPassword);
 
-            return ReturnOk(result);
+            return ReturnOk();
         }
     }
 }

@@ -4,14 +4,16 @@ using Lextatico.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lextatico.Infra.Data.Migrations
 {
     [DbContext(typeof(LextaticoContext))]
-    partial class LextaticoContextModelSnapshot : ModelSnapshot
+    [Migration("20211026182649_Update na tabela TerminalToken")]
+    partial class UpdatenatabelaTerminalToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -36,5 +36,14 @@ namespace Lextatico.Application.Services
 
             return analyzers;
         }
+
+        public async Task<bool> DeleteAnalyzerByIdAsync(Guid analyzerId)
+        {
+            var result = await _analyzerService.DeleteAsync(analyzerId);
+
+            // TODO: AQUI VERIFICAR COMO LANÇAR 404
+
+            return result;
+        }
     }
 }
