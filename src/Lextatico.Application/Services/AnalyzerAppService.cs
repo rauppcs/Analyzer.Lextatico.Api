@@ -8,45 +8,61 @@ using Lextatico.Application.Dtos.Filter;
 using Lextatico.Application.Services.Interfaces;
 using Lextatico.Domain.Dtos.Message;
 using Lextatico.Domain.Interfaces.Services;
+using Lextatico.Domain.Models;
+using Lextatico.Infra.Identity.User;
 
 namespace Lextatico.Application.Services
 {
     public class AnalyzerAppService : IAnalyzerAppService
     {
         private readonly IMapper _mapper;
-        private readonly IAnalyzerService _analyzerService;
         private readonly IMessage _message;
+        private readonly IAspNetUser _aspNetUser;
+        private readonly IAnalyzerService _analyzerService;
 
-        public AnalyzerAppService(IMapper mapper, IAnalyzerService analyzerService, IMessage message)
+
+        public AnalyzerAppService(IMapper mapper, IMessage message, IAspNetUser aspNetUser, IAnalyzerService analyzerService)
         {
             _mapper = mapper;
-            _analyzerService = analyzerService;
             _message = message;
+            _aspNetUser = aspNetUser;
+            _analyzerService = analyzerService;
+
         }
 
-        public async Task<AnalyzerDetailDto> GetAnalyzerByIdAsync(Guid analyzerId)
+        public async Task<AnalyzerDto> GetAnalyzerByIdAsync(Guid analyzerId)
         {
-            var analyzer = _mapper.Map<AnalyzerDetailDto>(await _analyzerService.GetByIdAsync(analyzerId));
+            var analyzer = _mapper.Map<AnalyzerDto>(await _analyzerService.GetByIdAsync(analyzerId));
 
             return analyzer;
         }
 
-        public async Task<IEnumerable<AnalyzerSummaryDto>> GetAnalyzersByLoggedUserAsync()
+        public async Task<IEnumerable<AnalyzerDto>> GetAnalyzersByLoggedUserAsync()
         {
-            var analyzers = _mapper.Map<IEnumerable<AnalyzerSummaryDto>>(await _analyzerService.GetAnalyzersByLoggedUserAsync());
+            var analyzers = _mapper.Map<IEnumerable<AnalyzerDto>>(await _analyzerService.GetAnalyzersByLoggedUserAsync());
 
             return analyzers;
         }
 
-        public async Task<(IEnumerable<AnalyzerSummaryDto>, int)> GetAnalyzersPaggedByLoggedUserAsync(int page, int size)
+        public async Task<(IEnumerable<AnalyzerDto>, int)> GetAnalyzersPaggedByLoggedUserAsync(int page, int size)
         {
             var (analyzers, total) = await _analyzerService.GetAnalyzersPaggedByLoggedUserAsync(page, size);
 
-            var analyzerSummaries = _mapper.Map<IEnumerable<AnalyzerSummaryDto>>(analyzers);
+            var analyzerSummaries = _mapper.Map<IEnumerable<AnalyzerDto>>(analyzers);
 
             return (analyzerSummaries, total);
         }
 
+        public async Task<bool> CreateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzerWithTerminalTokensAndNonTerminalTokens)
+        {
+            var analyzerDb = _mapper.Map<Analyzer>(analyzerWithTerminalTokensAndNonTerminalTokens);
+
+            analyzerDb.SetApplicationUserId(_aspNetUser.GetUserId());
+
+            var result = await _analyzerService.CreateAsync(analyzerDb);
+
+            return result;
+        }
         public async Task<bool> DeleteAnalyzerByIdAsync(Guid analyzerId)
         {
             var result = await _analyzerService.DeleteAsync(analyzerId);

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Lextatico.Application.Dtos.Analyzer
 {
-    public class AnalyzerDetailDto
+    public class AnalyzerDto : AnalyzerDetailDto
     {
-        public string Name { get; set; }
+        public Guid Id { get; set; }
     }
 }

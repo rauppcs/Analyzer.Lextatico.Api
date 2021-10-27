@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Lextatico.Api.Controllers.Base;
 using Lextatico.Application.Dtos.Analyzer;
 using Lextatico.Application.Dtos.Filter;
-using Lextatico.Application.Dtos.Response;
 using Lextatico.Application.Services.Interfaces;
 using Lextatico.Domain.Dtos.Message;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lextatico.Api.Controllers
@@ -37,6 +34,15 @@ namespace Lextatico.Api.Controllers
             var analyzer = await _analyzerAppService.GetAnalyzerByIdAsync(analyzerId);
 
             return ReturnOk(analyzer);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateAnalyzer(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer)
+        {
+            await _analyzerAppService.CreateAnalyzerAsync(analyzer);
+
+            return ReturnCreated();
         }
 
         [HttpDelete, Route("{analyzerId:guid}")]

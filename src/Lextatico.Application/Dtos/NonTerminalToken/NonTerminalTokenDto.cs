@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Lextatico.Application.Dtos.TerminalToken
+namespace Lextatico.Application.Dtos.NonTerminalToken
 {
-    public class TerminalTokenDto : TerminalTokenDetailDto
+    public class NonTerminalTokenDto : NonTerminalTokenDetailDto
     {
         public Guid Id { get; set; }
     }
