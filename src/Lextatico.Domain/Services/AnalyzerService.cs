@@ -30,5 +30,14 @@ namespace Lextatico.Domain.Services
 
             return analyzers;
         }
+
+        public async Task<(IEnumerable<Analyzer>, int)> GetAnalyzersPaggedByLoggedUserAsync(int page, int size)
+        {
+            var userId = _aspNetUser.GetUserId();
+
+            var result = await _analyzerRepository.SelectAnalyzersPaggedByUserIdAsync(userId, page, size);
+
+            return result;
+        }
     }
 }

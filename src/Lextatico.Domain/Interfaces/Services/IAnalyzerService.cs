@@ -8,6 +8,7 @@ namespace Lextatico.Domain.Interfaces.Services
 {
     public interface IAnalyzerService : IService<Analyzer>
     {
-        Task<IEnumerable<Analyzer>> GetAnalyzersByLoggedUserAsync();   
+        Task<IEnumerable<Analyzer>> GetAnalyzersByLoggedUserAsync();
+        Task<(IEnumerable<Analyzer>, int)> GetAnalyzersPaggedByLoggedUserAsync(int page, int size);
     }
 }
