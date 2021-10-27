@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Lextatico.Application.Dtos.Analyzer;
+using Lextatico.Application.Dtos.Filter;
 using Lextatico.Application.Services.Interfaces;
 using Lextatico.Domain.Dtos.Message;
 using Lextatico.Domain.Interfaces.Services;
@@ -35,6 +36,15 @@ namespace Lextatico.Application.Services
             var analyzers = _mapper.Map<IEnumerable<AnalyzerSummaryDto>>(await _analyzerService.GetAnalyzersByLoggedUserAsync());
 
             return analyzers;
+        }
+
+        public async Task<(IEnumerable<AnalyzerSummaryDto>, int)> GetAnalyzersPaggedByLoggedUserAsync(int page, int size)
+        {
+            var (analyzers, total) = await _analyzerService.GetAnalyzersPaggedByLoggedUserAsync(page, size);
+
+            var analyzerSummaries = _mapper.Map<IEnumerable<AnalyzerSummaryDto>>(analyzers);
+
+            return (analyzerSummaries, total);
         }
 
         public async Task<bool> DeleteAnalyzerByIdAsync(Guid analyzerId)

@@ -9,5 +9,6 @@ namespace Lextatico.Domain.Interfaces.Repositories
     public interface IAnalyzerRepository : IRepository<Analyzer>
     {
         Task<IEnumerable<Analyzer>> SelectAnalyzersByUserIdAsync(Guid userId);
+        Task<(IEnumerable<Analyzer>, int)> SelectAnalyzersPaggedByUserIdAsync(Guid userId, int page, int size);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Lextatico.Api.Controllers.Base;
 using Lextatico.Application.Dtos.Analyzer;
+using Lextatico.Application.Dtos.Filter;
 using Lextatico.Application.Dtos.Response;
 using Lextatico.Application.Services.Interfaces;
 using Lextatico.Domain.Dtos.Message;
@@ -22,11 +23,12 @@ namespace Lextatico.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAnalyzers()
+        public async Task<IActionResult> GetAnalyzers([FromQuery] PaginationFilter pagination)
         {
-            var analyzers = await _analyzerAppService.GetAnalyzersByLoggedUserAsync();
+            var (analyzers, total) = await _analyzerAppService
+                .GetAnalyzersPaggedByLoggedUserAsync(pagination.Page, pagination.Size);
 
-            return ReturnOk(analyzers);
+            return ReturnOk(analyzers, pagination, total);
         }
 
         [HttpGet, Route("{analyzerId:guid}")]

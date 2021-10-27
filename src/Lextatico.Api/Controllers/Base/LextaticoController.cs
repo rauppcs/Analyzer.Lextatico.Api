@@ -1,7 +1,9 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Lextatico.Application.Dtos.Filter;
 using Lextatico.Application.Dtos.Response;
+using Lextatico.Application.Helpers;
 using Lextatico.Domain.Dtos.Message;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,9 +33,16 @@ namespace Lextatico.Api.Controllers.Base
             return true;
         }
 
-        private Response MountResponse<T>(T data)
+        private Response MountResponse<T>(T data, PaginationFilter pagination, int total)
         {
-            var response = new Response(data);
+            var isPagination = pagination != null;
+
+            Response response;
+
+            if (isPagination)
+                response = Pagination.CreatePagedReponse(data, pagination, total);
+            else
+                response = new Response(data);
 
             foreach (var error in _message.Errors)
             {
@@ -53,7 +62,12 @@ namespace Lextatico.Api.Controllers.Base
 
         protected virtual IActionResult ReturnOk<T>(T data)
         {
-            var response = MountResponse(data);
+            return ReturnOk(data, null, 0);
+        }
+
+        protected virtual IActionResult ReturnOk<T>(T data, PaginationFilter pagination, int total)
+        {
+            var response = MountResponse(data, pagination, total);
 
             if (!ValidResponse())
                 return ReturnBadRequest(response);
@@ -61,9 +75,9 @@ namespace Lextatico.Api.Controllers.Base
             return Ok(response);
         }
 
-        protected virtual IActionResult ReturnCreated<T>(T data)
+        protected virtual IActionResult ReturnCreated<T>(T data, PaginationFilter pagination = null, int total = 0)
         {
-            var response = MountResponse(data);
+            var response = MountResponse(data, pagination, total);
 
             if (!ValidResponse())
                 return ReturnBadRequest(response);
@@ -71,9 +85,9 @@ namespace Lextatico.Api.Controllers.Base
             return Created(_message.GetLocation(), response);
         }
 
-        protected virtual IActionResult ReturnAccepted<T>(T data)
+        protected virtual IActionResult ReturnAccepted<T>(T data, PaginationFilter pagination = null, int total = 0)
         {
-            var response = MountResponse(data);
+            var response = MountResponse(data, pagination, total);
 
             if (!ValidResponse())
                 return ReturnBadRequest(response);

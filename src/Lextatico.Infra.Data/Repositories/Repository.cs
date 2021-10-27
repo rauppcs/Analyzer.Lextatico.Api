@@ -36,6 +36,9 @@ namespace Lextatico.Infra.Data.Repositories
         {
             var itemDb = await SelectByIdAsync(item.Id);
 
+            if (itemDb == null)
+                return false;
+
             _lextaticoContext.Entry(itemDb).CurrentValues.SetValues(item);
 
             var result = await _lextaticoContext.SaveChangesAsync();
@@ -46,6 +49,9 @@ namespace Lextatico.Infra.Data.Repositories
         public async Task<bool> DeleteAsync(Guid id)
         {
             var itemDb = await SelectByIdAsync(id);
+
+            if (itemDb == null)
+                return false;
 
             _dataSet.Remove(itemDb);
 
