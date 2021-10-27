@@ -104,6 +104,7 @@ namespace Lextatico.Application.Services
         {
             var applicationUser = await _userService.GetUserByEmailAsync(userForgotPassword.Email);
 
+            // TODO: AQUI VERIFICAR COMO LANÇAR 404
             if (applicationUser == null)
                 return false;
 
@@ -116,6 +117,7 @@ namespace Lextatico.Application.Services
         {
             var applicationUser = await _userService.GetUserByEmailAsync(userResetPassword.Email);
 
+            // TODO: AQUI VERIFICAR COMO LANÇAR 404
             if (applicationUser == null)
                 return false;
 

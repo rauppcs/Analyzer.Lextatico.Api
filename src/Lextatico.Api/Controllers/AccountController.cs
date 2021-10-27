@@ -66,18 +66,18 @@ namespace Lextatico.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword([FromBody] UserForgotPasswordDto userForgotPassword)
         {
-            var result = await _userAppService.ForgotPasswordAsync(userForgotPassword);
+            await _userAppService.ForgotPasswordAsync(userForgotPassword);
 
-            return ReturnOk(result);
+            return ReturnOk();
         }
 
         [HttpPost, Route("[action]")]
         [AllowAnonymous]
         public async Task<IActionResult> ResetPassword([FromBody] UserResetPasswordDto userResetPassword)
         {
-            var result = await _userAppService.ResetPasswordAsync(userResetPassword);
+            await _userAppService.ResetPasswordAsync(userResetPassword);
 
-            return ReturnOk(result);
+            return ReturnOk();
         }
     }
 }

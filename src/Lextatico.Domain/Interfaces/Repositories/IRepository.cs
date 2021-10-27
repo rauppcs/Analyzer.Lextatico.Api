@@ -8,12 +8,13 @@ namespace Lextatico.Domain.Interfaces.Repositories
 {
     public interface IRepository<T> where T : Base
     {
+        Task<IEnumerable<T>> SelectAllAsync();
+        Task<IEnumerable<T>> SelectAllOrderByAscendingAsync<TKey>(Expression<Func<T, TKey>> expression);
+        Task<IEnumerable<T>> SelectAllOrderByDescendingAsync<TKey>(Expression<Func<T, TKey>> expression);
         Task<bool> InsertAsync(T item);
         Task<bool> UpdateAsync(T item);
         Task<bool> DeleteAsync(Guid id);
         Task<T> SelectByIdAsync(Guid id);
-        Task<IEnumerable<T>> SelectAllAsync();
-        Task<IEnumerable<T>> SelectAllOrderByAscendingAsync<TKey>(Expression<Func<T, TKey>> expression);
-        Task<IEnumerable<T>> SelectAllOrderByDescendingAsync<TKey>(Expression<Func<T, TKey>> expression);
+        Task<bool> Exists(Guid id);
     }
 }

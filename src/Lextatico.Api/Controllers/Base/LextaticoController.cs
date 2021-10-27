@@ -37,7 +37,7 @@ namespace Lextatico.Api.Controllers.Base
 
             foreach (var error in _message.Errors)
             {
-                response.AddError(error.Property, error.Message);
+                response.AddError(error);
             }
 
             return response;
@@ -81,11 +81,16 @@ namespace Lextatico.Api.Controllers.Base
             return Accepted(response);
         }
 
+        protected virtual IActionResult ReturnAccepted()
+        {
+            if (!ValidResponse())
+                return BadRequest();
+
+            return Accepted();
+        }
+
         protected virtual IActionResult ReturnBadRequest(Response response)
         {
-            // if (response.Data == null)
-            //     return NotFound(response);
-
             return BadRequest(response);
         }
 

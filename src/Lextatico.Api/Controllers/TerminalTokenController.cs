@@ -26,5 +26,13 @@ namespace Lextatico.Api.Controllers
 
             return ReturnOk(terminalTokens);
         }
+
+        [HttpGet, Route("{terminalTokenId:guid}")]
+        public async Task<IActionResult> GetTerminalToken(Guid terminalTokenId)
+        {
+            var terminalToken = await _terminalTokenAppService.GetTerminalToken(terminalTokenId);
+
+            return ReturnOk(terminalToken);
+        }
     }
 }
