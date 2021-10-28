@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Lextatico.Application.Dtos.TerminalToken
 {
-    public class TerminalTokenDetailDto
+    public class TerminalTokenDetailDto : TerminalTokenDto
     {
         public string Name { get; set; }
         public string ViewName { get; set; }

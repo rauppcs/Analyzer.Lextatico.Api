@@ -5,7 +5,6 @@ using Lextatico.Application.Dtos.Analyzer;
 using Lextatico.Application.Dtos.Filter;
 using Lextatico.Application.Services.Interfaces;
 using Lextatico.Domain.Dtos.Message;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lextatico.Api.Controllers
@@ -37,7 +36,6 @@ namespace Lextatico.Api.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> CreateAnalyzer(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer)
         {
             await _analyzerAppService.CreateAnalyzerAsync(analyzer);

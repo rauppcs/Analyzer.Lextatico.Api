@@ -12,16 +12,17 @@ namespace Lextatico.Application.AutoMapper.Profiles
     {
         public TerminalTokenProfile()
         {
-            // MODEL TO DTO
-            CreateMap<TerminalToken, TerminalTokenDto>();
-            CreateMap<TerminalToken, TerminalTokenDetailDto>();
+            CreateMap<TerminalToken, TerminalTokenDto>().ReverseMap();
+            CreateMap<TerminalToken, TerminalTokenDetailDto>().ReverseMap();
 
-
-            // DTO TO MODEL
-            CreateMap<TerminalTokenDto, TerminalToken>();
             CreateMap<TerminalTokenDto, AnalyzerTerminalToken>()
-                .ForMember(analyzerTerminalToken => analyzerTerminalToken.TerminalToken,
-                    options => options.MapFrom(terminalTokenDto => terminalTokenDto));
+                .ForMember(analyzerTerminalToken => analyzerTerminalToken.Id,
+                    options => options.Ignore())
+                .ForMember(analyzerTerminalToken => analyzerTerminalToken.TerminalTokenId,
+                    options => options.MapFrom(terminalTokenDto => terminalTokenDto.Id))
+                .ReverseMap()
+                .ForAllMembers(options =>
+                    options.MapFrom(analyzerTerminalToken => analyzerTerminalToken.TerminalToken));
         }
     }
 }

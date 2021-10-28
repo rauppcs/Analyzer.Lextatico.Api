@@ -23,7 +23,7 @@ namespace Lextatico.Infra.Data.Repositories
 
         public async Task<bool> InsertAsync(T item)
         {
-            await _dataSet.AddAsync(item);
+            _dataSet.Add(item);
 
             var result = await _lextaticoContext.SaveChangesAsync();
 
