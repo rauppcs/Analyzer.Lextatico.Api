@@ -10,10 +10,17 @@ namespace Lextatico.Domain.Models
         {
         }
 
+        public Analyzer(string name, Guid applicationUserId)
+        {
+            Name = name;
+            ApplicationUserId = applicationUserId;
+        }
+
         public string Name { get; private set; }
         public Guid ApplicationUserId { get; private set; }
+        public void SetApplicationUserId(Guid applicationUserId) => ApplicationUserId = applicationUserId;
         public virtual ApplicationUser ApplicationUser { get; private set; }
-        public virtual ICollection<AnalyzerTerminalToken> AnalyzerTokens { get; private set; }
-        public virtual ICollection<AnalyzerNonTerminalToken> AnalyzerNonTerminalTokens { get; private set; }
+        public virtual ICollection<AnalyzerTerminalToken> AnalyzerTerminalTokens { get; } = new List<AnalyzerTerminalToken>();
+        public virtual ICollection<AnalyzerNonTerminalToken> AnalyzerNonTerminalTokens { get; } = new List<AnalyzerNonTerminalToken>();
     }
 }

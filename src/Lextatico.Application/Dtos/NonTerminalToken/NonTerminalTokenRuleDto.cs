@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Lextatico.Application.Dtos.Analyzer
+namespace Lextatico.Application.Dtos.NonTerminalToken
 {
-    public class AnalyzerSummaryDto
+    public class NonTerminalTokenRuleDto
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
+        public int Sequence { get; set; }
     }
 }

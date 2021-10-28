@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Lextatico.Application.Dtos.TerminalToken
+namespace Lextatico.Application.Dtos.Analyzer
 {
-    public class TerminalTokenDto
+    public class AnalyzerDto : AnalyzerDetailDto
     {
         public Guid Id { get; set; }
     }

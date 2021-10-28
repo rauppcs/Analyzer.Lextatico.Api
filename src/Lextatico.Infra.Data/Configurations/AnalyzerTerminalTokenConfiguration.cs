@@ -20,7 +20,7 @@ namespace Lextatico.Infra.Data.Configurations
             builder.HasIndex(analyzerToken => new { analyzerToken.AnalyzerId, analyzerToken.TerminalTokenId });
 
             builder.HasOne(analyzerToken => analyzerToken.Analyzer)
-                .WithMany(analyzer => analyzer.AnalyzerTokens)
+                .WithMany(analyzer => analyzer.AnalyzerTerminalTokens)
                 .HasForeignKey(analyzerToken => analyzerToken.AnalyzerId);
 
             builder.HasOne(analyzerToken => analyzerToken.TerminalToken)

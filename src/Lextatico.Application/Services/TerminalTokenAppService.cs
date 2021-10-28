@@ -20,16 +20,16 @@ namespace Lextatico.Application.Services
             _terminalTokenService = terminalTokenService;
         }
 
-        public async Task<TerminalTokenDto> GetTerminalToken(Guid terminalTokenId)
+        public async Task<TerminalTokenDetailDto> GetTerminalToken(Guid terminalTokenId)
         {
-            var terminalToken = _mapper.Map<TerminalTokenDto>(await _terminalTokenService.GetByIdAsync(terminalTokenId));
+            var terminalToken = _mapper.Map<TerminalTokenDetailDto>(await _terminalTokenService.GetByIdAsync(terminalTokenId));
 
             return terminalToken;
         }
 
-        public async Task<IEnumerable<TerminalTokenDto>> GetTerminalTokens()
+        public async Task<IEnumerable<TerminalTokenDetailDto>> GetTerminalTokens()
         {
-            var terminalTokens = _mapper.Map<IEnumerable<TerminalTokenDto>>(await _terminalTokenService.GetAllAsync());
+            var terminalTokens = _mapper.Map<IEnumerable<TerminalTokenDetailDto>>(await _terminalTokenService.GetAllAsync());
 
             return terminalTokens;
         }

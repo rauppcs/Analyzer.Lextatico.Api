@@ -27,6 +27,12 @@ namespace Lextatico.Infra.Data.Configurations
                 .HasColumnType("BIT")
                 .IsRequired();
 
+            builder.Property(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.TerminalTokenId)
+                .IsRequired(false);
+
+            builder.Property(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.NonTerminalTokenId)
+                .IsRequired(false);
+
             builder.HasOne(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.NonTerminalToken)
                 .WithMany(nonTerminalToken => nonTerminalToken.NonTerminalTokenRuleClauses)
                 .HasForeignKey(nonTerminalTokenRuleClause => nonTerminalTokenRuleClause.NonTerminalTokenId)

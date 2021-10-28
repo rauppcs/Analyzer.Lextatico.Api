@@ -6,6 +6,7 @@ using Lextatico.Application.Dtos.Response;
 using Lextatico.Application.Helpers;
 using Lextatico.Domain.Dtos.Message;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lextatico.Api.Controllers.Base
@@ -85,6 +86,14 @@ namespace Lextatico.Api.Controllers.Base
             return Created(_message.GetLocation(), response);
         }
 
+        protected virtual IActionResult ReturnCreated()
+        {
+            if (!ValidResponse())
+                return BadRequest();
+
+            return Created(_message.GetLocation());
+        }
+
         protected virtual IActionResult ReturnAccepted<T>(T data, PaginationFilter pagination = null, int total = 0)
         {
             var response = MountResponse(data, pagination, total);
@@ -140,6 +149,15 @@ namespace Lextatico.Api.Controllers.Base
                 return BadRequest();
 
             return actionResult;
+        }
+
+        private IActionResult Created(string location)
+        {
+            var result = new StatusCodeResult(StatusCodes.Status201Created);
+
+            HttpContext.Response.Headers["Location"] = location;
+
+            return result;
         }
     }
 }
