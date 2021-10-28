@@ -10,8 +10,8 @@ namespace Lextatico.Domain.Interfaces.Services
     {
         Task<T> GetByIdAsync(Guid id);
         Task<IEnumerable<T>> GetAllAsync();
-        Task<bool> PostAsync(T item);
-        Task<bool> PutAsync(T item);
+        Task<bool> CreateAsync(T item);
+        Task<bool> UpdateAsync(T item);
         Task<bool> DeleteAsync(Guid id);
     }
 }

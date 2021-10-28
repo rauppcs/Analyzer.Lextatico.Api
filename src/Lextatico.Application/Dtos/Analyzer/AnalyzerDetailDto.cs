@@ -7,7 +7,6 @@ namespace Lextatico.Application.Dtos.Analyzer
 {
     public class AnalyzerDetailDto
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
     }
 }

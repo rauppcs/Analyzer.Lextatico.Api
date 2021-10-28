@@ -28,12 +28,12 @@ namespace Lextatico.Domain.Services
             return await _repository.SelectByIdAsync(id);
         }
 
-        public virtual async Task<bool> PostAsync(T item)
+        public virtual async Task<bool> CreateAsync(T item)
         {
             return await _repository.InsertAsync(item);
         }
 
-        public virtual async Task<bool> PutAsync(T item)
+        public virtual async Task<bool> UpdateAsync(T item)
         {
             var exists = await _repository.Exists(item.Id);
 

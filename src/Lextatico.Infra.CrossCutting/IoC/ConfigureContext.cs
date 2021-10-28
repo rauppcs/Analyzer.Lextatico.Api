@@ -18,6 +18,8 @@ namespace Lextatico.Infra.CrossCutting.IoC
 
                 var connectionString = sqlStringBuilder.ToString();
 
+                op.UseLazyLoadingProxies();
+
                 op.UseSqlServer(connectionString);
             });
 
