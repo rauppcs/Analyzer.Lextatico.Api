@@ -13,7 +13,6 @@ namespace Lextatico.Application.AutoMapper.Profiles
         public TerminalTokenProfile()
         {
             CreateMap<TerminalToken, TerminalTokenDto>().ReverseMap();
-            CreateMap<TerminalToken, TerminalTokenDetailDto>().ReverseMap();
 
             CreateMap<TerminalTokenDto, AnalyzerTerminalToken>()
                 .ForMember(analyzerTerminalToken => analyzerTerminalToken.Id,

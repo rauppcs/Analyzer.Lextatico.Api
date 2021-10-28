@@ -15,9 +15,7 @@ namespace Lextatico.Application.AutoMapper.Profiles
         {
             CreateMap<NonTerminalToken, NonTerminalTokenDto>().ReverseMap();
 
-            CreateMap<NonTerminalToken, NonTerminalTokenDetailDto>().ReverseMap();
-
-            CreateMap<NonTerminalToken, NonTerminalTokenDetailWithRulesAndClausesDto>();
+            CreateMap<NonTerminalToken, NonTerminalTokenWithRulesAndClausesDto>();
 
             CreateMap<NonTerminalTokenDto, AnalyzerNonTerminalToken>()
                 .ForMember(analyzerNonTerminalToken => analyzerNonTerminalToken.Id,
@@ -28,7 +26,7 @@ namespace Lextatico.Application.AutoMapper.Profiles
                 .ForAllMembers(options =>
                     options.MapFrom(analyzerNonTerminalToken => analyzerNonTerminalToken.NonTerminalToken));
 
-            CreateMap<NonTerminalTokenDetailWithRulesAndClausesDto, AnalyzerNonTerminalToken>()
+            CreateMap<NonTerminalTokenWithRulesAndClausesDto, AnalyzerNonTerminalToken>()
                 .ForMember(analyzerNonTerminalToken => analyzerNonTerminalToken.Id,
                     options => options.Ignore())
                 .ForMember(analyzerNonTerminalToken => analyzerNonTerminalToken.NonTerminalTokenId,

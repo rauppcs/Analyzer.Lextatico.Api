@@ -8,7 +8,7 @@ namespace Lextatico.Application.Services.Interfaces
 {
     public interface ITerminalTokenAppService
     {
-        Task<TerminalTokenDetailDto> GetTerminalToken(Guid terminalTokenId);
-        Task<IEnumerable<TerminalTokenDetailDto>> GetTerminalTokens();
+        Task<TerminalTokenDto> GetTerminalToken(Guid terminalTokenId);
+        Task<IEnumerable<TerminalTokenDto>> GetTerminalTokens();
     }
 }
