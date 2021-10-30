@@ -21,6 +21,6 @@ namespace Lextatico.Domain.Models
         public void SetApplicationUserId(Guid applicationUserId) => ApplicationUserId = applicationUserId;
         public virtual ApplicationUser ApplicationUser { get; private set; }
         public virtual ICollection<AnalyzerTerminalToken> AnalyzerTerminalTokens { get; } = new List<AnalyzerTerminalToken>();
-        public virtual ICollection<AnalyzerNonTerminalToken> AnalyzerNonTerminalTokens { get; } = new List<AnalyzerNonTerminalToken>();
+        public virtual ICollection<NonTerminalToken> NonTerminalTokens { get; } = new List<NonTerminalToken>();
     }
 }

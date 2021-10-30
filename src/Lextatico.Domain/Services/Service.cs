@@ -11,13 +11,13 @@ namespace Lextatico.Domain.Services
 {
     public class Service<T> : IService<T> where T : Base
     {
-        private readonly IRepository<T> _repository;
+        private readonly IBaseRepository<T> _repository;
 
-        public Service(IRepository<T> repository)
+        public Service(IBaseRepository<T> repository)
         {
             _repository = repository;
         }
-        
+
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _repository.SelectAllAsync();
@@ -35,17 +35,18 @@ namespace Lextatico.Domain.Services
 
         public virtual async Task<bool> UpdateAsync(T item)
         {
-            var exists = await _repository.Exists(item.Id);
+            var exists = await _repository.ExistsAsync(item.Id);
 
             // if (!exists)
-            //     throw new NotFoundException($"{item.Id} não encontrado.");
+            //     return false;
+            // throw new NotFoundException($"{item.Id} não encontrado.");
 
             return await _repository.UpdateAsync(item);
         }
 
         public virtual async Task<bool> DeleteAsync(Guid id)
         {
-            var exists = await _repository.Exists(id);
+            var exists = await _repository.ExistsAsync(id);
 
             // if (!exists)
             //     throw new NotFoundException($"{id} não encontrado.");

@@ -12,6 +12,7 @@ namespace Lextatico.Application.Services.Interfaces
         Task<IEnumerable<AnalyzerDto>> GetAnalyzersByLoggedUserAsync();
         Task<(IEnumerable<AnalyzerDto>, int)> GetAnalyzersPaggedByLoggedUserAsync(int page, int size);
         Task<bool> CreateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer);
+        Task<bool> UpdateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer);
         Task<bool> DeleteAnalyzerByIdAsync(Guid analyzerId);
     }
 }

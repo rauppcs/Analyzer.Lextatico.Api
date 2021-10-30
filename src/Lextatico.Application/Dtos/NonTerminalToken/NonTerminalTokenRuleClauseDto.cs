@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Lextatico.Application.Dtos.NonTerminalToken
 {
-    public class NonTerminalTokenRuleClauseDto
+    public class NonTerminalTokenRuleClauseDto : BaseDto
     {
         public string Name { get; set; }
         public int Sequence { get; set; }

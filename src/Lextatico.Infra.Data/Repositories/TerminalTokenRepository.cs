@@ -8,7 +8,7 @@ using Lextatico.Infra.Data.Context;
 
 namespace Lextatico.Infra.Data.Repositories
 {
-    public class TerminalTokenRepository : Repository<TerminalToken>, ITerminalTokenRepository
+    public class TerminalTokenRepository : BaseRepository<TerminalToken>, ITerminalTokenRepository
     {
         public TerminalTokenRepository(LextaticoContext lextaticoContext)
             : base(lextaticoContext)

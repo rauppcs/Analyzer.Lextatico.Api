@@ -6,7 +6,7 @@ using Lextatico.Domain.Models;
 
 namespace Lextatico.Domain.Interfaces.Repositories
 {
-    public interface IAnalyzerRepository : IRepository<Analyzer>
+    public interface IAnalyzerRepository : IBaseRepository<Analyzer>
     {
         Task<IEnumerable<Analyzer>> SelectAnalyzersByUserIdAsync(Guid userId);
         Task<(IEnumerable<Analyzer>, int)> SelectAnalyzersPaggedByUserIdAsync(Guid userId, int page, int size);

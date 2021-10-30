@@ -6,7 +6,7 @@ using Lextatico.Domain.Models;
 
 namespace Lextatico.Domain.Interfaces.Repositories
 {
-    public interface ITerminalTokenRepository : IRepository<TerminalToken>
+    public interface ITerminalTokenRepository : IBaseRepository<TerminalToken>
     {
         
     }

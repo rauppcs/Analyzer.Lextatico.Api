@@ -6,7 +6,7 @@ using Lextatico.Domain.Models;
 
 namespace Lextatico.Domain.Interfaces.Repositories
 {
-    public interface IRepository<T> where T : Base
+    public interface IBaseRepository<T> where T : Base
     {
         Task<IEnumerable<T>> SelectAllAsync();
         Task<IEnumerable<T>> SelectAllOrderByAscendingAsync<TKey>(Expression<Func<T, TKey>> expression);
@@ -15,6 +15,6 @@ namespace Lextatico.Domain.Interfaces.Repositories
         Task<bool> UpdateAsync(T item);
         Task<bool> DeleteAsync(Guid id);
         Task<T> SelectByIdAsync(Guid id);
-        Task<bool> Exists(Guid id);
+        Task<bool> ExistsAsync(Guid id);
     }
 }

@@ -63,6 +63,18 @@ namespace Lextatico.Application.Services
 
             return result;
         }
+
+        public async Task<bool> UpdateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzerWithTerminalTokensAndNonTerminalTokens)
+        {
+            var analyzerDb = _mapper.Map<Analyzer>(analyzerWithTerminalTokensAndNonTerminalTokens);
+
+            analyzerDb.SetApplicationUserId(_aspNetUser.GetUserId());
+
+            var result = await _analyzerService.UpdateAsync(analyzerDb);
+
+            return result;
+        }
+
         public async Task<bool> DeleteAnalyzerByIdAsync(Guid analyzerId)
         {
             var result = await _analyzerService.DeleteAsync(analyzerId);
