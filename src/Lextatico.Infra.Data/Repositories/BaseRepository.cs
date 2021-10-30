@@ -10,41 +10,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lextatico.Infra.Data.Repositories
 {
-    public abstract class Repository<T> : IRepository<T> where T : Base
+    public abstract class BaseRepository<T> : IBaseRepository<T> where T : Base
     {
         protected readonly LextaticoContext _lextaticoContext;
         protected DbSet<T> _dataSet;
 
-        public Repository(LextaticoContext lextaticoContext)
+        public BaseRepository(LextaticoContext lextaticoContext)
         {
             _lextaticoContext = lextaticoContext;
             _dataSet = lextaticoContext.Set<T>();
         }
 
-        public async Task<bool> InsertAsync(T item)
+        public virtual async Task<bool> InsertAsync(T item)
         {
-            _dataSet.Add(item);
+            await _dataSet.AddAsync(item);
 
             var result = await _lextaticoContext.SaveChangesAsync();
 
-            return result > 0;
+            return result >= 0;
         }
 
-        public async Task<bool> UpdateAsync(T item)
+        public virtual async Task<bool> UpdateAsync(T item)
         {
             var itemDb = await SelectByIdAsync(item.Id);
 
             if (itemDb == null)
                 return false;
 
+            item.SetCreatedAt(itemDb.CreatedAt);
+
             _lextaticoContext.Entry(itemDb).CurrentValues.SetValues(item);
 
             var result = await _lextaticoContext.SaveChangesAsync();
 
-            return result > 0;
+            return result >= 0;
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public virtual async Task<bool> DeleteAsync(Guid id)
         {
             var itemDb = await SelectByIdAsync(id);
 
@@ -55,29 +57,34 @@ namespace Lextatico.Infra.Data.Repositories
 
             var result = await _lextaticoContext.SaveChangesAsync();
 
-            return result > 0;
+            return result >= 0;
         }
 
-        public async Task<T> SelectByIdAsync(Guid id) =>
+        public virtual async Task<T> SelectByIdAsync(Guid id) =>
             await _dataSet.FindAsync(id);
 
-        public async Task<IEnumerable<T>> SelectAllAsync() =>
+        public virtual async Task<IEnumerable<T>> SelectAllAsync() =>
             await _dataSet.ToListAsync();
 
-        public async Task<IEnumerable<T>> SelectAllOrderedAsync() =>
+        public virtual async Task<IEnumerable<T>> SelectAllOrderedAsync() =>
             await _dataSet.ToListAsync();
 
-        public async Task<IEnumerable<T>> SelectAllOrderByAscendingAsync<TKey>(Expression<Func<T, TKey>> expression) =>
+        public virtual async Task<IEnumerable<T>> SelectAllOrderByAscendingAsync<TKey>(Expression<Func<T, TKey>> expression) =>
             await _dataSet.OrderBy(expression).ToListAsync();
 
-        public async Task<IEnumerable<T>> SelectAllOrderByDescendingAsync<TKey>(Expression<Func<T, TKey>> expression) =>
+        public virtual async Task<IEnumerable<T>> SelectAllOrderByDescendingAsync<TKey>(Expression<Func<T, TKey>> expression) =>
             await _dataSet.OrderByDescending(expression).ToListAsync();
 
-        public async Task<bool> Exists(Guid id)
+        public virtual async Task<bool> ExistsAsync(Guid id)
         {
-            var entity = await SelectByIdAsync(id);
+            return await Exists(id);
+        }
 
-            return entity != null;
+        private async Task<bool> Exists(Guid id)
+        {
+            var exist = await _dataSet.CountAsync(c => c.Id == id);
+
+            return exist > 0;
         }
     }
 }

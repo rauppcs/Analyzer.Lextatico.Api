@@ -27,6 +27,10 @@ namespace Lextatico.Infra.Data.Configurations
                 .HasColumnType("BIT")
                 .HasDefaultValue(false)
                 .IsRequired();
+
+            builder.HasOne(nonTerminalToken => nonTerminalToken.Analyzer)
+                .WithMany(analyzer => analyzer.NonTerminalTokens)
+                .HasForeignKey(nonTerminalToken => nonTerminalToken.AnalyzerId);
         }
     }
 }

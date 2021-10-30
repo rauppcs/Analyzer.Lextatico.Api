@@ -15,6 +15,20 @@ namespace Lextatico.Infra.Data.Context
         {
         }
 
+        public DbSet<Analyzer> Analyzers { get; set; }
+
+        public DbSet<AnalyzerTerminalToken> AnalyzerTerminalTokens { get; set; }
+
+        public DbSet<NonTerminalToken> NonTerminalTokens { get; set; }
+
+        public DbSet<NonTerminalTokenRule> NonTerminalTokenRules { get; set; }
+
+        public DbSet<NonTerminalTokenRuleClause> NonTerminalTokenRuleClauses { get; set; }
+
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+        public DbSet<TerminalToken> TerminalTokens { get; set; }
+
         public bool ActiveTransaction => CurrentTransaction != null;
 
         public IDbContextTransaction CurrentTransaction { get; private set; }

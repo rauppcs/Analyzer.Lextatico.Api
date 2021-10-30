@@ -16,5 +16,7 @@ namespace Lextatico.Domain.Models
         public virtual NonTerminalToken NonTerminalToken { get; private set; }
         public Guid NonTerminalTokenRuleId { get; private set; }
         public virtual NonTerminalTokenRule NonTerminalTokenRule { get; private set; }
+
+        public void SetNonTerminalTokenRuleId(Guid nonTerminalTokenRuleId) => NonTerminalTokenRuleId = nonTerminalTokenRuleId;
     }
 }

@@ -15,31 +15,11 @@ namespace Lextatico.Application.AutoMapper.Profiles
         {
             CreateMap<NonTerminalToken, NonTerminalTokenDto>().ReverseMap();
 
-            CreateMap<NonTerminalToken, NonTerminalTokenDetailDto>().ReverseMap();
+            CreateMap<NonTerminalToken, NonTerminalTokenWithRulesAndClausesDto>().ReverseMap();
 
-            CreateMap<NonTerminalToken, NonTerminalTokenDetailWithRulesAndClausesDto>();
+            CreateMap<NonTerminalTokenDto, NonTerminalToken>().ReverseMap();
 
-            CreateMap<NonTerminalTokenDto, AnalyzerNonTerminalToken>()
-                .ForMember(analyzerNonTerminalToken => analyzerNonTerminalToken.Id,
-                    options => options.Ignore())
-                .ForMember(analyzerNonTerminalToken => analyzerNonTerminalToken.NonTerminalTokenId,
-                    options => options.MapFrom(nonTerminalTokenDto => nonTerminalTokenDto.Id))
-                .ReverseMap()
-                .ForAllMembers(options =>
-                    options.MapFrom(analyzerNonTerminalToken => analyzerNonTerminalToken.NonTerminalToken));
-
-            CreateMap<NonTerminalTokenDetailWithRulesAndClausesDto, AnalyzerNonTerminalToken>()
-                .ForMember(analyzerNonTerminalToken => analyzerNonTerminalToken.Id,
-                    options => options.Ignore())
-                .ForMember(analyzerNonTerminalToken => analyzerNonTerminalToken.NonTerminalTokenId,
-                    options => options.MapFrom(nonTerminalTokenDetailWithRulesAndClausesDto => nonTerminalTokenDetailWithRulesAndClausesDto.Id))
-                .ForMember(analyzerNonTerminalToken => analyzerNonTerminalToken.NonTerminalToken,
-                    options => options.MapFrom(nonTerminalTokenDetailWithRulesAndClausesDto => nonTerminalTokenDetailWithRulesAndClausesDto))
-                .ForPath(analyzerNonTerminalToken => analyzerNonTerminalToken.NonTerminalToken.NonTerminalTokenRules,
-                    options => options.MapFrom(nonTerminalTokenDetailWithRulesAndClausesDto => nonTerminalTokenDetailWithRulesAndClausesDto.NonTerminalTokenRules))
-                .ReverseMap()
-                .ForAllMembers(options =>
-                    options.MapFrom(analyzerNonTerminalToken => analyzerNonTerminalToken.NonTerminalToken));
+            CreateMap<NonTerminalTokenWithRulesAndClausesDto, NonTerminalToken>().ReverseMap();
 
             CreateMap<NonTerminalTokenRuleWithClausesDto, NonTerminalTokenRule>().ReverseMap();
 

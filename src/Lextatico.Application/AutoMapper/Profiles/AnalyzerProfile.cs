@@ -13,12 +13,11 @@ namespace Lextatico.Application.AutoMapper.Profiles
         public AnalyzerProfile()
         {
             CreateMap<Analyzer, AnalyzerDto>().ReverseMap();
-            CreateMap<Analyzer, AnalyzerDetailDto>().ReverseMap();
 
             CreateMap<AnalyzerWithTerminalTokensAndNonTerminalTokens, Analyzer>()
                 .ForMember(analyzer => analyzer.AnalyzerTerminalTokens,
                     options => options.MapFrom(analyzerWithTerminalTokensAndNonTerminalTokens => analyzerWithTerminalTokensAndNonTerminalTokens.TerminalTokens))
-                .ForMember(analyzer => analyzer.AnalyzerNonTerminalTokens,
+                .ForMember(analyzer => analyzer.NonTerminalTokens,
                     options => options.MapFrom(analyzerWithTerminalTokensAndNonTerminalTokens => analyzerWithTerminalTokensAndNonTerminalTokens.NonTerminalTokens));
         }
     }

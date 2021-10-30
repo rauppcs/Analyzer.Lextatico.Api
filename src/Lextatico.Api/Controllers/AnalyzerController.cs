@@ -36,11 +36,21 @@ namespace Lextatico.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAnalyzer(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer)
+        public async Task<IActionResult> PostAnalyzer(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer)
         {
             await _analyzerAppService.CreateAnalyzerAsync(analyzer);
 
             return ReturnCreated();
+        }
+
+        [HttpPut, Route("{analyzerId:guid}")]
+        public async Task<IActionResult> PutAnalyzer([FromRoute] Guid analyzerId, AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer)
+        {
+            analyzer.Id = analyzerId;
+
+            await _analyzerAppService.UpdateAnalyzerAsync(analyzer);
+
+            return ReturnOk();
         }
 
         [HttpDelete, Route("{analyzerId:guid}")]
