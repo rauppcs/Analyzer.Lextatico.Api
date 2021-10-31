@@ -7,6 +7,7 @@ using Lextatico.Domain.Interfaces.Repositories;
 using Lextatico.Domain.Models;
 using Lextatico.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lextatico.Infra.Data.Repositories
 {
@@ -20,6 +21,24 @@ namespace Lextatico.Infra.Data.Repositories
             _lextaticoContext = lextaticoContext;
             _dataSet = lextaticoContext.Set<T>();
         }
+
+        public virtual async Task<T> SelectByIdAsync(Guid id) =>
+            await _dataSet.FindAsync(id);
+
+        public virtual async Task<IEnumerable<T>> SelectByIdAsync(IEnumerable<Guid> ids) =>
+            await _dataSet.Where(x => ids.Contains(x.Id)).ToListAsync();
+
+        public virtual async Task<IEnumerable<T>> SelectAllAsync() =>
+            await _dataSet.ToListAsync();
+
+        public virtual async Task<IEnumerable<T>> SelectAllOrderedAsync() =>
+            await _dataSet.ToListAsync();
+
+        public virtual async Task<IEnumerable<T>> SelectAllOrderByAscendingAsync<TKey>(Expression<Func<T, TKey>> expression) =>
+            await _dataSet.OrderBy(expression).ToListAsync();
+
+        public virtual async Task<IEnumerable<T>> SelectAllOrderByDescendingAsync<TKey>(Expression<Func<T, TKey>> expression) =>
+            await _dataSet.OrderByDescending(expression).ToListAsync();
 
         public virtual async Task<bool> InsertAsync(T item)
         {
@@ -60,20 +79,19 @@ namespace Lextatico.Infra.Data.Repositories
             return result >= 0;
         }
 
-        public virtual async Task<T> SelectByIdAsync(Guid id) =>
-            await _dataSet.FindAsync(id);
+        public virtual async Task<bool> DeleteAsync(IEnumerable<Guid> ids)
+        {
+            var itemsDb = await SelectByIdAsync(ids);
 
-        public virtual async Task<IEnumerable<T>> SelectAllAsync() =>
-            await _dataSet.ToListAsync();
+            if (!itemsDb.Any())
+                return false;
 
-        public virtual async Task<IEnumerable<T>> SelectAllOrderedAsync() =>
-            await _dataSet.ToListAsync();
+            _dataSet.RemoveRange(itemsDb);
 
-        public virtual async Task<IEnumerable<T>> SelectAllOrderByAscendingAsync<TKey>(Expression<Func<T, TKey>> expression) =>
-            await _dataSet.OrderBy(expression).ToListAsync();
+            var result = await _lextaticoContext.SaveChangesAsync();
 
-        public virtual async Task<IEnumerable<T>> SelectAllOrderByDescendingAsync<TKey>(Expression<Func<T, TKey>> expression) =>
-            await _dataSet.OrderByDescending(expression).ToListAsync();
+            return result > 0;
+        }
 
         public virtual async Task<bool> ExistsAsync(Guid id)
         {

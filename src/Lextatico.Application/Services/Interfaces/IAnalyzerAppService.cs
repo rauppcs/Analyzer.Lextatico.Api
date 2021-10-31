@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,5 +15,6 @@ namespace Lextatico.Application.Services.Interfaces
         Task<bool> CreateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer);
         Task<bool> UpdateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer);
         Task<bool> DeleteAnalyzerByIdAsync(Guid analyzerId);
+        Task<bool> DeleteAnalyzersByIdAsync(IEnumerable<Guid> analyzerIds);
     }
 }

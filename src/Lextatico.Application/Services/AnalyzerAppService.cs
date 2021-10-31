@@ -83,5 +83,12 @@ namespace Lextatico.Application.Services
 
             return result;
         }
+
+        public async Task<bool> DeleteAnalyzersByIdAsync(IEnumerable<Guid> analyzersIds)
+        {
+            var result = await _analyzerService.DeleteAsync(analyzersIds);
+
+            return result;
+        }
     }
 }

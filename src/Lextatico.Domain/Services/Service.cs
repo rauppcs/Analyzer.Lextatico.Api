@@ -53,5 +53,10 @@ namespace Lextatico.Domain.Services
 
             return await _repository.DeleteAsync(id);
         }
+
+        public virtual async Task<bool> DeleteAsync(IEnumerable<Guid> ids)
+        {
+            return await _repository.DeleteAsync(ids);
+        }
     }
 }
