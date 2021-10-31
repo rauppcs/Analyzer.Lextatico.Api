@@ -13,5 +13,6 @@ namespace Lextatico.Domain.Interfaces.Services
         Task<bool> CreateAsync(T item);
         Task<bool> UpdateAsync(T item);
         Task<bool> DeleteAsync(Guid id);
+        Task<bool> DeleteAsync(IEnumerable<Guid> ids);
     }
 }

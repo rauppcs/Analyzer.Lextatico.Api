@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lextatico.Api.Controllers.Base;
 using Lextatico.Application.Dtos.Analyzer;
@@ -57,6 +59,14 @@ namespace Lextatico.Api.Controllers
         public async Task<IActionResult> DeleteAnalyzer(Guid analyzerId)
         {
             await _analyzerAppService.DeleteAnalyzerByIdAsync(analyzerId);
+
+            return ReturnOk();
+        }
+
+        [HttpPost, Route("deleteBulk")]
+        public async Task<IActionResult> DeleteAnalyzers([FromBody] IEnumerable<Guid> analyzerIds)
+        {
+            await _analyzerAppService.DeleteAnalyzersByIdAsync(analyzerIds);
 
             return ReturnOk();
         }
