@@ -18,7 +18,8 @@ namespace Lextatico.Application.AutoMapper.Profiles
                 .ForMember(analyzer => analyzer.AnalyzerTerminalTokens,
                     options => options.MapFrom(analyzerWithTerminalTokensAndNonTerminalTokens => analyzerWithTerminalTokensAndNonTerminalTokens.TerminalTokens))
                 .ForMember(analyzer => analyzer.NonTerminalTokens,
-                    options => options.MapFrom(analyzerWithTerminalTokensAndNonTerminalTokens => analyzerWithTerminalTokensAndNonTerminalTokens.NonTerminalTokens));
+                    options => options.MapFrom(analyzerWithTerminalTokensAndNonTerminalTokens => analyzerWithTerminalTokensAndNonTerminalTokens.NonTerminalTokens))
+                .ReverseMap();
         }
     }
 }

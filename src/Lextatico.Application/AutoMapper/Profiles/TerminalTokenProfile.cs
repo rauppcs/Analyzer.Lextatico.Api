@@ -20,8 +20,18 @@ namespace Lextatico.Application.AutoMapper.Profiles
                 .ForMember(analyzerTerminalToken => analyzerTerminalToken.TerminalTokenId,
                     options => options.MapFrom(terminalTokenDto => terminalTokenDto.Id))
                 .ReverseMap()
-                .ForAllMembers(options =>
-                    options.MapFrom(analyzerTerminalToken => analyzerTerminalToken.TerminalToken));
+                .ForMember(terminalTokenDto => terminalTokenDto.Id,
+                    options => options.MapFrom(analyzerTerminalToken => analyzerTerminalToken.TerminalToken.Id))
+                .ForMember(terminalTokenDto => terminalTokenDto.Name,
+                    options => options.MapFrom(analyzerTerminalToken => analyzerTerminalToken.TerminalToken.Name))
+                .ForMember(terminalTokenDto => terminalTokenDto.ViewName,
+                    options => options.MapFrom(analyzerTerminalToken => analyzerTerminalToken.TerminalToken.ViewName))
+                .ForMember(terminalTokenDto => terminalTokenDto.Resume,
+                    options => options.MapFrom(analyzerTerminalToken => analyzerTerminalToken.TerminalToken.Resume))
+                .ForMember(terminalTokenDto => terminalTokenDto.TokenType,
+                    options => options.MapFrom(analyzerTerminalToken => analyzerTerminalToken.TerminalToken.TokenType))
+                .ForMember(terminalTokenDto => terminalTokenDto.IdentifierType,
+                    options => options.MapFrom(analyzerTerminalToken => analyzerTerminalToken.TerminalToken.IdentifierType));
         }
     }
 }

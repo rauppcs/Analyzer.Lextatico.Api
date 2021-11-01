@@ -30,9 +30,9 @@ namespace Lextatico.Application.Services
 
         }
 
-        public async Task<AnalyzerDto> GetAnalyzerByIdAsync(Guid analyzerId)
+        public async Task<AnalyzerWithTerminalTokensAndNonTerminalTokens> GetAnalyzerByIdAsync(Guid analyzerId)
         {
-            var analyzer = _mapper.Map<AnalyzerDto>(await _analyzerService.GetByIdAsync(analyzerId));
+            var analyzer = _mapper.Map<AnalyzerWithTerminalTokensAndNonTerminalTokens>(await _analyzerService.GetByIdAsync(analyzerId));
 
             return analyzer;
         }

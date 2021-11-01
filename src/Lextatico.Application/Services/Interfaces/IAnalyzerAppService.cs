@@ -9,7 +9,7 @@ namespace Lextatico.Application.Services.Interfaces
 {
     public interface IAnalyzerAppService : IAppService
     {
-        Task<AnalyzerDto> GetAnalyzerByIdAsync(Guid analyzerId);
+        Task<AnalyzerWithTerminalTokensAndNonTerminalTokens> GetAnalyzerByIdAsync(Guid analyzerId);
         Task<IEnumerable<AnalyzerDto>> GetAnalyzersByLoggedUserAsync();
         Task<(IEnumerable<AnalyzerDto>, int)> GetAnalyzersPaggedByLoggedUserAsync(int page, int size);
         Task<bool> CreateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer);
