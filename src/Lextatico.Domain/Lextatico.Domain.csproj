@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Lextatico.Infra.Identity\Lextatico.Infra.Identity.csproj" />
     <ProjectReference Include="..\Lextatico.Infra.Services\Lextatico.Infra.Services.csproj" />
+    <ProjectReference Include="..\Lextatico.Sly\Lextatico.Sly.csproj" />
   </ItemGroup>
 
   <ItemGroup>

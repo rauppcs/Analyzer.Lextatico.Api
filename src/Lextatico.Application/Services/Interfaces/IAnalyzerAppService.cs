@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Lextatico.Application.Dtos.Analyzer;
+using Lextatico.Sly.Lexer;
+using Lextatico.Sly.Parser;
 
 namespace Lextatico.Application.Services.Interfaces
 {
@@ -16,5 +18,6 @@ namespace Lextatico.Application.Services.Interfaces
         Task<bool> UpdateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer);
         Task<bool> DeleteAnalyzerByIdAsync(Guid analyzerId);
         Task<bool> DeleteAnalyzersByIdAsync(IEnumerable<Guid> analyzerIds);
+        Task<ParseResult<Token>> TestAnalyzerByIdAsync(Guid analyzerId, TesteAnalyzerDto testeAnalyzer);
     }
 }

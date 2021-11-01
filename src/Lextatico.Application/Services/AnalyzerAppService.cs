@@ -10,6 +10,8 @@ using Lextatico.Domain.Dtos.Message;
 using Lextatico.Domain.Interfaces.Services;
 using Lextatico.Domain.Models;
 using Lextatico.Infra.Identity.User;
+using Lextatico.Sly.Lexer;
+using Lextatico.Sly.Parser;
 
 namespace Lextatico.Application.Services
 {
@@ -87,6 +89,13 @@ namespace Lextatico.Application.Services
         public async Task<bool> DeleteAnalyzersByIdAsync(IEnumerable<Guid> analyzersIds)
         {
             var result = await _analyzerService.DeleteAsync(analyzersIds);
+
+            return result;
+        }
+
+        public async Task<ParseResult<Token>> TestAnalyzerByIdAsync(Guid analyzerId, TesteAnalyzerDto testeAnalyzer)
+        {
+            var result = await _analyzerService.TestAnalyzer(analyzerId, testeAnalyzer.Content);
 
             return result;
         }
