@@ -175,7 +175,7 @@ namespace Lextatico.Sly.Lexer
                     if (eol != EolType.No)
                     {
                         position.Index += eol == EolType.Windows ? 2 : 1;
-                        position.Column = 0;
+                        position.Column = 1;
                         position.Line++;
                         continue;
                     }

@@ -91,13 +91,15 @@ namespace Lextatico.Sly.Lexer
 
             if (prev == null)
             {
-                eos.Position = new LexerPosition(1, 0, 0);
+                eos.Position = new LexerPosition(1, 1, 1);
             }
             else
             {
                 eos.Position = new LexerPosition(prev.Position.Index + 1, prev.Position.Line,
                     prev.Position.Column + prev.Value.Length);
             }
+
+            eos.Result = new Token("Fim do arquivo", "EOS", "Representa o fim do arquivo", "<<EOS>>", TokenType.Default, null) as T;
 
             tokens.Add(eos);
 

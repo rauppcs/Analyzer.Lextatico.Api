@@ -14,7 +14,7 @@ namespace Lextatico.Sly.Lexer
 
         public string UnexpectedSymbol { get; set; }
 
-        public override string ErrorMessage => string.Format("Lexical Error, line {1}, column {2} : Unrecognized symbol '{0}'", UnexpectedSymbol, Line, Column);
+        public override string ErrorMessage => string.Format("Erro lexico, linha {1}, coluna {2} : Simbolo não reconhecido '{0}'", UnexpectedSymbol, Line, Column);
 
 
         public override string ToString()

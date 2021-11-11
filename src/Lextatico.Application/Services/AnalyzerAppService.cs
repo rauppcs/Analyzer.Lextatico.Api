@@ -36,6 +36,14 @@ namespace Lextatico.Application.Services
         {
             var analyzer = _mapper.Map<AnalyzerWithTerminalTokensAndNonTerminalTokens>(await _analyzerService.GetByIdAsync(analyzerId));
 
+            analyzer.NonTerminalTokens = analyzer.NonTerminalTokens.OrderBy(order => order.Sequence);
+
+            foreach (var nonTerminalToken in analyzer.NonTerminalTokens)
+            {
+                nonTerminalToken.NonTerminalTokenRules = nonTerminalToken
+                    .NonTerminalTokenRules.OrderBy(order => order.Sequence);
+            }
+
             return analyzer;
         }
 

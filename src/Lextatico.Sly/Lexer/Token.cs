@@ -34,7 +34,7 @@ namespace Lextatico.Sly.Lexer
 
         public override string ToString()
         {
-            return $"({TokenType.ToString()} - '{ViewName}')";
+            return $"({Name} - '{ViewName}')";
         }
     }
 

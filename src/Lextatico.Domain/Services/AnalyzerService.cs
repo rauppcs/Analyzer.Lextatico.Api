@@ -51,6 +51,13 @@ namespace Lextatico.Domain.Services
 
             var startingNonTerminalToken = analyzerDb.NonTerminalTokens.FirstOrDefault(f => f.IsStart);
 
+            if (startingNonTerminalToken == null)
+            {
+                _message.AddError("Analisador não possui regra inicial.");
+
+                return null;
+            }
+
             var tokens = analyzerDb.AnalyzerTerminalTokens
                 .Select(s => s.TerminalToken)
                 .Select(s =>
@@ -64,8 +71,15 @@ namespace Lextatico.Domain.Services
                         .ToList();
 
             var productionRules = analyzerDb.NonTerminalTokens
-                .SelectMany(s => s.NonTerminalTokenRules)
-                .Select(s => $"{s.NonTerminalToken.Name}: { string.Join(" ", s.NonTerminalTokenRuleClauses.Select(ss => ss.IsTerminalToken ? ss.TerminalToken.ViewName : ss.NonTerminalToken.Name))}");
+                .SelectMany(s => s.NonTerminalTokenRules).OrderBy(order => order.Sequence)
+                .Select(s => $"{s.NonTerminalToken.Name}: { string.Join(" ", s.NonTerminalTokenRuleClauses.OrderBy(order => order.Sequence).Select(ss => ss.IsTerminalToken ? ss.TerminalToken.ViewName : ss.NonTerminalToken.Name))}");
+
+            if (!productionRules.Any())
+            {
+                _message.AddError("Analisador não possui regras de produção.");
+
+                return null;
+            }
 
             var lextaticoParserBuilder = new LextaticoParserBuilder<Token>(tokens);
 

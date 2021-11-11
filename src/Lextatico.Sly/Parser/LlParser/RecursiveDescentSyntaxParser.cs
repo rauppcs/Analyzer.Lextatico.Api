@@ -74,7 +74,7 @@ namespace Lextatico.Sly.Parser.LlParser
 
                     if (!errors.Any())
                     {
-                        errors.Add(new UnexpectedTokenSyntaxError<T>(tokens[lastposition], null));
+                        errors.Add(new UnexpectedTokenSyntaxError<T>(tokens[lastposition], tokens.LastOrDefault().Result));
                     }
                 }
             }
@@ -82,7 +82,7 @@ namespace Lextatico.Sly.Parser.LlParser
             if (result == null)
             {
                 result = new SyntaxParseResult<T>();
-                errors.Sort();
+                // errors.Sort();
 
                 if (errors.Count > 0)
                 {
@@ -160,7 +160,7 @@ namespace Lextatico.Sly.Parser.LlParser
             {
                 // TODO: REVER ESSA REGRA, NÃO PARECE ESTAR CERTA
                 result.IsEnded = result.EndingPosition >= tokens.Count - 1
-                    || result.EndingPosition == tokens.Count - 2 &&
+                    || result.EndingPosition == tokens.Count - 1 &&
                     tokens[tokens.Count - 1].IsEOS;
             }
 

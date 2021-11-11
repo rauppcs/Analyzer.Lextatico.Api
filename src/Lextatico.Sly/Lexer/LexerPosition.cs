@@ -8,7 +8,7 @@ namespace Lextatico.Sly.Lexer
 {
     public class LexerPosition : IComparable
     {
-        public LexerPosition() : this(0, 0, 0)
+        public LexerPosition() : this(0, 1, 1)
         {
         }
 
@@ -49,7 +49,7 @@ namespace Lextatico.Sly.Lexer
 
         public override string ToString()
         {
-            return $"line {Line}, column {Column}";
+            return $"linha {Line}, coluna {Column}";
         }
 
         public int CompareTo(object obj)
