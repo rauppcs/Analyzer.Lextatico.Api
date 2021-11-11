@@ -17,8 +17,6 @@ namespace Lextatico.Application.AutoMapper.Profiles
 
             CreateMap<NonTerminalToken, NonTerminalTokenWithRulesAndClausesDto>().ReverseMap();
 
-            CreateMap<NonTerminalTokenDto, NonTerminalToken>().ReverseMap();
-
             CreateMap<NonTerminalTokenWithRulesAndClausesDto, NonTerminalToken>().ReverseMap();
 
             CreateMap<NonTerminalTokenRuleWithClausesDto, NonTerminalTokenRule>().ReverseMap();

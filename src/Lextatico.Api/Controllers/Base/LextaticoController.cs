@@ -34,7 +34,7 @@ namespace Lextatico.Api.Controllers.Base
             return true;
         }
 
-        private Response MountResponse<T>(T data, PaginationFilter pagination, int total)
+        private Response MountResponse<T>(T data, PaginationFilterDto pagination, int total)
         {
             var isPagination = pagination != null;
 
@@ -66,7 +66,7 @@ namespace Lextatico.Api.Controllers.Base
             return ReturnOk(data, null, 0);
         }
 
-        protected virtual IActionResult ReturnOk<T>(T data, PaginationFilter pagination, int total)
+        protected virtual IActionResult ReturnOk<T>(T data, PaginationFilterDto pagination, int total)
         {
             var response = MountResponse(data, pagination, total);
 
@@ -76,7 +76,7 @@ namespace Lextatico.Api.Controllers.Base
             return Ok(response);
         }
 
-        protected virtual IActionResult ReturnCreated<T>(T data, PaginationFilter pagination = null, int total = 0)
+        protected virtual IActionResult ReturnCreated<T>(T data, PaginationFilterDto pagination = null, int total = 0)
         {
             var response = MountResponse(data, pagination, total);
 
@@ -94,7 +94,7 @@ namespace Lextatico.Api.Controllers.Base
             return Created(_message.GetLocation());
         }
 
-        protected virtual IActionResult ReturnAccepted<T>(T data, PaginationFilter pagination = null, int total = 0)
+        protected virtual IActionResult ReturnAccepted<T>(T data, PaginationFilterDto pagination = null, int total = 0)
         {
             var response = MountResponse(data, pagination, total);
 

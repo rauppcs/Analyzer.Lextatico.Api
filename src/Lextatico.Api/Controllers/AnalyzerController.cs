@@ -21,7 +21,7 @@ namespace Lextatico.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAnalyzers([FromQuery] PaginationFilter pagination)
+        public async Task<IActionResult> GetAnalyzers([FromQuery] PaginationFilterDto pagination)
         {
             var (analyzers, total) = await _analyzerAppService
                 .GetAnalyzersPaggedByLoggedUserAsync(pagination.Page, pagination.Size);
@@ -69,6 +69,14 @@ namespace Lextatico.Api.Controllers
             await _analyzerAppService.DeleteAnalyzersByIdAsync(analyzerIds);
 
             return ReturnOk();
+        }
+
+        [HttpPost, Route("{analyzerId:guid}/test")]
+        public async Task<IActionResult> TestAnalyzer([FromRoute] Guid analyzerId, TesteAnalyzerDto testeAnalyzer)
+        {
+            var result = await _analyzerAppService.TestAnalyzerByIdAsync(analyzerId, testeAnalyzer);
+
+            return ReturnOk(result);
         }
     }
 }

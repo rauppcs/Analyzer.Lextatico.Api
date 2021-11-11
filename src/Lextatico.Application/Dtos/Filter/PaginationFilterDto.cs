@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Lextatico.Application.Dtos.Filter
 {
-    public class PaginationFilter
+    public class PaginationFilterDto
     {
         private int _page;
         private int _size;
@@ -22,12 +22,12 @@ namespace Lextatico.Application.Dtos.Filter
             set => _size = value < 1 ? 1 : value;
         }
 
-        public PaginationFilter()
+        public PaginationFilterDto()
         {
             Page = 1;
             Size = 10;
         }
-        public PaginationFilter(int page, int size)
+        public PaginationFilterDto(int page, int size)
         {
             Page = page;
             Size = size;

@@ -100,6 +100,8 @@ namespace Lextatico.Infra.Data.Repositories
 
             _lextaticoContext.AddRange(nonTerminalTokensNotInDb);
 
+            _lextaticoContext.RemoveRange(nonTerminalTokensNotInDto.SelectMany(s => s.NonTerminalTokenRuleClauses));
+
             _lextaticoContext.RemoveRange(nonTerminalTokensNotInDto);
         }
 

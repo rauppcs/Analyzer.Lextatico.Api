@@ -10,6 +10,8 @@ using Lextatico.Domain.Dtos.Message;
 using Lextatico.Domain.Interfaces.Services;
 using Lextatico.Domain.Models;
 using Lextatico.Infra.Identity.User;
+using Lextatico.Sly.Lexer;
+using Lextatico.Sly.Parser;
 
 namespace Lextatico.Application.Services
 {
@@ -30,9 +32,17 @@ namespace Lextatico.Application.Services
 
         }
 
-        public async Task<AnalyzerDto> GetAnalyzerByIdAsync(Guid analyzerId)
+        public async Task<AnalyzerWithTerminalTokensAndNonTerminalTokens> GetAnalyzerByIdAsync(Guid analyzerId)
         {
-            var analyzer = _mapper.Map<AnalyzerDto>(await _analyzerService.GetByIdAsync(analyzerId));
+            var analyzer = _mapper.Map<AnalyzerWithTerminalTokensAndNonTerminalTokens>(await _analyzerService.GetByIdAsync(analyzerId));
+
+            analyzer.NonTerminalTokens = analyzer.NonTerminalTokens.OrderBy(order => order.Sequence);
+
+            foreach (var nonTerminalToken in analyzer.NonTerminalTokens)
+            {
+                nonTerminalToken.NonTerminalTokenRules = nonTerminalToken
+                    .NonTerminalTokenRules.OrderBy(order => order.Sequence);
+            }
 
             return analyzer;
         }
@@ -87,6 +97,13 @@ namespace Lextatico.Application.Services
         public async Task<bool> DeleteAnalyzersByIdAsync(IEnumerable<Guid> analyzersIds)
         {
             var result = await _analyzerService.DeleteAsync(analyzersIds);
+
+            return result;
+        }
+
+        public async Task<ParseResult<Token>> TestAnalyzerByIdAsync(Guid analyzerId, TesteAnalyzerDto testeAnalyzer)
+        {
+            var result = await _analyzerService.TestAnalyzer(analyzerId, testeAnalyzer.Content);
 
             return result;
         }

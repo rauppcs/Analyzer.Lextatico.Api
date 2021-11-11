@@ -72,23 +72,23 @@ namespace Lextatico.Sly.Parser
 
                 if (UnexpectedToken.IsEOS)
                 {
-                    message = "unexpected end of stream";
+                    message = "Fim inesperado do conteúdo \"{0}\"";
                     if (ExpectedTokens != null && ExpectedTokens.Any())
                     {
-                        message = "unexpected end of stream. Expecting: {0}";
+                        message = "Fim inesperado do conteúdo {0}. Esperando: {1}";
                     }
 
-                    return string.Format(message, expecting.ToString());
+                    return string.Format(message, UnexpectedToken.Result, expecting.ToString());
                 }
                 else
                 {
                     string value = UnexpectedToken.ToString();
 
-                    message = "unexpected \"{0}\" ({1})";
+                    message = "Inesperado {0}";
 
                     if (ExpectedTokens != null && ExpectedTokens.Any())
                     {
-                        message = "unexpected '{0}'. Expecting {1}";
+                        message = "Inesperado {0}. Esperando {1}";
 
                         return string.Format(message, value, expecting.ToString());
                     }

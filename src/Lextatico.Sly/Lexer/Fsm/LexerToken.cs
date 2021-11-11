@@ -98,7 +98,7 @@ namespace Lextatico.Sly.Lexer.Fsm
                 return "<<EOS>>";    
             }
 
-            return $"{Result} [{Value}] @{Position}";
+            return $"{Result} (\"{Value}\") na {Position}";
         }
     }
 }

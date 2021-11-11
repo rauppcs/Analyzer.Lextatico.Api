@@ -9,7 +9,7 @@ namespace Lextatico.Application.Helpers
 {
     public class Pagination
     {
-        public static PagedResponse CreatePagedReponse(object resultado, PaginationFilter pagination, int total)
+        public static PagedResponse CreatePagedReponse(object resultado, PaginationFilterDto pagination, int total)
         {
             var pagedResponse =
                 new PagedResponse(resultado, pagination.Page);
