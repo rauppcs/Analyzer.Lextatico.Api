@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/Lextatico.Api/bin/Debug/net5.0/Lextatico.Api.dll",
+            "program": "${workspaceFolder}/src/Lextatico.Api/bin/Debug/net6.0/Lextatico.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Lextatico.Api",
             "stopAtEntry": false,
