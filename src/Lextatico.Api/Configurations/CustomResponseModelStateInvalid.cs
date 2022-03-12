@@ -1,5 +1,4 @@
 using Lextatico.Application.Dtos.Response;
-using Lextatico.Domain.Dtos.Message;
 using Lextatico.Infra.CrossCutting.Extensions;
 using Microsoft.AspNetCore.Mvc;
 

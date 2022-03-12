@@ -5,34 +5,26 @@ version: '3.4'
 services:
   lextaticoapi:
     image: ${DOCKER_REGISTRY-}lextaticoapi
+    container_name: lextatico_api_prd
     build:
       context: .
       dockerfile: src/Lextatico.Api/Dockerfile
-    depends_on: 
-     - sqlserver
+    depends_on:
+      - sqlserver
     networks:
-     - Lextatico
+      - Lextatico
     ports:
       - 5000:5000
       - 5001:5001
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver
-    environment: 
+    environment:
       - SA_PASSWORD=L&xt@t1c02021
       - ACCEPT_EULA=Y
-    volumes: 
+    volumes:
       - sqlserverdata:/var/opt/mssql
-    ports: 
+    ports:
       - 1433:1433
-    networks: 
+    networks:
       - Lextatico
-  
-volumes: 
-  sqlserverdata:
-    external: false
-
-networks: 
-  Lextatico:
-    external: true
-    driver: bridge

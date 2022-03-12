@@ -14,16 +14,17 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "LocalDevelopment"
       }
     },
-    "Lextatico.Api": {
+    "Lextatico.Api - LocalDevelopment": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
-      "applicationUrl": "https://*:5001;http://*:5000",
+      "launchUrl": "swagger",
+      "applicationUrl": "http://*:9002;https://*:9003",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "LocalDevelopment"
       }
     }
   }

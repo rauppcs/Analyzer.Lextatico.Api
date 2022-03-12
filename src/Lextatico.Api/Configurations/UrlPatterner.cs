@@ -6,7 +6,7 @@ namespace Lextatico.Api.Configurations
 {
     public class UrlPatterner : IOutboundParameterTransformer
     {
-        public string TransformOutbound(object value)
+        public string? TransformOutbound(object? value)
         {
             if (value is null) return null;
 
