@@ -9,12 +9,12 @@ namespace Lextatico.Application.Helpers
 {
     public class Pagination
     {
-        public static PagedResponse CreatePagedReponse(object resultado, PaginationFilterDto pagination, int total)
+        public static PagedResponse CreatePagedReponse(object? resultado, PaginationFilterDto? pagination, int total)
         {
             var pagedResponse =
-                new PagedResponse(resultado, pagination.Page);
+                new PagedResponse(resultado, pagination?.Page ?? 1);
 
-            var totalPages = (int)Math.Ceiling((double)total / pagination.Size);
+            var totalPages = (int)Math.Ceiling((double)total / pagination?.Size ?? 10);
 
             pagedResponse.TotalPages = totalPages;
 

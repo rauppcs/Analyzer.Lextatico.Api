@@ -46,60 +46,6 @@ namespace Lextatico.Application.Services
             return result;
         }
 
-        public async Task<AuthenticatedUserDto> LogInAsync(UserLogInDto userLogIn)
-        {
-            var result = await _userService.SignInAsync(userLogIn.Email, userLogIn.Password);
-
-            if (result)
-            {
-                var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserByEmailAsync(userLogIn.Email));
-
-                var (token, refreshToken) = _userService.GenerateFullJwt(userLogIn.Email);
-
-                var authenticatedUser = new AuthenticatedUserDto(
-                    userDto,
-                    true,
-                    DateTime.UtcNow,
-                    DateTime.UtcNow.AddSeconds(_tokenConfiguration.Seconds),
-                    token,
-                    refreshToken,
-                    DateTime.UtcNow.AddSeconds(_tokenConfiguration.SecondsRefresh));
-
-                await _userService.UpdateRefreshTokenAsync(userLogIn.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
-
-                return authenticatedUser;
-            }
-
-            return null;
-        }
-
-        public async Task<AuthenticatedUserDto> RefreshTokenAsync(UserRefreshDto userRefresh)
-        {
-            var applicationUser = _userService.GetUserByRefreshToken(userRefresh.RefreshToken);
-
-            if (applicationUser == null)
-            {
-                return null;
-            }
-
-            var userDto = _mapper.Map<UserDetailDto>(await _userService.GetUserByEmailAsync(applicationUser.Email));
-
-            var (token, refreshToken) = _userService.GenerateFullJwt(applicationUser.Email);
-
-            var authenticatedUser = new AuthenticatedUserDto(
-                userDto,
-                true,
-                DateTime.UtcNow,
-                DateTime.UtcNow.AddSeconds(_tokenConfiguration.Seconds),
-                token,
-                refreshToken,
-                DateTime.UtcNow.AddSeconds(_tokenConfiguration.SecondsRefresh));
-
-            await _userService.UpdateRefreshTokenAsync(applicationUser.Email, authenticatedUser.RefreshToken, authenticatedUser.RefreshTokenExpiration);
-
-            return authenticatedUser;
-        }
-
         public async Task<bool> ForgotPasswordAsync(UserForgotPasswordDto userForgotPassword)
         {
             var applicationUser = await _userService.GetUserByEmailAsync(userForgotPassword.Email);

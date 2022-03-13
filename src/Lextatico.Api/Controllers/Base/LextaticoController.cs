@@ -1,12 +1,8 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Lextatico.Application.Dtos.Filter;
 using Lextatico.Application.Dtos.Response;
 using Lextatico.Application.Helpers;
 using Lextatico.Domain.Dtos.Message;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lextatico.Api.Controllers.Base
@@ -34,7 +30,7 @@ namespace Lextatico.Api.Controllers.Base
             return true;
         }
 
-        private Response MountResponse<T>(T data, PaginationFilterDto pagination, int total)
+        private Response MountResponse<T>(T? data, PaginationFilterDto? pagination, int total)
         {
             var isPagination = pagination != null;
 
@@ -66,7 +62,7 @@ namespace Lextatico.Api.Controllers.Base
             return ReturnOk(data, null, 0);
         }
 
-        protected virtual IActionResult ReturnOk<T>(T data, PaginationFilterDto pagination, int total)
+        protected virtual IActionResult ReturnOk<T>(T? data, PaginationFilterDto? pagination, int total)
         {
             var response = MountResponse(data, pagination, total);
 
@@ -76,7 +72,7 @@ namespace Lextatico.Api.Controllers.Base
             return Ok(response);
         }
 
-        protected virtual IActionResult ReturnCreated<T>(T data, PaginationFilterDto pagination = null, int total = 0)
+        protected virtual IActionResult ReturnCreated<T>(T data, PaginationFilterDto? pagination = null, int total = 0)
         {
             var response = MountResponse(data, pagination, total);
 

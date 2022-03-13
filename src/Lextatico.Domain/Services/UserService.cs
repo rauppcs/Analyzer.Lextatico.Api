@@ -35,17 +35,6 @@ namespace Lextatico.Domain.Services
             _emailService = emailService;
         }
 
-        public (string token, string refreshToken) GenerateFullJwt(string email)
-        {
-            return _tokenService
-                    .WithUserManager(_userManager)
-                    .WithEmail(email)
-                    .WithJwtClaims()
-                    .WithUserClaims()
-                    .WithUserRoles()
-                    .BuildToken();
-        }
-
         public async Task<ApplicationUser> GetUserLoggedAsync()
         {
             var email = _aspNetUser.GetUserEmail();
@@ -93,32 +82,6 @@ namespace Lextatico.Domain.Services
             }
 
             return result.Succeeded;
-        }
-
-        public async Task<bool> SignInAsync(string email, string password)
-        {
-            var result = await _signInManager.PasswordSignInAsync(email, password, false, true);
-
-            if (!result.Succeeded)
-            {
-                if (result.IsLockedOut)
-                    _message.AddError(string.Empty, "Usuário bloqueado. Aguarde 5 minutos e tente novamente.");
-                else if (result.IsNotAllowed)
-                    _message.AddError(string.Empty, "Usuário não está liberado para fazer login.");
-                else
-                    _message.AddError(string.Empty, "Usuário ou senha incorreto.");
-            }
-
-            return result.Succeeded;
-        }
-
-        public async Task UpdateRefreshTokenAsync(string email, string refreshToken, DateTime refreshTokenExpiration)
-        {
-            var applicationUser = await _userManager.FindByEmailAsync(email);
-
-            var refreshTokenModel = new RefreshToken(refreshToken, refreshTokenExpiration, applicationUser.Id, applicationUser);
-
-            applicationUser.RefreshTokens.Add(refreshTokenModel);
         }
 
         public async Task<bool> ForgotPasswordAsync(string email)

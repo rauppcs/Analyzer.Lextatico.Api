@@ -1,8 +1,4 @@
-using System;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using Lextatico.Domain.Exceptions;
 using Lextatico.Infra.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -52,7 +48,7 @@ namespace Lextatico.Infra.CrossCutting.Extensions
 
                         var pathSplit = httpContext.Request.Path.Value.Split("/");
 
-                        if (httpStatusCode.IsSuccess() || pathSplit.Contains("login"))
+                        if (httpStatusCode.IsSuccess())
                             await lextaticoContext.SubmitTransactionAsync(transaction);
                         else
                         {

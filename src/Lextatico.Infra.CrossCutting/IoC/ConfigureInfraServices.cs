@@ -1,7 +1,6 @@
 using Lextatico.Infra.Services.Implementations;
 using Lextatico.Infra.Services.Interfaces;
 using Lextatico.Infra.Services.Models.EmailService;
-using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

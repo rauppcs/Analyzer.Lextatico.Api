@@ -31,35 +31,11 @@ namespace Lextatico.Api.Controllers
 
         [HttpPost, Route("[action]")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] UserLogInDto userLogin)
-        {
-            var result = await _userAppService.LogInAsync(userLogin);
-
-            return ReturnOk(result);
-        }
-
-        [HttpPost, Route("[action]")]
-        [AllowAnonymous]
         public async Task<IActionResult> Signin([FromBody] UserSignInDto userSignIn)
         {
             await _userAppService.CreateAsync(userSignIn);
 
             return ReturnCreated();
-        }
-
-        [HttpPost, Route("[action]")]
-        [AllowAnonymous]
-        public async Task<IActionResult> RefreshToken([FromBody] UserRefreshDto userRefresh)
-        {
-            var result = await _userAppService.RefreshTokenAsync(userRefresh);
-
-            return ReturnOk(result);
-        }
-
-        [HttpGet, Route("[action]")]
-        public IActionResult ValidateToken()
-        {
-            return ReturnOk();
         }
 
         [HttpPost, Route("[action]")]

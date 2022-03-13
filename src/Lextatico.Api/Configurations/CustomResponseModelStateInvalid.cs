@@ -15,10 +15,12 @@ namespace Lextatico.Api.Configurations
                 foreach (var key in context.ModelState.Keys)
                 {
                     var value = context.ModelState[key];
-                    foreach (var error in value.Errors)
-                    {
-                        response.AddError(key.ToCamelCase(), error.ErrorMessage);
-                    }
+
+                    if (value != null)
+                        foreach (var error in value.Errors)
+                        {
+                            response.AddError(key.ToCamelCase(), error.ErrorMessage);
+                        }
                 }
 
                 return new BadRequestObjectResult(response);

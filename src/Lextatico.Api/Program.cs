@@ -1,44 +1,106 @@
-using System;
-using System.Collections.Immutable;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Net.Mime;
+using HealthChecks.UI.Client;
+using Lextatico.Api.Configurations;
 using Lextatico.Api.Extensions;
 using Lextatico.Infra.CrossCutting.Extensions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Lextatico.Infra.CrossCutting.IoC;
+using Lextatico.Infra.Identity.User;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Newtonsoft.Json;
 using HostEnvironmentEnvExtensions = Lextatico.Api.Extensions.HostEnvironmentEnvExtensions;
 
-namespace Lextatico.Api
+if (HostEnvironmentEnvExtensions.IsDocker())
+    Thread.Sleep(30000);
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureAppConfiguration((hostContext, builder) =>
 {
-    public class Program
-    {
-        public static async Task Main(string[] args)
-        {
-            // TODO: ESSA REGRA AQUI É PARA DAR TEMPO DE DAR ATTACH NA API
-            if (HostEnvironmentEnvExtensions.IsDocker())
-                Thread.Sleep(30000);
+    if (hostContext.HostingEnvironment.IsLocalDevelopment())
+        builder.AddUserSecrets<Program>();
+});
 
-            var host = CreateHostBuilder(args).ConfigureAppConfiguration((hostContext, builder) =>
-            {
-                if (hostContext.HostingEnvironment.IsLocalDevelopment())
-                    builder.AddUserSecrets<Program>();
-            }).Build();
+builder.Services
+    .AddHttpContextAccessor()
+    .AddMessage()
+    .AddAspNetUserConfiguration()
+    .AddEmailSettings(builder.Configuration)
+    .AddUrlsConfiguration(builder.Configuration)
+    .AddRepositories()
+    .AddInfraServices()
+    .AddDomainServices()
+    .AddLextaticoAutoMapper()
+    .AddApplicationServices()
+    .AddLextaticoHealthChecks(builder.Configuration)
+    .AddContext(builder.Configuration)
+    .AddLextaticoIdentity()
+    .AddJwtConfiguration(builder.Configuration)
+    .AddLexitaticoCors()
+    .AddLextaticoControllers()
+    .AddSwaggerConfiguration()
+    .AddEndpointsApiExplorer();
 
-            var webHostEnvironment = host.Services.GetRequiredService<IWebHostEnvironment>();
+var app = builder.Build();
 
-            if (!webHostEnvironment.IsProduction())
-                await host.Services.MigrateContextDbAsync();
+if (!app.Environment.IsProduction())
+{
+    await app.Services.MigrateContextDbAsync();
 
-            await host.RunAsync();
-        }
+    app.UseDeveloperExceptionPage();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+    app.UseSwagger();
+
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("doc/swagger.json", "Lextatico Api v1"));
 }
+
+if (app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+
+    app.UseHsts();
+}
+
+app.UseRouting();
+
+app.UseCors();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.UseTransaction();
+
+app.MapHealthChecks("/status",
+              new HealthCheckOptions()
+              {
+                  ResponseWriter = async (context, report) =>
+                  {
+                      var result = JsonConvert.SerializeObject(
+                          new
+                          {
+                              statusApplication = report.Status.ToString(),
+                              healthChecks = report.Entries.Select(e => new
+                              {
+                                  check = e.Key,
+                                  ErrorMessage = e.Value.Exception?.Message,
+                                  status = Enum.GetName(typeof(HealthStatus), e.Value.Status)
+                              })
+                          });
+                      context.Response.ContentType = MediaTypeNames.Application.Json;
+                      await context.Response.WriteAsync(result);
+                  }
+              });
+
+app.MapHealthChecks("/healthchecks-data-ui", new HealthCheckOptions()
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.MapHealthChecksUI();
+
+app.MapControllers();
+
+app.Run();

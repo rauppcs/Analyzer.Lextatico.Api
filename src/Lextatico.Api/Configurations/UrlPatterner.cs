@@ -10,7 +10,7 @@ namespace Lextatico.Api.Configurations
         {
             if (value is null) return null;
 
-            var replacement=  Regex.Replace(value.ToString() ?? string.Empty,
+            var replacement = Regex.Replace(value.ToString() ?? string.Empty,
                 "([a-z])([A-Z])",
                 "$1-$2",
                 RegexOptions.CultureInvariant,
