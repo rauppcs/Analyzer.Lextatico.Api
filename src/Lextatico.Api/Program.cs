@@ -44,15 +44,15 @@ builder.Services
 
 var app = builder.Build();
 
+app.UseSwagger();
+
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("doc/swagger.json", "Lextatico Api v1"));
+
 if (!app.Environment.IsProduction())
 {
     await app.Services.MigrateContextDbAsync();
 
     app.UseDeveloperExceptionPage();
-
-    app.UseSwagger();
-
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("doc/swagger.json", "Lextatico Api v1"));
 }
 
 if (app.Environment.IsProduction())
