@@ -3,19 +3,19 @@
 version: '3.4'
 
 services:
-  lextaticoapi:
-    image: ${DOCKER_REGISTRY-}lextaticoapi
-    container_name: lextatico_api
+  analyzerlextaticoapi:
+    image: ${DOCKER_REGISTRY-}analyzerlextaticoapi
+    container_name: analyzer_lextatico_api
     build:
       context: .
-      dockerfile: src/Lextatico.Api/Dockerfile
+      dockerfile: src/Analyzer.Lextatico.Api/Dockerfile
     depends_on:
       - sqlserver
     networks:
       - Lextatico
     ports:
-      - 9002:9002
-      - 9003:9003
+      - 9004:9004
+      - 9005:9005
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - LOCAL_DEVELOPMENT=True

@@ -3,7 +3,7 @@
 version: '3.4'
 
 services:
-  lextaticoapi:
+  analyzerlextaticoapi:
     environment:
       - IS_DOCKER=True
       - ASPNETCORE_Kestrel__Certificates__Default__Password=lextatico

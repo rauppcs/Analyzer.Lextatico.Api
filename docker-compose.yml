@@ -3,19 +3,19 @@
 version: '3.4'
 
 services:
-  lextaticoapi:
+  analyzerlextaticoapi:
     image: ${DOCKER_REGISTRY-}lextaticoapi
-    container_name: lextatico_api_prd
+    container_name: analyzer_lextatico_api_prd
     build:
       context: .
-      dockerfile: src/Lextatico.Api/Dockerfile
+      dockerfile: src/Analyzer.Lextatico.Api/Dockerfile
     depends_on:
       - sqlserver
     networks:
       - Lextatico
     ports:
-      - 5000:5000
-      - 5001:5001
+      - 9004:9004
+      - 9005:9005
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver

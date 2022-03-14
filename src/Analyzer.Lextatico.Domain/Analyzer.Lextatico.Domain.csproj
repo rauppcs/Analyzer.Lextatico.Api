@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Analyzer.Lextatico.Infra.Identity\Analyzer.Lextatico.Infra.Identity.csproj" />
+    <ProjectReference Include="..\Analyzer.Lextatico.Infra.Services\Analyzer.Lextatico.Infra.Services.csproj" />
+    <ProjectReference Include="..\Analyzer.Lextatico.Sly\Analyzer.Lextatico.Sly.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.3" />
+  </ItemGroup>
+
+</Project>
