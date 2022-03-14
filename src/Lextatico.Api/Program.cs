@@ -46,7 +46,7 @@ var app = builder.Build();
 
 app.UseSwagger();
 
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("doc/swagger.json", "Lextatico Api v1"));
+app.UseSwaggerUI(c => c.SwaggerEndpoint("doc/swagger.json", "Lextatico Api v1"));
 
 if (!app.Environment.IsProduction())
 {
