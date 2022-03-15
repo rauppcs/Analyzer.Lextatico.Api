@@ -7,10 +7,11 @@ namespace Analyzer.Lextatico.Domain.Dtos.Message
 {
     public class Message : IMessage
     {
+
+        private string _locationObjectCreated = string.Empty;
         public IList<Notification> Errors { get; set; } = new List<Notification>();
 
         public IList<Notification> Warnings { get; set; } = new List<Notification>();
-        private string _locationObjectCreated = string.Empty;
 
         public void AddError(Notification error) => Errors.Add(error);
 
@@ -28,7 +29,7 @@ namespace Analyzer.Lextatico.Domain.Dtos.Message
 
         public void ClearErrors() => Errors.Clear();
 
-        public void ClearWarnings() =>  Warnings.Clear();
+        public void ClearWarnings() => Warnings.Clear();
 
         public string GetLocation() => _locationObjectCreated;
 
@@ -38,9 +39,13 @@ namespace Analyzer.Lextatico.Domain.Dtos.Message
     public interface IMessage
     {
         IList<Notification> Errors { get; set; }
+        IList<Notification> Warnings { get; set; }
         void AddError(Notification error);
         void AddError(string property, string message);
         void AddError(string message);
+        void AddWarning(Notification warning);
+        void AddWarning(string property, string message);
+        void AddWarning(string message);
         bool IsValid();
         void ClearErrors();
         string GetLocation();
