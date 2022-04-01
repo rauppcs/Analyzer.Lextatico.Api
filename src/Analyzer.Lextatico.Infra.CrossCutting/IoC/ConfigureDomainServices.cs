@@ -9,7 +9,6 @@ namespace Analyzer.Lextatico.Infra.CrossCutting.IoC
         public static IServiceCollection AddLextaticoDomainServices(this IServiceCollection services)
         {
             // DOMAIN SERVICES
-            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAnalyzerService, AnalyzerService>();
             services.AddScoped<ITerminalTokenService, TerminalTokenService>();
 

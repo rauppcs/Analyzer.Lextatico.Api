@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Analyzer.Lextatico.Domain.Models
 {
-    public class ApplicationUser : IdentityUser<Guid>
+    public class ApplicationUser : Base
     {
-        public string Name { get; private set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
         public virtual ICollection<Analyzer> Analyzers { get; } = new List<Analyzer>();
-        public virtual ICollection<RefreshToken> RefreshTokens { get; } = new List<RefreshToken>();
     }
 }

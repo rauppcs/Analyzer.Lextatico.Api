@@ -11,13 +11,13 @@ namespace Analyzer.Lextatico.Application.Services.Interfaces
 {
     public interface IAnalyzerAppService : IAppService
     {
-        Task<AnalyzerWithTerminalTokensAndNonTerminalTokens> GetAnalyzerByIdAsync(Guid analyzerId);
+        Task<AnalyzerWithTerminalTokensAndNonTerminalTokens> GetAnalyzerByLoggedUserAsync(Guid analyzerId);
         Task<IEnumerable<AnalyzerDto>> GetAnalyzersByLoggedUserAsync();
         Task<(IEnumerable<AnalyzerDto>, int)> GetAnalyzersPaggedByLoggedUserAsync(int page, int size);
-        Task<bool> CreateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer);
-        Task<bool> UpdateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer);
-        Task<bool> DeleteAnalyzerByIdAsync(Guid analyzerId);
-        Task<bool> DeleteAnalyzersByIdAsync(IEnumerable<Guid> analyzerIds);
-        Task<ParseResult<Token>> TestAnalyzerByIdAsync(Guid analyzerId, TesteAnalyzerDto testeAnalyzer);
+        Task<bool> CreateAnalyzerAndByLoggedUserAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer);
+        Task<bool> UpdateAnalyzerAndByLoggedUserAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer);
+        Task<bool> DeleteAnalyzerByIdAndByLoggedUserAsync(Guid analyzerId);
+        Task<bool> DeleteAnalyzersByIdAndByLoggedUserAsync(IEnumerable<Guid> analyzerIds);
+        Task<ParseResult<Token>> TestAnalyzerByIdAndByLoggedUserAsync(Guid analyzerId, TesteAnalyzerDto testeAnalyzer);
     }
 }

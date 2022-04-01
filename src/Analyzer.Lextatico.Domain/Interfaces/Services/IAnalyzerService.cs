@@ -11,8 +11,10 @@ namespace Analyzer.Lextatico.Domain.Interfaces.Services
 {
     public interface IAnalyzerService : IService<AnalyzerModel>
     {
+        Task<AnalyzerModel> GetAnalyzerByIdAndUserIdAsync(Guid id);
+        Task<IEnumerable<AnalyzerModel>> GetAnalyzersByIdsAndByLoggedUserAsync(IEnumerable<Guid> analyzersIds);
         Task<IEnumerable<AnalyzerModel>> GetAnalyzersByLoggedUserAsync();
         Task<(IEnumerable<AnalyzerModel>, int)> GetAnalyzersPaggedByLoggedUserAsync(int page, int size);
-        Task<ParseResult<Token>> TestAnalyzer(Guid analyzerId, string content);
+        Task<ParseResult<Token>> TestAnalyzerByIdAndUserIdAsync(Guid analyzerId, string content);
     }
 }

@@ -32,7 +32,7 @@ namespace Analyzer.Lextatico.Api.Controllers
         [HttpGet, Route("{analyzerId:guid}")]
         public async Task<IActionResult> GetAnalyzer(Guid analyzerId)
         {
-            var analyzer = await _analyzerAppService.GetAnalyzerByIdAsync(analyzerId);
+            var analyzer = await _analyzerAppService.GetAnalyzerByLoggedUserAsync(analyzerId);
 
             return ReturnOk(analyzer);
         }
@@ -40,7 +40,7 @@ namespace Analyzer.Lextatico.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAnalyzer(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzer)
         {
-            await _analyzerAppService.CreateAnalyzerAsync(analyzer);
+            await _analyzerAppService.CreateAnalyzerAndByLoggedUserAsync(analyzer);
 
             return ReturnCreated();
         }
@@ -50,7 +50,7 @@ namespace Analyzer.Lextatico.Api.Controllers
         {
             analyzer.Id = analyzerId;
 
-            await _analyzerAppService.UpdateAnalyzerAsync(analyzer);
+            await _analyzerAppService.UpdateAnalyzerAndByLoggedUserAsync(analyzer);
 
             return ReturnOk();
         }
@@ -58,7 +58,7 @@ namespace Analyzer.Lextatico.Api.Controllers
         [HttpDelete, Route("{analyzerId:guid}")]
         public async Task<IActionResult> DeleteAnalyzer(Guid analyzerId)
         {
-            await _analyzerAppService.DeleteAnalyzerByIdAsync(analyzerId);
+            await _analyzerAppService.DeleteAnalyzerByIdAndByLoggedUserAsync(analyzerId);
 
             return ReturnOk();
         }
@@ -66,7 +66,7 @@ namespace Analyzer.Lextatico.Api.Controllers
         [HttpPost, Route("deleteBulk")]
         public async Task<IActionResult> DeleteAnalyzers([FromBody] IEnumerable<Guid> analyzerIds)
         {
-            await _analyzerAppService.DeleteAnalyzersByIdAsync(analyzerIds);
+            await _analyzerAppService.DeleteAnalyzersByIdAndByLoggedUserAsync(analyzerIds);
 
             return ReturnOk();
         }
@@ -74,7 +74,7 @@ namespace Analyzer.Lextatico.Api.Controllers
         [HttpPost, Route("{analyzerId:guid}/test")]
         public async Task<IActionResult> TestAnalyzer([FromRoute] Guid analyzerId, TesteAnalyzerDto testeAnalyzer)
         {
-            var result = await _analyzerAppService.TestAnalyzerByIdAsync(analyzerId, testeAnalyzer);
+            var result = await _analyzerAppService.TestAnalyzerByIdAndByLoggedUserAsync(analyzerId, testeAnalyzer);
 
             return ReturnOk(result);
         }

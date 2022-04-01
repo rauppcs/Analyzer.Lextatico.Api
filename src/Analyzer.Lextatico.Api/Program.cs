@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json;
 using HostEnvironmentEnvExtensions = Analyzer.Lextatico.Api.Extensions.HostEnvironmentEnvExtensions;
+using Analyzer.Lextatico.Infra.CrossCutting.Extensions.MassTransitExtensions;
 
 if (HostEnvironmentEnvExtensions.IsDocker())
     Thread.Sleep(30000);
@@ -35,11 +36,11 @@ builder.Services
     .AddLextaticoApplicationServices()
     .AddLextaticoHealthChecks(builder.Configuration)
     .AddLextaticoContext(builder.Configuration)
-    .AddLextaticoIdentity()
     .AddLextaticoJwt(builder.Configuration)
     .AddLexitaticoCors()
     .AddLextaticoControllers()
     .AddLextaticoSwagger()
+    .AddLextaticoMassTransitWithRabbitMq(builder.Configuration)
     .AddEndpointsApiExplorer();
 
 var app = builder.Build();

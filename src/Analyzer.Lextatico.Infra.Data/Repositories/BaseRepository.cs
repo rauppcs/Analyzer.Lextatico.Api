@@ -14,6 +14,9 @@ namespace Analyzer.Lextatico.Infra.Data.Repositories
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : Base
     {
         protected readonly LextaticoContext _lextaticoContext;
+
+        public IUnityOfWork UnityOfWork => _lextaticoContext;
+
         protected DbSet<T> _dataSet;
 
         public BaseRepository(LextaticoContext lextaticoContext)
@@ -65,28 +68,18 @@ namespace Analyzer.Lextatico.Infra.Data.Repositories
             return result >= 0;
         }
 
-        public virtual async Task<bool> DeleteAsync(Guid id)
+        public virtual async Task<bool> DeleteAsync(T item)
         {
-            var itemDb = await SelectByIdAsync(id);
-
-            if (itemDb == null)
-                return false;
-
-            _dataSet.Remove(itemDb);
+            _dataSet.Remove(item);
 
             var result = await _lextaticoContext.SaveChangesAsync();
 
             return result >= 0;
         }
 
-        public virtual async Task<bool> DeleteAsync(IEnumerable<Guid> ids)
+        public virtual async Task<bool> DeleteAsync(IEnumerable<T> items)
         {
-            var itemsDb = await SelectByIdAsync(ids);
-
-            if (!itemsDb.Any())
-                return false;
-
-            _dataSet.RemoveRange(itemsDb);
+            _dataSet.RemoveRange(items);
 
             var result = await _lextaticoContext.SaveChangesAsync();
 

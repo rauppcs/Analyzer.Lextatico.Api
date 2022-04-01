@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Analyzer.Lextatico.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Analyzer.Lextatico.Infra.Data.Context

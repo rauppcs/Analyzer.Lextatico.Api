@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Analyzer.Lextatico.Infra.Data.Context
+namespace Analyzer.Lextatico.Domain.Interfaces.Repositories
 {
     public interface IUnityOfWork
     {

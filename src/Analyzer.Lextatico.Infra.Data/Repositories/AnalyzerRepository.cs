@@ -17,6 +17,20 @@ namespace Analyzer.Lextatico.Infra.Data.Repositories
         {
         }
 
+        public async Task<AnalyzerModel> SelectAnalyzerByIdAndUserIdAsync(Guid id, Guid userId)
+        {
+            var analyzer = await _dataSet.FirstOrDefaultAsync(analyzer => analyzer.Id == id && analyzer.ApplicationUserId == userId);
+
+            return analyzer;
+        }
+
+        public async Task<IEnumerable<AnalyzerModel>> SelectAnalyzersByIdsByUserIdAsync(IEnumerable<Guid> analyzersIds, Guid userId)
+        {
+            var analyzers = await _dataSet.Where(x => analyzersIds.Contains(x.Id) && x.ApplicationUserId == userId).ToListAsync();
+
+            return analyzers;
+        }
+
         public async Task<IEnumerable<AnalyzerModel>> SelectAnalyzersByUserIdAsync(Guid userId) =>
             await _dataSet.Where(f => f.ApplicationUserId == userId).ToListAsync();
 

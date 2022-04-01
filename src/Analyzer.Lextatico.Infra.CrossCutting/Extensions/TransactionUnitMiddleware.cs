@@ -53,7 +53,6 @@ namespace Analyzer.Lextatico.Infra.CrossCutting.Extensions
                         else
                         {
                             await lextaticoContext.UndoTransaction(transaction);
-                            await lextaticoContext.DiscardCurrentTransactionAsync();
                         }
                     });
                 }
@@ -65,6 +64,10 @@ namespace Analyzer.Lextatico.Infra.CrossCutting.Extensions
             catch (Exception)
             {
                 await lextaticoContext.UndoTransaction();
+
+            }
+            finally
+            {
                 await lextaticoContext.DiscardCurrentTransactionAsync();
             }
         }

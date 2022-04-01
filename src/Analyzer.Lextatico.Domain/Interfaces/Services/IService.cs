@@ -12,7 +12,9 @@ namespace Analyzer.Lextatico.Domain.Interfaces.Services
         Task<IEnumerable<T>> GetAllAsync();
         Task<bool> CreateAsync(T item);
         Task<bool> UpdateAsync(T item);
-        Task<bool> DeleteAsync(Guid id);
-        Task<bool> DeleteAsync(IEnumerable<Guid> ids);
+        // Task<bool> DeleteAsync(Guid id);
+        // Task<bool> DeleteAsync(IEnumerable<Guid> ids);
+        Task<bool> DeleteAsync(T item);
+        Task<bool> DeleteAsync(IEnumerable<T> items);
     }
 }
