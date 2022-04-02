@@ -10,6 +10,7 @@ namespace Analyzer.Lextatico.Infra.CrossCutting.IoC
         {
             // REPOSITORIES
             services.AddScoped<IAnalyzerRepository, AnalyzerRepository>();
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddScoped<ITerminalTokenRepository, TerminalTokenRepository>();
 
             return services;

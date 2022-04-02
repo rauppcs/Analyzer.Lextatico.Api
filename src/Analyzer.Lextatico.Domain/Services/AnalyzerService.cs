@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Analyzer.Lextatico.Domain.Dtos.Message;
+using Analyzer.Lextatico.Domain.Exceptions;
 using Analyzer.Lextatico.Domain.Interfaces.Repositories;
 using Analyzer.Lextatico.Domain.Interfaces.Services;
 using Analyzer.Lextatico.Domain.Models;
@@ -28,6 +29,27 @@ namespace Analyzer.Lextatico.Domain.Services
             _aspNetUser = aspNetUser;
         }
 
+        public async Task<AnalyzerModel> GetAnalyzerByIdAndUserIdAsync(Guid id)
+        {
+            var userId = _aspNetUser.GetUserId();
+
+            var analyzer = await _analyzerRepository.SelectAnalyzerByIdAndUserIdAsync(id, userId);
+
+            if (analyzer == null)
+                throw new NotFoundException("Analisador não encontrado");
+
+            return analyzer;
+        }
+
+        public async Task<IEnumerable<AnalyzerModel>> GetAnalyzersByIdsAndByLoggedUserAsync(IEnumerable<Guid> analyzersIds)
+        {
+            var userId = _aspNetUser.GetUserId();
+
+            var analyzers = await _analyzerRepository.SelectAnalyzersByIdsByUserIdAsync(analyzersIds, userId);
+
+            return analyzers;
+        }
+
         public async Task<IEnumerable<AnalyzerModel>> GetAnalyzersByLoggedUserAsync()
         {
             var userId = _aspNetUser.GetUserId();
@@ -46,9 +68,12 @@ namespace Analyzer.Lextatico.Domain.Services
             return result;
         }
 
-        public async Task<ParseResult<Token>> TestAnalyzer(Guid analyzerId, string content)
+        public async Task<ParseResult<Token>> TestAnalyzerByIdAndUserIdAsync(Guid analyzerId, string content)
         {
-            var analyzerDb = await GetByIdAsync(analyzerId);
+            var analyzerDb = await GetAnalyzerByIdAndUserIdAsync(analyzerId);
+
+            if (analyzerDb == null)
+                throw new NotFoundException("Analisador não encontrado");
 
             var startingNonTerminalToken = analyzerDb.NonTerminalTokens.FirstOrDefault(f => f.IsStart);
 
@@ -109,6 +134,38 @@ namespace Analyzer.Lextatico.Domain.Services
             }
 
             return parseResult;
+        }
+
+        public override async Task<bool> CreateAsync(AnalyzerModel analyzer)
+        {
+            if (analyzer.ApplicationUserId != _aspNetUser.GetUserId())
+                throw new NotFoundException("Analisador não encontrado");
+
+            return await base.CreateAsync(analyzer);
+        }
+
+        public override async Task<bool> UpdateAsync(AnalyzerModel analyzer)
+        {
+            if (analyzer.ApplicationUserId != _aspNetUser.GetUserId())
+                throw new NotFoundException("Analisador não encontrado");
+
+            return await base.UpdateAsync(analyzer);
+        }
+
+        public override async Task<bool> DeleteAsync(AnalyzerModel analyzer)
+        {
+            if (analyzer.ApplicationUserId != _aspNetUser.GetUserId())
+                throw new NotFoundException("Analisador não encontrado");
+
+            return await base.DeleteAsync(analyzer);
+        }
+
+        public override async Task<bool> DeleteAsync(IEnumerable<AnalyzerModel> analyzers)
+        {
+            if (!analyzers.Any(a => a.ApplicationUserId == _aspNetUser.GetUserId()))
+                throw new NotFoundException("Analisador não encontrado");
+
+            return await base.DeleteAsync(analyzers);
         }
     }
 }

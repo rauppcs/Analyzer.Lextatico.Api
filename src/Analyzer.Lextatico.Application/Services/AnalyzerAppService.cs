@@ -13,6 +13,7 @@ using Analyzer.Lextatico.Infra.Identity.User;
 using Analyzer.Lextatico.Sly.Lexer;
 using Analyzer.Lextatico.Sly.Parser;
 using AnalyzerModel = Analyzer.Lextatico.Domain.Models.Analyzer;
+using Analyzer.Lextatico.Domain.Exceptions;
 
 namespace Analyzer.Lextatico.Application.Services
 {
@@ -33,9 +34,9 @@ namespace Analyzer.Lextatico.Application.Services
 
         }
 
-        public async Task<AnalyzerWithTerminalTokensAndNonTerminalTokens> GetAnalyzerByIdAsync(Guid analyzerId)
+        public async Task<AnalyzerWithTerminalTokensAndNonTerminalTokens> GetAnalyzerByLoggedUserAsync(Guid analyzerId)
         {
-            var analyzer = _mapper.Map<AnalyzerWithTerminalTokensAndNonTerminalTokens>(await _analyzerService.GetByIdAsync(analyzerId));
+            var analyzer = _mapper.Map<AnalyzerWithTerminalTokensAndNonTerminalTokens>(await _analyzerService.GetAnalyzerByIdAndUserIdAsync(analyzerId));
 
             analyzer.NonTerminalTokens = analyzer.NonTerminalTokens.OrderBy(order => order.Sequence);
 
@@ -64,7 +65,7 @@ namespace Analyzer.Lextatico.Application.Services
             return (analyzerSummaries, total);
         }
 
-        public async Task<bool> CreateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzerWithTerminalTokensAndNonTerminalTokens)
+        public async Task<bool> CreateAnalyzerAndByLoggedUserAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzerWithTerminalTokensAndNonTerminalTokens)
         {
             var analyzerDb = _mapper.Map<AnalyzerModel>(analyzerWithTerminalTokensAndNonTerminalTokens);
 
@@ -75,7 +76,7 @@ namespace Analyzer.Lextatico.Application.Services
             return result;
         }
 
-        public async Task<bool> UpdateAnalyzerAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzerWithTerminalTokensAndNonTerminalTokens)
+        public async Task<bool> UpdateAnalyzerAndByLoggedUserAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzerWithTerminalTokensAndNonTerminalTokens)
         {
             var analyzerDb = _mapper.Map<AnalyzerModel>(analyzerWithTerminalTokensAndNonTerminalTokens);
 
@@ -86,25 +87,27 @@ namespace Analyzer.Lextatico.Application.Services
             return result;
         }
 
-        public async Task<bool> DeleteAnalyzerByIdAsync(Guid analyzerId)
+        public async Task<bool> DeleteAnalyzerByIdAndByLoggedUserAsync(Guid analyzerId)
         {
-            var result = await _analyzerService.DeleteAsync(analyzerId);
+            var analyzer = await _analyzerService.GetAnalyzerByIdAndUserIdAsync(analyzerId);
 
-            // TODO: AQUI VERIFICAR COMO LANÇAR 404
+            var result = await _analyzerService.DeleteAsync(analyzer);
 
             return result;
         }
 
-        public async Task<bool> DeleteAnalyzersByIdAsync(IEnumerable<Guid> analyzersIds)
+        public async Task<bool> DeleteAnalyzersByIdAndByLoggedUserAsync(IEnumerable<Guid> analyzersIds)
         {
-            var result = await _analyzerService.DeleteAsync(analyzersIds);
+            var analyzers = await _analyzerService.GetAnalyzersByIdsAndByLoggedUserAsync(analyzersIds);
+
+            var result = await _analyzerService.DeleteAsync(analyzers);
 
             return result;
         }
 
-        public async Task<ParseResult<Token>> TestAnalyzerByIdAsync(Guid analyzerId, TesteAnalyzerDto testeAnalyzer)
+        public async Task<ParseResult<Token>> TestAnalyzerByIdAndByLoggedUserAsync(Guid analyzerId, TesteAnalyzerDto testeAnalyzer)
         {
-            var result = await _analyzerService.TestAnalyzer(analyzerId, testeAnalyzer.Content);
+            var result = await _analyzerService.TestAnalyzerByIdAndUserIdAsync(analyzerId, testeAnalyzer.Content);
 
             return result;
         }

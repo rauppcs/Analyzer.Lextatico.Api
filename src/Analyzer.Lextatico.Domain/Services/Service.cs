@@ -28,6 +28,8 @@ namespace Analyzer.Lextatico.Domain.Services
             return await _repository.SelectByIdAsync(id);
         }
 
+        
+
         public virtual async Task<bool> CreateAsync(T item)
         {
             return await _repository.InsertAsync(item);
@@ -44,19 +46,14 @@ namespace Analyzer.Lextatico.Domain.Services
             return await _repository.UpdateAsync(item);
         }
 
-        public virtual async Task<bool> DeleteAsync(Guid id)
+        public virtual async Task<bool> DeleteAsync(T item)
         {
-            var exists = await _repository.ExistsAsync(id);
-
-            // if (!exists)
-            //     throw new NotFoundException($"{id} não encontrado.");
-
-            return await _repository.DeleteAsync(id);
+            return await _repository.DeleteAsync(item);
         }
 
-        public virtual async Task<bool> DeleteAsync(IEnumerable<Guid> ids)
+        public virtual async Task<bool> DeleteAsync(IEnumerable<T> items)
         {
-            return await _repository.DeleteAsync(ids);
+            return await _repository.DeleteAsync(items);
         }
     }
 }

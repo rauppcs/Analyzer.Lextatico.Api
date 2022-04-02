@@ -93,7 +93,11 @@ namespace Analyzer.Lextatico.Api.Controllers.Base
         protected virtual IActionResult ReturnCreated()
         {
             if (!ValidResponse())
-                return BadRequest();
+            {
+                var response = MountResponse();
+
+                return ReturnBadRequest(response);
+            }
 
             return Created(_message.GetLocation());
         }

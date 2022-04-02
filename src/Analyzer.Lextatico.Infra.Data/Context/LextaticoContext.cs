@@ -7,14 +7,17 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Analyzer.Lextatico.Domain.Models;
 using System.Reflection;
 using AnalyzerModel = Analyzer.Lextatico.Domain.Models.Analyzer;
+using Analyzer.Lextatico.Domain.Interfaces.Repositories;
 
 namespace Analyzer.Lextatico.Infra.Data.Context
 {
-    public class LextaticoContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IContextDb
+    public class LextaticoContext : DbContext, IContextDb, IUnityOfWork
     {
         public LextaticoContext(DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<ApplicationUser> AspNetUsers { get; set; }
 
         public DbSet<AnalyzerModel> Analyzers { get; set; }
 
@@ -25,8 +28,6 @@ namespace Analyzer.Lextatico.Infra.Data.Context
         public DbSet<NonTerminalTokenRule> NonTerminalTokenRules { get; set; }
 
         public DbSet<NonTerminalTokenRuleClause> NonTerminalTokenRuleClauses { get; set; }
-
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public DbSet<TerminalToken> TerminalTokens { get; set; }
 
@@ -56,22 +57,9 @@ namespace Analyzer.Lextatico.Infra.Data.Context
 
             if (transaction != CurrentTransaction) throw new InvalidOperationException($"{transaction.TransactionId} não é a transação atual.");
 
-            try
-            {
-                await SaveChangesAsync();
+            await SaveChangesAsync();
 
-                await transaction.CommitAsync();
-            }
-            catch (System.Exception)
-            {
-                await UndoTransaction(transaction);
-
-                throw;
-            }
-            finally
-            {
-                await DiscardCurrentTransactionAsync();
-            }
+            await transaction.CommitAsync();
         }
 
         public async Task UndoTransaction(IDbContextTransaction transaction = null)
