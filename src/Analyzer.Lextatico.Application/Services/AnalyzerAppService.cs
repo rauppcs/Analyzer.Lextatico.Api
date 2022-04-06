@@ -34,9 +34,9 @@ namespace Analyzer.Lextatico.Application.Services
 
         }
 
-        public async Task<AnalyzerWithTerminalTokensAndNonTerminalTokens> GetAnalyzerByLoggedUserAsync(Guid analyzerId)
+        public async Task<AnalyzerWithTerminalTokensAndNonTerminalTokensDto> GetAnalyzerByLoggedUserAsync(Guid analyzerId)
         {
-            var analyzer = _mapper.Map<AnalyzerWithTerminalTokensAndNonTerminalTokens>(await _analyzerService.GetAnalyzerByIdAndUserIdAsync(analyzerId));
+            var analyzer = _mapper.Map<AnalyzerWithTerminalTokensAndNonTerminalTokensDto>(await _analyzerService.GetAnalyzerByIdAndUserIdAsync(analyzerId));
 
             analyzer.NonTerminalTokens = analyzer.NonTerminalTokens.OrderBy(order => order.Sequence);
 
@@ -65,7 +65,7 @@ namespace Analyzer.Lextatico.Application.Services
             return (analyzerSummaries, total);
         }
 
-        public async Task<bool> CreateAnalyzerAndByLoggedUserAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzerWithTerminalTokensAndNonTerminalTokens)
+        public async Task<bool> CreateAnalyzerAndByLoggedUserAsync(AnalyzerWithTerminalTokensAndNonTerminalTokensDto analyzerWithTerminalTokensAndNonTerminalTokens)
         {
             var analyzerDb = _mapper.Map<AnalyzerModel>(analyzerWithTerminalTokensAndNonTerminalTokens);
 
@@ -76,7 +76,7 @@ namespace Analyzer.Lextatico.Application.Services
             return result;
         }
 
-        public async Task<bool> UpdateAnalyzerAndByLoggedUserAsync(AnalyzerWithTerminalTokensAndNonTerminalTokens analyzerWithTerminalTokensAndNonTerminalTokens)
+        public async Task<bool> UpdateAnalyzerAndByLoggedUserAsync(AnalyzerWithTerminalTokensAndNonTerminalTokensDto analyzerWithTerminalTokensAndNonTerminalTokens)
         {
             var analyzerDb = _mapper.Map<AnalyzerModel>(analyzerWithTerminalTokensAndNonTerminalTokens);
 
