@@ -15,7 +15,7 @@ namespace Analyzer.Lextatico.Application.AutoMapper.Profiles
         {
             CreateMap<AnalyzerModel, AnalyzerDto>().ReverseMap();
 
-            CreateMap<AnalyzerWithTerminalTokensAndNonTerminalTokens, AnalyzerModel>()
+            CreateMap<AnalyzerWithTerminalTokensAndNonTerminalTokensDto, AnalyzerModel>()
                 .ForMember(analyzer => analyzer.AnalyzerTerminalTokens,
                     options => options.MapFrom(analyzerWithTerminalTokensAndNonTerminalTokens => analyzerWithTerminalTokensAndNonTerminalTokens.TerminalTokens))
                 .ForMember(analyzer => analyzer.NonTerminalTokens,

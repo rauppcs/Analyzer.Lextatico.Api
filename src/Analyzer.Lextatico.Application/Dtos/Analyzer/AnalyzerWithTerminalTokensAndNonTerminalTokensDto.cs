@@ -7,7 +7,7 @@ using Analyzer.Lextatico.Application.Dtos.TerminalToken;
 
 namespace Analyzer.Lextatico.Application.Dtos.Analyzer
 {
-    public class AnalyzerWithTerminalTokensAndNonTerminalTokens : AnalyzerDto
+    public class AnalyzerWithTerminalTokensAndNonTerminalTokensDto : AnalyzerDto
     {
         public IEnumerable<TerminalTokenDto> TerminalTokens { get; set; }
         public IEnumerable<NonTerminalTokenWithRulesAndClausesDto> NonTerminalTokens { get; set; }
