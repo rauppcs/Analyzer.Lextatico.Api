@@ -56,12 +56,13 @@ namespace Analyzer.Lextatico.Api.Configurations
                 c.SwaggerDoc("doc",
                      new OpenApiInfo
                      {
-                         Title = "Analyzer Lextatico Api",
+                         Title = "Auth Lextatico Api",
                          Version = "v1",
                          Contact = new OpenApiContact
                          {
                              Name = "Cassiano dos Santos Raupp",
-                             Url = new Uri("https://www.linkedin.com/in/cassiano-raupp-50a6a9133/")
+                             Email = "cassiano.raupp@outlook.com",
+                             Url = new Uri("https://cassiano3795.github.io/cassianoraupp/")
                          }
                      });
 
