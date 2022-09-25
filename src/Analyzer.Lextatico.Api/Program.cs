@@ -1,16 +1,15 @@
 using System.Net.Mime;
 using HealthChecks.UI.Client;
 using Analyzer.Lextatico.Api.Configurations;
-using Analyzer.Lextatico.Api.Extensions;
 using Analyzer.Lextatico.Infra.CrossCutting.Extensions;
 using Analyzer.Lextatico.Infra.CrossCutting.IoC;
 using Analyzer.Lextatico.Infra.Identity.User;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Newtonsoft.Json;
-using HostEnvironmentEnvExtensions = Analyzer.Lextatico.Api.Extensions.HostEnvironmentEnvExtensions;
+using HostEnvironmentEnvExtensions = Analyzer.Lextatico.Infra.CrossCutting.Extensions.HostEnvironmentEnvExtensions;
 using Analyzer.Lextatico.Infra.CrossCutting.Extensions.MassTransitExtensions;
+using System.Text.Json;
+using Analyzer.Lextatico.Infra.CrossCutting.Middlewares;
 
 if (HostEnvironmentEnvExtensions.IsDocker())
     Thread.Sleep(30000);
@@ -22,6 +21,8 @@ builder.WebHost.ConfigureAppConfiguration((hostContext, builder) =>
     if (hostContext.HostingEnvironment.IsLocalDevelopment())
         builder.AddUserSecrets<Program>();
 });
+
+builder.Host.UseLextaticoSerilog(builder.Environment, builder.Configuration);
 
 builder.Services
     .AddHttpContextAccessor()
@@ -75,6 +76,12 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.UseRequestSerilog();
+
+app.UseLogging();
+
+app.UseErrorHandling();
+
 app.UseTransaction();
 
 app.MapHealthChecks("/status",
@@ -82,7 +89,7 @@ app.MapHealthChecks("/status",
               {
                   ResponseWriter = async (context, report) =>
                   {
-                      var result = JsonConvert.SerializeObject(
+                      var result = JsonSerializer.Serialize(
                           new
                           {
                               statusApplication = report.Status.ToString(),

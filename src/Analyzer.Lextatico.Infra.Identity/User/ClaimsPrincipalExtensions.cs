@@ -27,5 +27,16 @@ namespace Analyzer.Lextatico.Infra.Identity.User
             var claim = principal.FindFirst(ClaimTypes.Email);
             return claim?.Value;
         }
+
+        public static string GetUserName(this ClaimsPrincipal principal)
+        {
+            if (principal == null)
+            {
+                throw new ArgumentNullException(nameof(principal));
+            }
+
+            var claim = principal.FindFirst("name");
+            return claim?.Value;
+        }
     }
 }
