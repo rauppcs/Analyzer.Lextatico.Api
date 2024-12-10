@@ -56,7 +56,7 @@ namespace Analyzer.Lextatico.Api.Configurations
                 c.SwaggerDoc("doc",
                      new OpenApiInfo
                      {
-                         Title = "Auth Lextatico Api",
+                         Title = "Analyzer Lextatico Api",
                          Version = "v1",
                          Contact = new OpenApiContact
                          {

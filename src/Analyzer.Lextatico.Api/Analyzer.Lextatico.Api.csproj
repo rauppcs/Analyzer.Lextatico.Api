@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Analyzer.Lextatico.Infra.CrossCutting\Analyzer.Lextatico.Infra.CrossCutting.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

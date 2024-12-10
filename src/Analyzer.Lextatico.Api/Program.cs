@@ -11,16 +11,10 @@ using Analyzer.Lextatico.Infra.CrossCutting.Extensions.MassTransitExtensions;
 using System.Text.Json;
 using Analyzer.Lextatico.Infra.CrossCutting.Middlewares;
 
-if (HostEnvironmentEnvExtensions.IsDocker())
-    Thread.Sleep(30000);
-
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureAppConfiguration((hostContext, builder) =>
-{
-    if (hostContext.HostingEnvironment.IsLocalDevelopment())
-        builder.AddUserSecrets<Program>();
-});
+if (builder.Environment.IsLocalDevelopment())
+    builder.Configuration.AddUserSecrets<Program>();
 
 builder.Host.UseLextaticoSerilog(builder.Environment, builder.Configuration);
 
