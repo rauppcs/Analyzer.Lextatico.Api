@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "LocalDevelopment"
       }
     },
-    "Analyzer.Lextatico.Api - LocalDevelopment": {
+    "LocalDevelopment": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

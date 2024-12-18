@@ -8,33 +8,14 @@ namespace Analyzer.Lextatico.Infra.CrossCutting.Extensions
 {
     public static class SerilogExtensions
     {
-        public static void UseLextaticoSerilog(this IHostBuilder builder, IWebHostEnvironment hostEnvironment, IConfiguration configuration)
+        public static void UseLextaticoSerilog(this IHostBuilder builder, IWebHostEnvironment hostEnvironment,
+            IConfiguration configuration)
         {
-            builder.UseSerilog((context, cfg) =>
-            {
-                cfg.Enrich.FromLogContext();
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
 
-                cfg.Enrich.WithProperty("Application", "Analyzer.Lextatico.Api");
-
-                cfg.Enrich.WithMachineName();
-
-                cfg.Enrich.WithEnvironmentName();
-
-                cfg.Enrich.WithCorrelationId();
-
-                cfg.MinimumLevel.Override("Microsoft", LogEventLevel.Warning);
-
-                cfg.MinimumLevel.Override("System", LogEventLevel.Warning);
-
-                cfg.WriteTo.MongoDB(context.Configuration.GetConnectionString("LextaticoMongoDbLogs"), "logs");
-
-                cfg.WriteTo.Console();
-
-                if (hostEnvironment.IsProduction())
-                    cfg.MinimumLevel.Information();
-                else
-                    cfg.MinimumLevel.Debug();
-            });
+            builder.UseSerilog();
         }
     }
 }
