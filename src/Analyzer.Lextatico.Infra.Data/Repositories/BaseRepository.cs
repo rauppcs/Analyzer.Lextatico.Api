@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Analyzer.Lextatico.Domain.Interfaces.Repositories;
 using Analyzer.Lextatico.Domain.Models;
 using Analyzer.Lextatico.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Analyzer.Lextatico.Infra.Data.Repositories
 {

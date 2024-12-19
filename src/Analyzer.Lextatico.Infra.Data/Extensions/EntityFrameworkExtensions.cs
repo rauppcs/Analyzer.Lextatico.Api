@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Analyzer.Lextatico.Infra.Data.Extensions
 {
-    public static class EntityFramework
+    public static class EntityFrameworkExtensions
     {
         /// <summary>
         /// Define some default fields for the model.

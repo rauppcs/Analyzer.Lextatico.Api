@@ -1,10 +1,12 @@
 using System.Net;
+using Analyzer.Lextatico.Infra.CrossCutting.Extensions;
 using Analyzer.Lextatico.Infra.Data.Context;
+using MassTransit.Mediator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace Analyzer.Lextatico.Infra.CrossCutting.Extensions
+namespace Analyzer.Lextatico.Infra.CrossCutting.Middlewares
 {
     public static class TransactionUnitExtension
     {

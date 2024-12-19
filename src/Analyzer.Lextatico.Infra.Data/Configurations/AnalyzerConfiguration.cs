@@ -1,4 +1,3 @@
-using Analyzer.Lextatico.Domain.Models;
 using Analyzer.Lextatico.Infra.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

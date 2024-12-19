@@ -17,12 +17,12 @@
         "ASPNETCORE_ENVIRONMENT": "LocalDevelopment"
       }
     },
-    "Analyzer.Lextatico.Api - LocalDevelopment": {
+    "LocalDevelopment": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://*:9004;https://*:9005",
+      "applicationUrl": "http://localhost:9004;https://localhost:9005",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "LocalDevelopment"
       }

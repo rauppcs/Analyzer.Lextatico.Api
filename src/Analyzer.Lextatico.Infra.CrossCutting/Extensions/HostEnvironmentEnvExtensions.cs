@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
-namespace Analyzer.Lextatico.Api.Extensions
+namespace Analyzer.Lextatico.Infra.CrossCutting.Extensions
 {
     public static class HostEnvironmentEnvExtensions
     {
