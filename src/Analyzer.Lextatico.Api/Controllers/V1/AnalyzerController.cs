@@ -1,16 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Analyzer.Lextatico.Api.Controllers.Base;
 using Analyzer.Lextatico.Application.Dtos.Analyzer;
 using Analyzer.Lextatico.Application.Dtos.Filter;
 using Analyzer.Lextatico.Application.Services.Interfaces;
 using Analyzer.Lextatico.Domain.Dtos.Message;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Analyzer.Lextatico.Api.Controllers
+namespace Analyzer.Lextatico.Api.Controllers.V1
 {
+    [ApiVersion("1.0")]
     public class AnalyzerController : LextaticoController
     {
         private readonly IAnalyzerAppService _analyzerAppService;
