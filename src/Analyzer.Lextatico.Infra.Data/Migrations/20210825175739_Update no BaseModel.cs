@@ -31,7 +31,7 @@ namespace Analyzer.Lextatico.Infra.Data.Migrations
                 table: "RefreshToken",
                 type: "DATETIME",
                 nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                defaultValueSql: "'1753-01-01 00:00:00.000'",
                 oldClrType: typeof(DateTime),
                 oldType: "datetime",
                 oldNullable: true);

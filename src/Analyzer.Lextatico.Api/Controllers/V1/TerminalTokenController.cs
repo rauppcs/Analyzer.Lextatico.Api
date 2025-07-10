@@ -1,14 +1,15 @@
+using Analyzer.Lextatico.Application.Services.Interfaces;
+using Analyzer.Lextatico.Domain.Dtos.Message;
+using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Analyzer.Lextatico.Api.Controllers.Base;
-using Analyzer.Lextatico.Application.Services.Interfaces;
-using Analyzer.Lextatico.Domain.Dtos.Message;
-using Microsoft.AspNetCore.Mvc;
 
-namespace Analyzer.Lextatico.Api.Controllers
+namespace Analyzer.Lextatico.Api.Controllers.V1
 {
+    [ApiVersion("1.0")]
     public class TerminalTokenController : LextaticoController
     {
         private readonly ITerminalTokenAppService _terminalTokenAppService;

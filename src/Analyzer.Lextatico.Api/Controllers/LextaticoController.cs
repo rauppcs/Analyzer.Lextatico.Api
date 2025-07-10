@@ -5,14 +5,14 @@ using Analyzer.Lextatico.Domain.Dtos.Message;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Analyzer.Lextatico.Api.Controllers.Base
+namespace Analyzer.Lextatico.Api.Controllers
 {
     /// <summary>
     /// Base controller, containing the validation of the response object and the appropriate status returns of the possible application status codes.
     /// </summary>
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public abstract class LextaticoController : ControllerBase
     {
         private readonly IMessage _message;

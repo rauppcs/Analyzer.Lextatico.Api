@@ -1,15 +1,18 @@
-using System;
-using System.Reflection;
-using FluentValidation.AspNetCore;
 using Analyzer.Lextatico.Api.Filters;
+using Analyzer.Lextatico.Api.Options;
 using Analyzer.Lextatico.Domain.Configurations;
 using Analyzer.Lextatico.Domain.Security;
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Reflection;
 
 namespace Analyzer.Lextatico.Api.Configurations
 {
@@ -36,6 +39,23 @@ namespace Analyzer.Lextatico.Api.Configurations
             return services;
         }
 
+        public static IServiceCollection AddLextaticoApiVersioning(this IServiceCollection services)
+        {
+            services.AddApiVersioning(options =>
+            {
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+            })
+                .AddApiExplorer(options =>
+                {
+                    options.GroupNameFormat = "'v'VVV";
+                    options.SubstituteApiVersionInUrl = true;
+                });
+
+            return services;
+        }
+
         public static IServiceCollection AddLexitaticoCors(this IServiceCollection services)
         {
             services.AddCors(optionsCors =>
@@ -51,46 +71,26 @@ namespace Analyzer.Lextatico.Api.Configurations
 
         public static IServiceCollection AddLextaticoSwagger(this IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("doc",
-                     new OpenApiInfo
-                     {
-                         Title = "Analyzer Lextatico Api",
-                         Version = "v1",
-                         Contact = new OpenApiContact
-                         {
-                             Name = "Cassiano dos Santos Raupp",
-                             Email = "cassiano.raupp@outlook.com",
-                             Url = new Uri("https://cassiano3795.github.io/cassianoraupp/")
-                         }
-                     });
-
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "Entre com o Token JWT",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey
-                });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] {}
-                    }
-                });
-            });
+            services.AddSwaggerGen();
+            services.ConfigureOptions<ConfigureSwaggerOptions>();
 
             return services;
+        }
+
+        public static WebApplication UseLextaticoSwagger(this WebApplication app)
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+                        $"API {description.GroupName.ToUpper()}");
+                }
+            });
+
+            return app;
         }
 
         public static IServiceCollection AddLextaticoJwt(this IServiceCollection services, IConfiguration configuration)
