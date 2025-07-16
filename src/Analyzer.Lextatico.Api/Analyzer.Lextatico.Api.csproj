@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <Content Remove="Extensions\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
@@ -17,10 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Analyzer.Lextatico.Application\Analyzer.Lextatico.Application.csproj" />
     <ProjectReference Include="..\Analyzer.Lextatico.Infra.CrossCutting\Analyzer.Lextatico.Infra.CrossCutting.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>
